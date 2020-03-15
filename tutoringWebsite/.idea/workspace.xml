@@ -1,18 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8f1a423e-62f5-43c2-b65d-9b337394084c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.project" beforeDir="false" afterPath="$PROJECT_DIR$/.project" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/classes/classes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/courses/courses.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/profiles/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/profiles/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/resources/resources.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/resources/resources.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/schedule/schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/schedule/schedule.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/study_groups/groups.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/study_groups/groups.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/tutors/tutors.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/tutors/tutors.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/servlets/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/servlets/package-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tutoringWebsite.iml" beforeDir="false" afterPath="$PROJECT_DIR$/tutoringWebsite.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1Z8XjfuiHB8ZkihnnenxhC5pRH1" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f1a423e-62f5-43c2-b65d-9b337394084c" name="Default Changelist" comment="" />
+      <created>1584221832180</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584221832180</updated>
+      <workItem from="1584221841202" duration="3933000" />
+      <workItem from="1584232964942" duration="696000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="446" y="305" key="com.intellij.ide.util.TipDialog" timestamp="1584221841606">
-      <screen x="0" y="0" width="1500" height="960" />
+    <state x="-2066" y="830" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1584232986254">
+      <screen x="-2560" y="241" width="2560" height="1400" />
     </state>
+    <state x="-2066" y="830" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1500.960/-2560.241.2560.1400@-2560.241.2560.1400" timestamp="1584232986254" />
+    <state x="-2098" y="360" key="FileChooserDialogImpl" timestamp="1584227921164">
+      <screen x="-2560" y="241" width="2560" height="1400" />
+    </state>
+    <state x="-2098" y="360" key="FileChooserDialogImpl/0.0.1500.960/-2560.241.2560.1400@-2560.241.2560.1400" timestamp="1584227921164" />
+    <state x="-2377" y="248" key="SettingsEditor" timestamp="1584227924106">
+      <screen x="-2560" y="241" width="2560" height="1400" />
+    </state>
+    <state x="-2377" y="248" key="SettingsEditor/0.0.1500.960/-2560.241.2560.1400@-2560.241.2560.1400" timestamp="1584227924106" />
+    <state x="-1799" y="686" key="com.intellij.ide.util.TipDialog" timestamp="1584232964903">
+      <screen x="-2560" y="241" width="2560" height="1400" />
+    </state>
+    <state x="-1799" y="686" key="com.intellij.ide.util.TipDialog/0.0.1500.960/-2560.241.2560.1400@-2560.241.2560.1400" timestamp="1584232964903" />
     <state x="446" y="305" key="com.intellij.ide.util.TipDialog/0.0.1500.960/-2560.241.2560.1400@0.0.1500.960" timestamp="1584221841606" />
   </component>
 </project>
