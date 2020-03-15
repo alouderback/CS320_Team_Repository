@@ -1,13 +1,14 @@
 package tutoringWebsite.controllers;
 
 
-import tutoringWebsite.model.Course;
+
+import tutoringWebsite.model.courses;
 
 public class courseController{
 	
-	private Course model;
+	private courses model;
 	
-	public void setModel(Course model) {
+	public void setModel(courses model) {
 		this.model = model; 
 	}
 }
