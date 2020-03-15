@@ -1,4 +1,6 @@
-]<!DOCTYPE html>
+
+<!DOCTYPE html>
+
 
 <html>
 	<form action="${pageContext.servletContext.contextPath}/index" method="post">
@@ -15,6 +17,7 @@
 				</ul>	
 			</div>
 		</form>
+
 		
 		<form action="${pageContext.servletContext.contextPath}/courses" method="post">
 			<table>
