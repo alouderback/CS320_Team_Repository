@@ -8,7 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/junit" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="JavaSE-1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
