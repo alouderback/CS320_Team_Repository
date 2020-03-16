@@ -20,7 +20,7 @@ public class sessionController{
 	}
 	
 	public session getSession() {
-		return  new session();
+		return  this.model;
 		
 	}
 	
