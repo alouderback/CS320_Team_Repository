@@ -1,10 +1,10 @@
 package tutoringWebsite.model;
 
-public class user {
+public class User {
 	private String email;
 	private String password;
 	private String genInfo;
-	public user(){
+	public User(){
 	}
 	public void setEmail(String email){
 		this.email = email;
