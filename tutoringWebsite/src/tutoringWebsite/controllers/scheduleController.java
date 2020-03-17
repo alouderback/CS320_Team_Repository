@@ -1,4 +1,6 @@
 package tutoringWebsite.controllers;
+import java.util.ArrayList;
+
 import tutoringWebsite.model.announcement;
 import tutoringWebsite.model.schedule;
 
@@ -10,8 +12,6 @@ public class scheduleController{
 	}
 	
 	public void display() {
-		for(int i = 0; i < model.getSchedule().size(); i++) {
-			System.out.println(model.getSchedule().get(i));
-		}
+		model.getSchedule();
 	}
 }
