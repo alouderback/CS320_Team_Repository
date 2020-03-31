@@ -9,6 +9,7 @@ import tutoringWebsite.model.user;
 public class userController {
 	//User type variable
 	private user model;
+	private LoginController model2;
 	private ArrayList<String> emailList = new ArrayList<String>();
 	Scanner keyboard = new Scanner(System.in);
 	
@@ -16,44 +17,19 @@ public class userController {
 	public void setUser(user model) {
 		this.model = model;
 	}
+	public void setLogin(LoginController model2) {
+		this.model2 = model2;
+	}
 	
 	//Using the search bar
 	public void lookUp(String item) {
 		
 	}
 	
-	//user logs into account
-	// if user does not have account, prompt to make one (check if they have
-	//account using email)
-	//parameters are email and password inputs, compare with emails in an emailList...?
-	//check to see if the password matches the one for that account
-	//if password matches, if not ask to try again
+	//what we want login to do eventually, is check what kind of info can be accessed on each page depending on the user type
+	//and if they are logged in or not
 	public void login(String e, String pass) {
-		String email = model.getEmail();
-		String password = model.getPassword();
-		int hasAccount = 0;
-		for(int i = 0; i < emailList.size()-1; i++) {
-			if(email.equals(emailList.get(i))) {
-				hasAccount++;
-			}
-		}
-		if(hasAccount == 0) { // user makes account
-			System.out.println("Enter in email: ");
-			String newEmail = keyboard.next();
-			emailList.add(newEmail);
-			System.out.println("Enter in password: ");
-			String newPassword = keyboard.next();
-			//creating the account???
-		}
-		else if(hasAccount != 1) {
-			throw new NoSuchElementException("email is already used");}
-		else {
-			if(pass.equals(password)) {
-				//can log in
-			}
-			else {
-				throw new NoSuchElementException("Incorrect password");}
-		}
+		//model2.checkLogin();
 	}
 	
 	//go to whatever is selected
@@ -63,12 +39,30 @@ public class userController {
 	}
 	
 	//push a request to whom it may be concerned
-	public void request() {
-		
+	//parameter is email of person requesting from
+	//message of what the request is
+	public void request(String requestEmail) {
+		int canDoRequest = 0;
+		String message;
+		//check to make sure requestEmail is valid
+		for(int i = 0; i < emailList.size()-1; i++) {
+			if(requestEmail.equals(emailList.get(i))) {
+				canDoRequest++;
+			}
+		}
+		if(canDoRequest == 1) {
+			//put small message for what the request is for
+			System.out.print("Enter message for " + requestEmail + ": ");
+			message = keyboard.nextLine();
+			//send request with message...?
+		}
+		else {
+			throw new NoSuchElementException("Something is wrong");
+		}
 	}
 	
-	//cancel whatever they were trying to do
+	//cancel making new account, or logging in
 	public void cancel() {
-		
+		model.cancel();
 	}
 }
