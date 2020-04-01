@@ -49,7 +49,7 @@ public class StudyGroupServlet extends HttpServlet {
 			}
 			else if(req.getParameter("ECE260") != null) {
 				for(int i = 0; i < studyGroups.size(); i++) {
-					if(studyGroups.get(i).getCourse().getTitle().equals("ECE260")) {
+					if(studyGroups.get(i).getSession().getCourse().getTitle().equals("ECE260")) {
 						System.out.println("getting ECE260 sessions");
 						sessions.add(studyGroups.get(i).getSession());
 					}
@@ -57,7 +57,7 @@ public class StudyGroupServlet extends HttpServlet {
 			}
 			else if(req.getParameter("CS320") != null) {
 				for(int i = 0; i < studyGroups.size(); i++) {
-					if(studyGroups.get(i).getCourse().getTitle().equals("CS320")) {
+					if(studyGroups.get(i).getSession().getCourse().getTitle().equals("CS320")) {
 						System.out.println("getting CS320 sessions");
 						sessions.add(studyGroups.get(i).getSession());
 					}
@@ -66,6 +66,8 @@ public class StudyGroupServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			error = "Try failed";
 		}
+		
+		System.out.println("***** NUMBER OF STUDY GROUPS: " + sessions.size() +  " *****");
 		req.setAttribute("error", error);
 		req.setAttribute("sessions", sessions);
 		System.out.println("loaded param, refreshing page " + sessions.toString());

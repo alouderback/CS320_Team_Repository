@@ -35,7 +35,8 @@
 	       				<td>Tutor</td>
 	       				<td>Date</td>      
 	       				<td>Time</td>
-	       				<td>Room</td>   				
+	       				<td>Room</td>
+	       				<td>Course</td>   				
 				    </tr>
 					
 					<c:forEach items="${sessions}" var="session">
@@ -43,7 +44,8 @@
 			            	<td>${session.tutor.name}</td>
 			            	<td>${session.date}</td>
 			            	<td>${session.time}</td>
-			            	<td>${session.room}</td>			            
+			            	<td>${session.room}</td>
+			            	<td>${session.course.title} </td>			            
 			        	</tr>
 			    	</c:forEach>
 			    </table>
