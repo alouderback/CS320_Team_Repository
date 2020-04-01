@@ -1,9 +1,9 @@
 package tutoringWebsite.model;
 
-import tutoringWebsite.model.FakeScheduleDatabase;
-
-
 import java.util.ArrayList;
+
+import tutoringWebsite.db.FakeScheduleDatabase;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -12,7 +12,7 @@ public class Schedule {
 	private LocalDate date;
 	private LocalTime time;
 	
-	private ArrayList<session> scheduleList = new ArrayList<session>();
+	private ArrayList<Session> scheduleList = new ArrayList<Session>();
 	
 	public Schedule(){
 	
@@ -34,7 +34,7 @@ public class Schedule {
 		this.time = time;
 	}
 	
-	public ArrayList<session> getSchedule() {
+	public ArrayList<Session> getSchedule() {
 		return scheduleList;
 	}
 	

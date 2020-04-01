@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import tutoringWebsite.model.Announcement;
 import tutoringWebsite.model.Schedule;
+import tutoringWebsite.model.Session;
 
 public class ScheduleController{
 	private Schedule model;
@@ -11,7 +12,8 @@ public class ScheduleController{
 		this.model = model;
 	}
 	
-	public void display() {
-		model.getSchedule();
+	public ArrayList<Session> getScheduleWithDate(String timeframe) {
+		model.setSchedule(timeframe);
+		return model.getSchedule();
 	}
 }
