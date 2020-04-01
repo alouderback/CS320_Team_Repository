@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.model.*;
 import tutoringWebsite.controllers.*;
+import tutoringWebsite.db.FakeScheduleDatabase;
 
 public class ScheduleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -40,10 +41,12 @@ public class ScheduleServlet extends HttpServlet {
 
 		
 		ScheduleController controller = new ScheduleController();
-
-		controller.setModel(model);
+		FakeScheduleDatabase db = new FakeScheduleDatabase();
 		
-		ArrayList<session> sessions = new ArrayList<session>();
+		controller.setModel(model);
+		controller.setDB(db);
+		
+		ArrayList<Session> sessions = new ArrayList<Session>();
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
@@ -52,13 +55,13 @@ public class ScheduleServlet extends HttpServlet {
 			
 			// check for errors in the form data before using is in a calculation
 			if (req.getParameter("Submit") != null) {
-				sessions = (ArrayList<session>) controller.getScheduleWithDate("Submit");
+				sessions = (ArrayList<Session>) controller.getScheduleWithDate("Submit");
 			}
 			else if(req.getParameter("SubmitW") != null){
-				sessions = (ArrayList<session>) controller.getScheduleWithDate("SubmitW");
+				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
 			}
 			else if(req.getParameter("SubmitM") != null) {
-				sessions = (ArrayList<session>) controller.getScheduleWithDate("SubmitM");
+				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
 			}
 		
 		} catch (NumberFormatException e) {

@@ -1,4 +1,4 @@
-package tutoringWebsite.model;
+package tutoringWebsite.db;
 
 import java.io.IOException;
 
@@ -7,17 +7,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import tutoringWebsite.model.session;
-import java.time.format.DateTimeFormatter;  
+import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 public class FakeScheduleDatabase {
 	
-	static private ArrayList<session> sessionList;
+	static private ArrayList<Session> sessionList;
 	
 	public FakeScheduleDatabase() {
-		sessionList = new ArrayList<session>();
+		sessionList = new ArrayList<Session>();
 		
 		// Add initial data
 		readInitialData();
@@ -27,35 +30,43 @@ public class FakeScheduleDatabase {
 	
 
 	public void readInitialData() {
-		session session1 = new session();
-		session1.setDate("04/01/2020");
+		Session session1 = new Session();
+		Tutor tutor1 = new Tutor();
+		tutor1.setName("Eric Bosse");
+		session1.setDate(LocalDate.of(2020, 04, 01));
 		session1.setRoom("KEC 125");
-		session1.setTime("18:00");
-		session1.setTutor("Eric Bosse");
+		session1.setTime(LocalTime.of(18, 00));
+		session1.setTutor(tutor1);
 		
-		session session2 = new session();
-		session2.setDate("04/01/2020");
+		Session session2 = new Session();
+		Tutor tutor2 = new Tutor();
+		tutor2.setName("Caryn Sims");
+		session2.setDate(LocalDate.of(2020, 04, 01));
 		session2.setRoom("KEC 127");
-		session2.setTime("20:00");
-		session2.setTutor("Caryn Sims");
+		session2.setTime(LocalTime.of(20, 00));
+		session2.setTutor(tutor2);
 		
-		session session3 = new session();
-		session3.setDate("04/02/2020");
+		Session session3 = new Session();
+		Tutor tutor3 = new Tutor();
+		tutor3.setName("Alex Louderback");
+		session3.setDate(LocalDate.of(2020,04,02));
 		session3.setRoom("KEC 125");
-		session3.setTime("18:00");
-		session3.setTutor("Alex Louderback");
+		session3.setTime(LocalTime.of(18,00));
+		session3.setTutor(tutor3);
 		
-		session session4 = new session();
-		session4.setDate("04/02/2020");
+		Session session4 = new Session();
+		Tutor tutor4 = new Tutor();
+		tutor4.setName("Isabelle Hoffmann");
+		session4.setDate(LocalDate.of(2020, 04, 02));
 		session4.setRoom("KEC 127");
-		session4.setTime("20:00");
-		session4.setTutor("Isabelle Hoffmann");
+		session4.setTime(LocalTime.of(20, 00));
+		session4.setTutor(tutor4);
 		
-		session session5 = new session();
-		session5.setDate("04/29/2020");
+		Session session5 = new Session();
+		session5.setDate(LocalDate.of(2020, 04, 29));
 		session5.setRoom("KEC 127");
-		session5.setTime("20:00");
-		session5.setTutor("Isabelle Hoffman");
+		session5.setTime(LocalTime.of(20, 00));
+		session5.setTutor(tutor4);
 		
 		sessionList.add(session1);
 		sessionList.add(session2);
@@ -66,8 +77,8 @@ public class FakeScheduleDatabase {
 	
 	
 //Returns a list of sessions
-	public static ArrayList<session> findScheduleByDate(String timeframe) {
-		ArrayList<session> result = new ArrayList<session>();
+	public ArrayList<Session> findScheduleByDate(String timeframe) {
+		ArrayList<Session> result = new ArrayList<Session>();
 		
 		int[] currentDateArray = getCurrentDay();
 		System.out.println("Month: " + currentDateArray[0] + ", Day: " + currentDateArray[1] + ", Year: " + currentDateArray[2]);
@@ -76,8 +87,10 @@ public class FakeScheduleDatabase {
 		
 		if(timeframe == "Submit") {
 			for (int i = 0; i < sessionList.size(); i++) {
-				placeholderDate = breakDateDown(sessionList.get(i).getDate());
-				
+				//placeholderDate = breakDateDown(sessionList.get(i).getDate());
+				placeholderDate[0] = sessionList.get(i).getDate().getMonthValue();
+				placeholderDate[1] = sessionList.get(i).getDate().getDayOfMonth();
+				placeholderDate[2] = sessionList.get(i).getDate().getYear();
 				System.out.println("Month:" + currentDateArray[0] + "." + ", Day:" + currentDateArray[1] + "." + ", Year:" + currentDateArray[2] + ".");
 				System.out.println("(Database) Month:" + placeholderDate[0] + "." + ", Day:" + placeholderDate[1] + "." + ", Year:" + placeholderDate[2] + ".");
 				
@@ -104,11 +117,11 @@ public class FakeScheduleDatabase {
 		System.out.println(result.size());
 		
 		if (result.size() == 0) {
-			session session = new session();
-			session.setDate(" ");
+			Session session = new Session();
+			session.setDate(null);
 			session.setRoom(" ");
-			session.setTime(" ");
-			session.setTutor("No Tutoring Sessions Available");
+			session.setTime(null);
+			session.setTutor(null);
 			result.add(session);
 		}
 		return result;
