@@ -2,42 +2,46 @@ package tutoringWebsite.controllerJUnit;
 
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import tutoringWebsite.controllers.courseController;
-import tutoringWebsite.model.courses;
-import tutoringWebsite.model.session;
-import tutoringWebsite.model.tutor;
+import tutoringWebsite.controllers.CourseController;
+import tutoringWebsite.model.Course;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
 
 public class coursesControllerJUnit {
-	private courses model;
-	private courseController controller;
-	private session courseSession;
-	private ArrayList<tutor> tutorList;
+	private Course model;
+	private CourseController controller;
+	private Session courseSession;
+	private ArrayList<Tutor> tutorList;
 	
 	@Before
 	public void setUp() { 
-		model = new courses();
-		controller = new courseController();
-		courseSession = new session();
-		tutorList = new ArrayList<tutor>();
+		model = new Course();
+		controller = new CourseController();
+		courseSession = new Session();
+		tutorList = new ArrayList<Tutor>();
 		
 		model.setTitle("CS320");
 	
+		Tutor alex = new Tutor();
+		alex.setName("Alex Louderback");
 		
-		courseSession.setDate("12/12/12");
-		courseSession.setTime("6-8");
+		courseSession.setDate(LocalDate.of(2012, 12, 12));
+		courseSession.setTime(LocalTime.of(03, 52));
 		courseSession.setRoom("123");
-		courseSession.setTutor("john smith");
+		courseSession.setTutor(alex);
 		
 		model.setCourseSession(courseSession);
 		
 		
-		tutor emily = new tutor();
-		tutor john = new tutor();
+		Tutor emily = new Tutor();
+		Tutor john = new Tutor();
 		
 		tutorList.add(emily);
 		tutorList.add(john);

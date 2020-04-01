@@ -1,6 +1,7 @@
 package tutoringWebsite.servlets;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -10,18 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.model.*;
 import tutoringWebsite.controllers.*;
+import tutoringWebsite.db.FakeScheduleDatabase;
 
-public class scheduleServlet extends HttpServlet {
+public class ScheduleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("courses Servlet: doGet");	 
+		System.out.println("schedule Servlet: doGet");	 
 		
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/courses.jsp").forward(req, resp); 
+		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp); 
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -32,46 +34,51 @@ public class scheduleServlet extends HttpServlet {
 
 		String errorMessage = null;
 
-		schedule model = null;
-		
-		scheduleController controller = new scheduleController();
 
+		Schedule model = null;
+
+		
+
+		
+		ScheduleController controller = new ScheduleController();
+		FakeScheduleDatabase db = new FakeScheduleDatabase();
+		
 		controller.setModel(model);
+		controller.setDB(db);
+		
+		ArrayList<Session> sessions = new ArrayList<Session>();
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			String scheduleButton = getInitParameter(req.getParameter("schedule"));
-
+			//String date = getInitParameter(req.getParameter("date"));
 			
 			
 			// check for errors in the form data before using is in a calculation
-			if (scheduleButton == "schedule") {
-				
+			if (req.getParameter("Submit") != null) {
+				sessions = (ArrayList<Session>) controller.getScheduleWithDate("Submit");
 			}
-			
-			
-			else {
-				
+			else if(req.getParameter("SubmitW") != null){
+				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
 			}
+			else if(req.getParameter("SubmitM") != null) {
+				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
+			}
+		
 		} catch (NumberFormatException e) {
-			errorMessage = "Invalid double";
+			errorMessage = "Try failed";
 		}
 		
-		// Add parameters as request attributes
-		// this creates attributes named "first" and "second for the response, and grabs the
-		// values that were originally assigned to the request attributes, also named "first" and "second"
-		// they don't have to be named the same, but in this case, since we are passing them back
-		// and forth, it's a good idea
-		req.setAttribute("title", req.getParameter("title"));
-		req.setAttribute("tutorList", req.getParameter("tutorList"));
-		req.setAttribute("courseSession", req.getParameter("courseSession"));
+	
+		
 		
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
-		req.setAttribute("course", model);
+		req.setAttribute("sessions", sessions);
+		
+		System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(0).getTutor());
 		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/courses.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp);
 	}
 
 	// gets double from the request with attribute named s

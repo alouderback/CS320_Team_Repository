@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<title>CS320 Library Login</title>
+		<title>CS320 Create Account</title>
 		<style type="text/css">
 		.error {
 			color: red;
@@ -21,7 +21,7 @@
 			<div class="error">${errorMessage}</div>
 		</c:if>
 	
-		<form action="${pageContext.servletContext.contextPath}/login" method="post">
+		<form action="${pageContext.servletContext.contextPath}/createAccount" method="post">
 			<table>
 				<tr>
 					<td class="label">User Name:</td>
@@ -31,15 +31,16 @@
 					<td class="label">Password:</td>
 					<td><input type="text" name="password" size="12" value="${password}" /></td>
 				</tr>
+				<tr>
+					<td class="label">Class Year:</td>
+					<td><input type="text" name="year" size="12" value="${year}" /></td>
+				</tr>
+				<tr>
+					<td class="label">Major:</td>
+					<td><input type="text" name="major" size="12" value="${major}" /></td>
+				</tr>
 			</table>
-     			<input type="Submit" name="submit" value="Login">
-     			<input type="hidden" onclick="window.location.href='http://localhost:8081/tutoringWebsite/createAccount'"value =  "Create Account">
-     			
-     		
-		<c:if test="${ validUser}">
-            <input type="button" onclick="window.location.href='http://localhost:8081/tutoringWebsite/createAccount'"value =  "Create Account">
-		</c:if>
-        </form>
-		
+			<input type="Submit" name="submit" value="Create Account">
+		</form>
 	</body>
 </html>
