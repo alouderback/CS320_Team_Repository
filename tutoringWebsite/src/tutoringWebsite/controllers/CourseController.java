@@ -4,15 +4,15 @@ package tutoringWebsite.controllers;
 
 import java.util.ArrayList;
 
-import tutoringWebsite.model.courses;
-import tutoringWebsite.model.session;
-import tutoringWebsite.model.tutor;
+import tutoringWebsite.model.Course;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
 
-public class courseController{
+public class CourseController{
 	
-	private courses model;
+	private Course model;
 	
-	public void setModel(courses model) {
+	public void setModel(Course model) {
 		this.model = model; 
 	}
 	

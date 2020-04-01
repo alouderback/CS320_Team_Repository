@@ -7,14 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import tutoringWebsite.model.schedule;
+import tutoringWebsite.model.Schedule;
 
 public class scheduleTest {
-	private schedule model;
+	private Schedule model;
 	
 	@Before
 	public void setUp() {
-		model = new schedule();
+		model = new Schedule();
 	}
 	
 	@Test
