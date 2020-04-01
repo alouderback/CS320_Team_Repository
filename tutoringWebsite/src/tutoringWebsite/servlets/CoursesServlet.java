@@ -1,6 +1,8 @@
 package tutoringWebsite.servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -48,14 +50,14 @@ public class CoursesServlet extends HttpServlet {
 		// decode POSTed form parameters and dispatch to controller
 		try {
 			String title = getInitParameter(req.getParameter("title"));
-			String date = getInitParameter(req.getParameter("date"));
-			String time = getInitParameter(req.getParameter("time"));
+			String dateString = getInitParameter(req.getParameter("date"));
+			String timeString = getInitParameter(req.getParameter("time"));
 			String room = getInitParameter(req.getParameter("room"));
-			String tutor = getInitParameter(req.getParameter("tutor"));
+			String tutorString = getInitParameter(req.getParameter("tutor"));
 			
 			
 			// check for errors in the form data before using is in a calculation
-			if (title == null || date == null||time==null||room == null) {
+			if (title == null || dateString == null||timeString ==null||room == null) {
 				errorMessage = "Please specify three numbers";
 			}
 			// otherwise, data is good, do the calculation
@@ -63,6 +65,12 @@ public class CoursesServlet extends HttpServlet {
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
 			else {
+				Tutor tutor = new Tutor();
+				tutor.setName(tutorString);
+				
+				LocalDate date = LocalDate.of(2020,04,01);
+				
+				LocalTime time = LocalTime.of(03, 49);
 				
 				model.setTitle(title);
 				controller1.createSession(room, date, tutor, time);

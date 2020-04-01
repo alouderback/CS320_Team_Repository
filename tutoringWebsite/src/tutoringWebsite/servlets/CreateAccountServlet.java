@@ -52,7 +52,7 @@ public class CreateAccountServlet extends HttpServlet {
 			model      = new Login();
 			controller = new LoginController(model);
 			
-			validLogin = controller.createAccount(name, pw, major, year);
+			validLogin = controller.createAccount(name, pw);
 
 			 if (!validLogin) {
 				errorMessage = "must be a ycp username";

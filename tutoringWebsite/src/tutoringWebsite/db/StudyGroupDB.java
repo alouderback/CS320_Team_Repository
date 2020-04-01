@@ -131,6 +131,7 @@ public class StudyGroupDB {
 	}
 	
 	public ArrayList<StudyGroup> getStudyGroups(){
+		System.out.println("db returning study groups");
 		return studyGroups;
 	}
 	

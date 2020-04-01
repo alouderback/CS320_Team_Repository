@@ -2,7 +2,11 @@ package tutoringWebsite.controllers;
 
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
 
 public class SessionController{
 	
@@ -12,7 +16,7 @@ public class SessionController{
 		this.model = model; 
 	}
 	
-	public void createSession( String room, String date, String tutor, String time) {
+	public void createSession( String room, LocalDate date, Tutor tutor, LocalTime time) {
 		 model.setRoom(room);
 		 model.setDate(date);
 		 model.setTime(time);

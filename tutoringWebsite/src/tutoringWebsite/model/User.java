@@ -5,6 +5,7 @@ package tutoringWebsite.model;
 public class User {
 	private String email;
 	private String password;
+	private String name;
 	
 	public User(){
 	}
@@ -19,6 +20,12 @@ public class User {
 	}
 	public String getPassword() {
 		return this.password;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName() {
+		return this.name;
 	}
 	
 	public void cancel() {
