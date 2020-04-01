@@ -7,19 +7,22 @@ import tutoringWebsite.model.tutor;
 
 public class courses {
 	
-	private ArrayList<tutor> test;
+	private ArrayList<tutor> tutorList;
 	private session courseSession;
+	private String title;
+	
 	
 	public courses() {
 		
+		
 	}
 
-	public ArrayList<tutor> getTest() {
-		return test;
+	public ArrayList<tutor> getTutorList() {
+		return tutorList;
 	}
 
-	public void setTest(ArrayList<tutor> test) {
-		this.test = test;
+	public void setTutorList(ArrayList<tutor> tutorList) {
+		this.tutorList = tutorList;
 	}
 
 	public session getCourseSession() {
@@ -28,6 +31,14 @@ public class courses {
 
 	public void setCourseSession(session courseSession) {
 		this.courseSession = courseSession;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

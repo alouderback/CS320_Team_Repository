@@ -10,6 +10,15 @@
     <servlet-name>IndexServlet</servlet-name>
     <servlet-class>tutoringWebsite.servlets.IndexServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>coursesServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.coursesServlet</servlet-class>
+     </servlet>
+   <servlet>
+  <servlet-name>LoginServlet</servlet-name>
+  <servlet-class>tutoringWebsite.servlets.LoginServlet</servlet-class>
+  </servlet>
+
  
 
 
@@ -17,6 +26,14 @@
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>coursesServlet</servlet-name>
+    <url-pattern>/courses</url-pattern>
+  <servlet-mapping>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<url-pattern>/login</url-pattern>
   </servlet-mapping>
 
   
