@@ -40,7 +40,7 @@ public class FakeScheduleDatabase {
 		
 		Session session2 = new Session();
 		Tutor tutor2 = new Tutor();
-		tutor1.setName("Caryn Sims");
+		tutor2.setName("Caryn Sims");
 		session2.setDate(LocalDate.of(2020, 04, 01));
 		session2.setRoom("KEC 127");
 		session2.setTime(LocalTime.of(20, 00));
@@ -48,7 +48,7 @@ public class FakeScheduleDatabase {
 		
 		Session session3 = new Session();
 		Tutor tutor3 = new Tutor();
-		tutor1.setName("Caryn Sims");
+		tutor3.setName("Alex Louderback");
 		session3.setDate(LocalDate.of(2020,04,02));
 		session3.setRoom("KEC 125");
 		session3.setTime(LocalTime.of(18,00));
@@ -77,7 +77,7 @@ public class FakeScheduleDatabase {
 	
 	
 //Returns a list of sessions
-	public static ArrayList<Session> findScheduleByDate(String timeframe) {
+	public ArrayList<Session> findScheduleByDate(String timeframe) {
 		ArrayList<Session> result = new ArrayList<Session>();
 		
 		int[] currentDateArray = getCurrentDay();

@@ -40,7 +40,7 @@
 					
 					<c:forEach items="${sessions}" var="session">
 			        	<tr>
-			            	<td>${session.tutor}</td>
+			            	<td>${session.tutor.name}</td>
 			            	<td>${session.date}</td>
 			            	<td>${session.time}</td>
 			            	<td>${session.room}</td>			            
