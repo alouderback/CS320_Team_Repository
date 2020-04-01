@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.LoginController;
-import tutoringWebsite.model.login;
+import tutoringWebsite.model.Login;
 
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private login model;
+	private Login model;
 	private LoginController controller;
 
 	@Override
@@ -49,7 +49,7 @@ public class CreateAccountServlet extends HttpServlet {
 		if (name == null || pw == null || name.equals("") || pw.equals("")) {
 			errorMessage = "Please specify both user name and password";
 		} else {
-			model      = new login();
+			model      = new Login();
 			controller = new LoginController(model);
 			
 			validLogin = controller.createAccount(name, pw, major, year);

@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tutoringWebsite.model.*;
-import tutoringWebsite.controllers.*;
+import tutoringWebsite.model.Course;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
+import tutoringWebsite.controllers.CourseController;
+import tutoringWebsite.controllers.SessionController;
 
-public class scheduleServlet extends HttpServlet {
+public class CoursesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -27,31 +30,45 @@ public class scheduleServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("schedule Servlet: doPost");
+		System.out.println("courses Servlet: doPost");
 		
 
+		// holds the error message text, if there is any
 		String errorMessage = null;
 
-		schedule model = null;
+		// result of calculation goes here
+		Session courseSession = null;
 		
-		scheduleController controller = new scheduleController();
-
+		//numbers controller and model
+		Course model = new Course();
+		CourseController controller = new CourseController();
+		SessionController controller1 = new SessionController();
 		controller.setModel(model);
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			String scheduleButton = getInitParameter(req.getParameter("schedule"));
-
+			String title = getInitParameter(req.getParameter("title"));
+			String date = getInitParameter(req.getParameter("date"));
+			String time = getInitParameter(req.getParameter("time"));
+			String room = getInitParameter(req.getParameter("room"));
+			String tutor = getInitParameter(req.getParameter("tutor"));
 			
 			
 			// check for errors in the form data before using is in a calculation
-			if (scheduleButton == "schedule") {
-				
+			if (title == null || date == null||time==null||room == null) {
+				errorMessage = "Please specify three numbers";
 			}
-			
-			
+			// otherwise, data is good, do the calculation
+			// must create the controller each time, since it doesn't persist between POSTs
+			// the view does not alter data, only controller methods should be used for that
+			// thus, always call a controller method to operate on the data
 			else {
 				
+				model.setTitle(title);
+				controller1.createSession(room, date, tutor, time);
+				courseSession = controller1.getSession();
+				model.setCourseSession(courseSession);
+				controller.createCourse();
 			}
 		} catch (NumberFormatException e) {
 			errorMessage = "Invalid double";
@@ -75,5 +92,15 @@ public class scheduleServlet extends HttpServlet {
 	}
 
 	// gets double from the request with attribute named s
-
+	private ArrayList getArrayListFromParameter(ArrayList s) {
+		if (s == null || s.equals("")) {
+			return null;
+		} else {
+			return s;
+					//Double.parseDouble(s);
+		}
 	}
+	
+	
+	
+}

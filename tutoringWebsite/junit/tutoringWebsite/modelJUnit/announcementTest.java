@@ -7,14 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import tutoringWebsite.model.announcement;
+import tutoringWebsite.model.Announcement;
 
 public class announcementTest {
-	private announcement model;
+	private Announcement model;
 	
 	@Before
 	public void setUp() {
-		model = new announcement();
+		model = new Announcement();
 	}
 	
 	@Test

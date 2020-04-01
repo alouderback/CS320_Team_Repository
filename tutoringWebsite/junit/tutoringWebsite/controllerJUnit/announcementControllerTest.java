@@ -11,13 +11,13 @@ import tutoringWebsite.controllers.*;
 import tutoringWebsite.model.*;
 
 public class announcementControllerTest{
-	private announcement model;
-	private announcementController controller;
+	private Announcement model;
+	private AnnouncementController controller;
 	
 	@Before
 	public void setUp() {
-		model = new announcement();
-		controller = new announcementController();
+		model = new Announcement();
+		controller = new AnnouncementController();
 		
 		model.setDate("3-14-2020");
 		model.setTime("15:00");

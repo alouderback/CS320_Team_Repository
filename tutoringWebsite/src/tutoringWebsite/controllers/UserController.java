@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import tutoringWebsite.model.user;
+import tutoringWebsite.model.User;
 
-public class userController {
+public class UserController {
 	//User type variable
-	private user model;
+	private User model;
 	private LoginController model2;
 	private ArrayList<String> emailList = new ArrayList<String>();
 	Scanner keyboard = new Scanner(System.in);
 	
 	//set up the model
-	public void setUser(user model) {
+	public void setUser(User model) {
 		this.model = model;
 	}
 	public void setLogin(LoginController model2) {
