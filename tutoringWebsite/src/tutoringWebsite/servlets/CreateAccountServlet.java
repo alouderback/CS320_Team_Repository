@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.LoginController;
 import tutoringWebsite.model.login;
-import tutoringWebsite.model.user;
 
-public class LoginServlet extends HttpServlet {
+public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private login model;
 	private LoginController controller;
@@ -20,28 +19,30 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("\nLoginServlet: doGet");
+		System.out.println("\nCreateAccountServlet: doGet");
 
-		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("\nLoginServlet: doPost");
+		System.out.println("\ncreateAccount: doPost");
 
 		String errorMessage = null;
 		String name         = null;
 		String pw           = null;
-		user current 		= new user();
+		String major		= null;
+		String year 		= null;
 		boolean validLogin  = false;
-		boolean validUser   = false;
-		
+	
 
 		// Decode form parameters and dispatch to controller
 		name = req.getParameter("email");
 		pw   = req.getParameter("password");
+		major = req.getParameter("major");
+		year   = req.getParameter("year");
 
 		System.out.println("   Name: <" + name + "> PW: <" + pw + ">");			
 
@@ -50,45 +51,40 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			model      = new login();
 			controller = new LoginController(model);
-			validUser  = controller.checkUserName(name);
-			validLogin = controller.validateCredentials(name, pw);
 			
-			if(!validUser) {
-				///find out how to submit this into allowing a button
-				errorMessage = "create account";
-			}
-			else if (!validLogin) {
-				errorMessage = "Username and/or password invalid";
+			validLogin = controller.createAccount(name, pw, major, year);
+
+			 if (!validLogin) {
+				errorMessage = "must be a ycp username";
 			}
 		}
 
 		// Add parameters as request attributes
-		req.setAttribute("email", req.getParameter("email"));
+		req.setAttribute("username", req.getParameter("username"));
 		req.setAttribute("password", req.getParameter("password"));
+		req.setAttribute("major", req.getParameter("major"));
+		req.setAttribute("year", req.getParameter("year"));
 
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
-		req.setAttribute("login",        validLogin);
-		req.setAttribute("validUser",        validUser);
+		req.setAttribute("createAccount",        validLogin);
 
 		// if login is valid, start a session
 		if (validLogin) {
-			System.out.println("   Valid login - starting session, redirecting to /index");
+			System.out.println("  Account created - starting session, redirecting to /index");
 
 			// store user object in session
-			//currently stores onlt the name but but shuld we store the enitre class or should we store the name 
-			//and a boolean true to say the user is validated as logged in???
-			req.getSession().setAttribute("user", current);
+			req.getSession().setAttribute("user", name);
 
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");
 
 			return;
 		}
-		
-		System.out.println("   Invalid login - returning to /Login");
+
+		System.out.println("   Invalid login - returning to /createAccount");
 
 		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
 	}
 }
