@@ -2,13 +2,13 @@ package tutoringWebsite.controllers;
 
 
 
-import tutoringWebsite.model.Login;
-import tutoringWebsite.model.User;
+import tutoringWebsite.model.login;
+import tutoringWebsite.model.user;
 
 public class LoginController {
-	private Login model = null;
+	private login model = null;
 	
-	public LoginController(Login model) {
+	public LoginController(login model) {
 		this.model = model;
 	}
 	

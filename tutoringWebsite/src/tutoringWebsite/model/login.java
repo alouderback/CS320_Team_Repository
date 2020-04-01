@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Login {
+public class login {
 	
 	private ArrayList<String> emails;
 	private ArrayList<String> passwords;
 	private Map<String, String> credentials;
 	
 	// create model - test version
-		public Login() {
+		public login() {
 			emails = new ArrayList<String>();
 			passwords = new ArrayList<String>();
 			credentials = new TreeMap<String, String>();
@@ -43,13 +43,13 @@ public class Login {
 			return false;
 		}
 		
-		public User createAccount(String email, String password, String major, String classYear) {
+		public user createAccount(String email, String password, String major, String classYear) {
 			
 			emails.add(email);
 			passwords.add(password);
 			credentials.put(email, password);
 			
-			User account = new User();
+			user account = new user();
 			account.setEmail(email);
 			account.setPassword(password);
 			account.setMajor(major);

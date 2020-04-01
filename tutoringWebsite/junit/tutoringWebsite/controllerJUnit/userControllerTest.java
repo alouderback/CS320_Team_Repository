@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import tutoringWebsite.controllers.UserController;
-import tutoringWebsite.model.User;
+import tutoringWebsite.controllers.userController;
+import tutoringWebsite.model.user;
 
 public class userControllerTest {
-	private User model;
-	private UserController controller;
+	private user model;
+	private userController controller;
 	private ArrayList<String> emailList;
 	
 	@Before
 	public void setUp() {
-		model = new User();
-		controller = new UserController();
+		model = new user();
+		controller = new userController();
 		emailList = new ArrayList<String>();
 		emailList.add("csims2@ycp.edu");
 		emailList.add("ebosse@ycp.edu");

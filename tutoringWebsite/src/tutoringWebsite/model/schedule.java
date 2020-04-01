@@ -1,33 +1,30 @@
 package tutoringWebsite.model;
 
 import java.util.ArrayList;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
-public class Schedule {
-	private LocalDate date;
-	private LocalTime time;
+public class schedule {
+	private String date;
+	private String time;
 	
 	private ArrayList<String> scheduleList = new ArrayList<String>();
 	
-	public Schedule(){
-	
+	public schedule(){
 	}
 	
-	public LocalDate getDate() {
+	public String getDate() {
 		return date;
 	}
 	
-	public void setDate(LocalDate date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	
-	public LocalTime getTime() {
+	public String getTime() {
 		return time;
 	}
 	
-	public void setTime(LocalTime time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	

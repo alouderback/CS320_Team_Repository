@@ -8,11 +8,11 @@ import org.junit.Test;
 import tutoringWebsite.model.*;
 
 public class userTest {
-	private User model;
+	private user model;
 	
 	@Before
 	public void setUp() {
-		model = new User();
+		model = new user();
 	}
 	
 	@Test

@@ -11,13 +11,13 @@ import tutoringWebsite.controllers.*;
 import tutoringWebsite.model.*;
 
 public class scheduleControllerTest{
-	private Schedule model;
-	private ScheduleController controller;
+	private schedule model;
+	private scheduleController controller;
 	
 	@Before
 	public void setUp() {
-		model = new Schedule();
-		controller = new ScheduleController();
+		model = new schedule();
+		controller = new scheduleController();
 		
 		model.setDate("3-14-2020");
 		model.setTime("15:00");

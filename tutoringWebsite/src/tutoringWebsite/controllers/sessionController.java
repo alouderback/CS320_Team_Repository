@@ -2,13 +2,13 @@ package tutoringWebsite.controllers;
 
 
 
-import tutoringWebsite.model.Session;
+import tutoringWebsite.model.session;
 
-public class SessionController{
+public class sessionController{
 	
-	private Session model;
+	private session model;
 	
-	public void setModel(Session model) {
+	public void setModel(session model) {
 		this.model = model; 
 	}
 	
@@ -19,7 +19,7 @@ public class SessionController{
 		 model.setTutor(tutor);
 	}
 	
-	public Session getSession() {
+	public session getSession() {
 		return  this.model;
 		
 	}

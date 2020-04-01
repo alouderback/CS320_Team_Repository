@@ -1,13 +1,13 @@
 
 package tutoringWebsite.model;
 
-public class Announcement {
+public class announcement {
 	private String message;
 	private String date;
 	private String time;
 	
 	// Constructor for class
-	public Announcement() {
+	public announcement() {
 	}
 	
 	//Sets everything to null
