@@ -8,15 +8,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import tutoringWebsite.model.schedule;
-import tutoringWebsite.model.session;
+import tutoringWebsite.model.Schedule;
+import tutoringWebsite.model.Session;
+
 
 public class scheduleTest {
-	private schedule model;
+	private Schedule model;
 	
 	@Before
 	public void setUp() {
-		model = new schedule();
+		model = new Schedule();
 	}
 	
 	@Test

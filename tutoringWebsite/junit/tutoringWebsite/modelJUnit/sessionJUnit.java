@@ -8,17 +8,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import tutoringWebsite.controllers.sessionController;
-import tutoringWebsite.model.session;
+import tutoringWebsite.controllers.SessionController;
+import tutoringWebsite.model.Session;
 
 public class sessionJUnit {
-	private session model;
-	private sessionController controller;
+	private Session model;
+	private SessionController controller;
 	
 	@Before
 	public void setUp() { 
-		model = new session();
-		controller = new sessionController();
+		model = new Session();
+		controller = new SessionController();
 		
 		
 		model.setDate("12/12/12");

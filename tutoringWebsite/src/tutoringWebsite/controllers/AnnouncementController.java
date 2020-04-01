@@ -1,14 +1,14 @@
 package tutoringWebsite.controllers;
-import tutoringWebsite.model.announcement;
+import tutoringWebsite.model.Announcement;
 
 import java.util.ArrayList;
 import java.util.Scanner; 
 
-public class announcementController{
-	private announcement model;
+public class AnnouncementController{
+	private Announcement model;
 	private ArrayList<String> announcementList = new ArrayList<String>();
 	
-	public void setModel(announcement model) {
+	public void setModel(Announcement model) {
 		this.model = model;
 	}
 	
