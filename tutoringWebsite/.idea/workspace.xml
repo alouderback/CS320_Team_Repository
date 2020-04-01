@@ -2,18 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f1a423e-62f5-43c2-b65d-9b337394084c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.project" beforeDir="false" afterPath="$PROJECT_DIR$/.project" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/classes/classes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/courses/courses.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/profiles/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/profiles/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/resources/resources.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/resources/resources.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/schedule/schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/schedule/schedule.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/study_groups/groups.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/study_groups/groups.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/html/tutors/tutors.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/html/tutors/tutors.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/servlets/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/servlets/package-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tutoringWebsite.iml" beforeDir="false" afterPath="$PROJECT_DIR$/tutoringWebsite.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tutoringWebsite/model/FakeScheduleDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/junit/tutoringWebsite/controllerJUnit/scheduleControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/junit/tutoringWebsite/controllerJUnit/scheduleControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/junit/tutoringWebsite/controllerJUnit/userControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/junit/tutoringWebsite/controllerJUnit/userControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/junit/tutoringWebsite/modelJUnit/scheduleTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/junit/tutoringWebsite/modelJUnit/scheduleTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/model/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/model/Schedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tutoringWebsite/servlets/ScheduleServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutoringWebsite/servlets/ScheduleServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/war/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war/_view/courses.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/war/_view/courses.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war/_view/schedule.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/war/_view/schedule.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +47,7 @@
       <updated>1584221832180</updated>
       <workItem from="1584221841202" duration="3933000" />
       <workItem from="1584232964942" duration="696000" />
+      <workItem from="1585743593646" duration="4000" />
     </task>
     <servers />
   </component>
@@ -67,9 +67,10 @@
       <screen x="-2560" y="241" width="2560" height="1400" />
     </state>
     <state x="-2377" y="248" key="SettingsEditor/0.0.1500.960/-2560.241.2560.1400@-2560.241.2560.1400" timestamp="1584227924106" />
-    <state x="-1799" y="686" key="com.intellij.ide.util.TipDialog" timestamp="1584232964903">
-      <screen x="-2560" y="241" width="2560" height="1400" />
+    <state x="-2554" y="71" key="com.intellij.ide.util.TipDialog" timestamp="1585743594564">
+      <screen x="-3000" y="-241" width="1500" height="980" />
     </state>
+    <state x="-2554" y="71" key="com.intellij.ide.util.TipDialog/-3000.-241.1500.980/0.0.1920.1040/1920.0.1024.728@-3000.-241.1500.980" timestamp="1585743594564" />
     <state x="-1799" y="686" key="com.intellij.ide.util.TipDialog/0.0.1500.960/-2560.241.2560.1400@-2560.241.2560.1400" timestamp="1584232964903" />
     <state x="446" y="305" key="com.intellij.ide.util.TipDialog/0.0.1500.960/-2560.241.2560.1400@0.0.1500.960" timestamp="1584221841606" />
   </component>

@@ -1,6 +1,8 @@
 package tutoringWebsite.servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -8,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tutoringWebsite.model.courses;
-import tutoringWebsite.model.session;
-import tutoringWebsite.model.tutor;
-import tutoringWebsite.controllers.courseController;
-import tutoringWebsite.controllers.sessionController;
+import tutoringWebsite.model.Course;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
+import tutoringWebsite.controllers.CourseController;
+import tutoringWebsite.controllers.SessionController;
 
-public class coursesServlet extends HttpServlet {
+public class CoursesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -37,25 +39,25 @@ public class coursesServlet extends HttpServlet {
 		String errorMessage = null;
 
 		// result of calculation goes here
-		session courseSession = null;
+		Session courseSession = null;
 		
 		//numbers controller and model
-		courses model = new courses();
-		courseController controller = new courseController();
-		sessionController controller1 = new sessionController();
+		Course model = new Course();
+		CourseController controller = new CourseController();
+		SessionController controller1 = new SessionController();
 		controller.setModel(model);
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
 			String title = getInitParameter(req.getParameter("title"));
-			String date = getInitParameter(req.getParameter("date"));
-			String time = getInitParameter(req.getParameter("time"));
+			String dateString = getInitParameter(req.getParameter("date"));
+			String timeString = getInitParameter(req.getParameter("time"));
 			String room = getInitParameter(req.getParameter("room"));
-			String tutor = getInitParameter(req.getParameter("tutor"));
+			String tutorString = getInitParameter(req.getParameter("tutor"));
 			
 			
 			// check for errors in the form data before using is in a calculation
-			if (title == null || date == null||time==null||room == null) {
+			if (title == null || dateString == null||timeString ==null||room == null) {
 				errorMessage = "Please specify three numbers";
 			}
 			// otherwise, data is good, do the calculation
@@ -63,6 +65,12 @@ public class coursesServlet extends HttpServlet {
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
 			else {
+				Tutor tutor = new Tutor();
+				tutor.setName(tutorString);
+				
+				LocalDate date = LocalDate.of(2020,04,01);
+				
+				LocalTime time = LocalTime.of(03, 49);
 				
 				model.setTitle(title);
 				controller1.createSession(room, date, tutor, time);

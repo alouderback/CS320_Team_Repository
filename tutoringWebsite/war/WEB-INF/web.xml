@@ -10,22 +10,30 @@
     <servlet-name>IndexServlet</servlet-name>
     <servlet-class>tutoringWebsite.servlets.IndexServlet</servlet-class>
   </servlet>
+  
   <servlet>
-    <servlet-name>coursesServlet</servlet-name>
-    <servlet-class>tutoringWebsite.servlets.coursesServlet</servlet-class>
+    <servlet-name>CoursesServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.CoursesServlet</servlet-class>
   </servlet>
+  
   <servlet>
-
-    <servlet-name>scheduleServlet</servlet-name>
-    <servlet-class>tutoringWebsite.servlets.scheduleServlet</servlet-class>
+    <servlet-name>ScheduleServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.ScheduleServlet</servlet-class>
   </servlet>
 
+  <servlet>
   	<servlet-name>LoginServlet</servlet-name>
- 	 <servlet-class>tutoringWebsite.servlets.LoginServlet</servlet-class>
+ 	<servlet-class>tutoringWebsite.servlets.LoginServlet</servlet-class>
   </servlet>
-   <servlet>
+  
+  <servlet>
   	<servlet-name>CreateAccountServlet</servlet-name>
  	 <servlet-class>tutoringWebsite.servlets.CreateAccountServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>StudyGroupServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.StudyGroupServlet</servlet-class>
   </servlet>
 
 
@@ -39,7 +47,7 @@
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>coursesServlet</servlet-name>
+    <servlet-name>CoursesServlet</servlet-name>
     <url-pattern>/courses</url-pattern>
    </servlet-mapping>
   
@@ -52,10 +60,17 @@
   	<servlet-name>CreateAccountServlet</servlet-name>
   	<url-pattern>/createAccount</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
-    <servlet-name>scheduleServlet</servlet-name>
+
+  <servlet-mapping>
+  	<servlet-name>StudyGroupServlet</servlet-name>
+  	<url-pattern>/groups</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>ScheduleServlet</servlet-name>
     <url-pattern>/schedule</url-pattern>
   </servlet-mapping>
+
 
   
 
