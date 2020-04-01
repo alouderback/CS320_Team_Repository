@@ -14,7 +14,10 @@
     <servlet-name>coursesServlet</servlet-name>
     <servlet-class>tutoringWebsite.servlets.coursesServlet</servlet-class>
   </servlet>
-
+  <servlet>
+    <servlet-name>scheduleServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.scheduleServlet</servlet-class>
+  </servlet>
  
 
 
@@ -27,6 +30,10 @@
   <servlet-mapping>
     <servlet-name>coursesServlet</servlet-name>
     <url-pattern>/courses</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>scheduleServlet</servlet-name>
+    <url-pattern>/schedule</url-pattern>
   </servlet-mapping>
 
   
