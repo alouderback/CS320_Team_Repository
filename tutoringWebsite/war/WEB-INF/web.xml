@@ -15,6 +15,11 @@
     <servlet-class>tutoringWebsite.servlets.coursesServlet</servlet-class>
   </servlet>
   <servlet>
+
+    <servlet-name>scheduleServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.scheduleServlet</servlet-class>
+  </servlet>
+
   	<servlet-name>LoginServlet</servlet-name>
  	 <servlet-class>tutoringWebsite.servlets.LoginServlet</servlet-class>
   </servlet>
@@ -22,6 +27,7 @@
   	<servlet-name>CreateAccountServlet</servlet-name>
  	 <servlet-class>tutoringWebsite.servlets.CreateAccountServlet</servlet-class>
   </servlet>
+
 
  
 
@@ -45,6 +51,10 @@
   <servlet-mapping>
   	<servlet-name>CreateAccountServlet</servlet-name>
   	<url-pattern>/createAccount</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>scheduleServlet</servlet-name>
+    <url-pattern>/schedule</url-pattern>
   </servlet-mapping>
 
   

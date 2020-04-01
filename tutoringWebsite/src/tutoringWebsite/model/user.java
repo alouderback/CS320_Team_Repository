@@ -1,5 +1,6 @@
 package tutoringWebsite.model;
 
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ public class user {
 	private String password;
 	private String year;
 	private String major;
+  private String genInfo;
+
 	public user(){
 	}
 	public void setEmail(String email){
