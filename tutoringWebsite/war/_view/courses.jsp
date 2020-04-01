@@ -23,7 +23,7 @@
 			<table>
 				<tr>
 					<td class="label">Title:</td>
-					<td><input type="text" name="title" size="12" value="${course.title}" /></td>
+					<td><input type="text" name="date" size="12" value="${course.title}" /></td>
 				</tr>
 				<tr>
 					<td class="label">Date:</td>
