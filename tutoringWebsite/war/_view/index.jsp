@@ -12,6 +12,8 @@
 					<li><input name="tutors" type="submit" value="Tutors" /></li>
 					<li><input name="resources" type="submit" value="Resources" /></li>
 					<li><input name="profile" type="submit" value="Profile" /></li>
+					<li><input name="login" type="submit" value="Login" /></li>
+					<li><input name="createAccount" type="submit" value="Create Account" /></li>
 				</ul>	
 			</div>
 		</form>

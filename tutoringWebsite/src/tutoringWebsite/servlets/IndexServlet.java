@@ -54,6 +54,14 @@ public class IndexServlet extends HttpServlet {
 			// call groups JSP
 			req.getRequestDispatcher("/_view/profile.jsp").forward(req, resp);
 		}
+		else if (req.getParameter("login") != null) {
+			// call login JSP
+			req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+		}
+		else if (req.getParameter("createAccount") != null) {
+			// call login JSP
+			req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}
