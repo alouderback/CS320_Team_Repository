@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 	<form action="${pageContext.servletContext.contextPath}/index" method="post">
 			<input name="index" type="submit" value="Kinsley Tutoring Service" /><br>
@@ -28,7 +29,7 @@
 	       				<td>Date</td>
 	       				<td>Time</td>      
 	       				<td>Room</td>
-	       				<td>Tutor</td>   				
+	       				<td>Course</td>   				
 				    </tr>
 					
 					<c:forEach items="${sessions}" var="session">
@@ -36,7 +37,8 @@
 			            	<td>${session.date}</td>
 			            	<td>${session.time}</td>
 			            	<td>${session.room}</td>			            
-			        	    <td>${session.tutor}</td>
+			        	    <td>${session.course.title}</td>
+			        	    <!--  <td>${session.course.title} </td> -->
                         </tr>
 			    	</c:forEach>
 			    </table>
