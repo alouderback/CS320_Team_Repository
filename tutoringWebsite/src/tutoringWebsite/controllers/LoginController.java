@@ -2,13 +2,13 @@ package tutoringWebsite.controllers;
 
 
 
-import tutoringWebsite.model.login;
-import tutoringWebsite.model.user;
+import tutoringWebsite.model.Login;
+import tutoringWebsite.model.User;
 
 public class LoginController {
-	private login model = null;
+	private Login model = null;
 	
-	public LoginController(login model) {
+	public LoginController(Login model) {
 		this.model = model;
 	}
 	
@@ -20,11 +20,11 @@ public class LoginController {
 		return model.validatePW(name, pw);
 	}
 	//add new account
-	public boolean createAccount(String name, String pw, String major, String year) {
+	public boolean createAccount(String name, String pw) {
 		if(model.isStudent(name)==false) {
 			return false;
 		}
-		model.createAccount(name, pw, major, year);
+		model.createAccount(name, pw);
 		return true;
 		
 	}

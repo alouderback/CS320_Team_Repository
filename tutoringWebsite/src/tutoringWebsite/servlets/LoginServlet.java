@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.LoginController;
-import tutoringWebsite.model.login;
-import tutoringWebsite.model.user;
+import tutoringWebsite.model.Login;
+import tutoringWebsite.model.User;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private login model;
+	private Login model;
 	private LoginController controller;
 
 	@Override
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
 		String errorMessage = null;
 		String name         = null;
 		String pw           = null;
-		user current 		= new user();
+		User current 		= new User();
 		boolean validLogin  = false;
 		boolean validUser   = false;
 		
@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
 		if (name == null || pw == null || name.equals("") || pw.equals("")) {
 			errorMessage = "Please specify both user name and password";
 		} else {
-			model      = new login();
+			model      = new Login();
 			controller = new LoginController(model);
 			validUser  = controller.checkUserName(name);
 			validLogin = controller.validateCredentials(name, pw);
