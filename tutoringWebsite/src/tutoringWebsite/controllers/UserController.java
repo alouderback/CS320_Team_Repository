@@ -1,6 +1,7 @@
 package tutoringWebsite.controllers;
 
 import java.util.ArrayList;
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -8,8 +9,12 @@ import tutoringWebsite.model.User;
 
 public class UserController {
 	//User type variable
+
 	private User model;
+
+
 	private LoginController model2;
+
 	private ArrayList<String> emailList = new ArrayList<String>();
 	Scanner keyboard = new Scanner(System.in);
 	

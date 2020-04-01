@@ -17,6 +17,11 @@
   </servlet>
   
   <servlet>
+
+    <servlet-name>ScheduleServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.scheduleServlet</servlet-class>
+  </servlet>
+
   	<servlet-name>LoginServlet</servlet-name>
  	<servlet-class>tutoringWebsite.servlets.LoginServlet</servlet-class>
   </servlet>
@@ -30,6 +35,7 @@
   	<servlet-name>StudyGroupServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.StudyGroupServlet</servlet-class>
   </servlet>
+
 
  
 
@@ -54,11 +60,18 @@
   	<servlet-name>CreateAccountServlet</servlet-name>
   	<url-pattern>/createAccount</url-pattern>
   </servlet-mapping>
-	
+
   <servlet-mapping>
   	<servlet-name>StudyGroupServlet</servlet-name>
   	<url-pattern>/groups</url-pattern>
   </servlet-mapping>
+
+    <servlet-mapping>
+    <servlet-name>ScheduleServlet</servlet-name>
+    <url-pattern>/schedule</url-pattern>
+  </servlet-mapping>
+
+
   
 
   <welcome-file-list>

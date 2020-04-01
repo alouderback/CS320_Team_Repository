@@ -2,10 +2,16 @@ package tutoringWebsite.model;
 
 
 
+import java.util.ArrayList;
+import java.util.Map;
+
+
+
 public class User {
 	private String email;
 	private String password;
 	private String name;
+	private String genInfo;
 	
 	public User(){
 	}
