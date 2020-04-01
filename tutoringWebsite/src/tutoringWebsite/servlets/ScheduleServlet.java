@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.model.*;
 import tutoringWebsite.controllers.*;
+import tutoringWebsite.db.FakeScheduleDatabase;
 
 public class ScheduleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -40,8 +41,10 @@ public class ScheduleServlet extends HttpServlet {
 
 		
 		ScheduleController controller = new ScheduleController();
-
+		FakeScheduleDatabase db = new FakeScheduleDatabase();
+		
 		controller.setModel(model);
+		controller.setDB(db);
 		
 		ArrayList<Session> sessions = new ArrayList<Session>();
 		
