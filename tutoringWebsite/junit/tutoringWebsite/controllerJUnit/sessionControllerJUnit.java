@@ -7,17 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import tutoringWebsite.controllers.sessionController;
-import tutoringWebsite.model.session;
+import tutoringWebsite.controllers.SessionController;
+import tutoringWebsite.model.Session;
 
 public class sessionControllerJUnit {
-	private session model;
-	private sessionController controller;
+	private Session model;
+	private SessionController controller;
 	
 	@Before
 	public void setUp() { 
-		model = new session();
-		controller = new sessionController();
+		model = new Session();
+		controller = new SessionController();
 		
 		model.setRoom("123");
 		model.setDate("12/12/12");
@@ -33,7 +33,7 @@ public class sessionControllerJUnit {
 	}
 @Test
 	public void testCreateSession() {
-		session test = new session();
+		Session test = new Session();
 		
 		test.setDate(model.getDate());
 		test.setTime(model.getTime());
