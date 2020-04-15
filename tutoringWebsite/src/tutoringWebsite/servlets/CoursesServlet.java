@@ -75,7 +75,9 @@ public class CoursesServlet extends HttpServlet {
 				model.setTitle(title);
 				controller1.createSession(room, date, tutor, time);
 				courseSession = controller1.getSession();
-				model.setCourseSession(courseSession);
+				ArrayList<Session> courseSessions = new ArrayList<Session>();
+				courseSessions.add(courseSession);
+				model.setCourseSession(courseSessions);
 				controller.createCourse();
 			}
 		} catch (NumberFormatException e) {

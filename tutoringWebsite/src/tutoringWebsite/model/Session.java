@@ -10,10 +10,19 @@ public class Session {
 	private LocalDate date;
 	private Tutor tutor;
 	private LocalTime time;
+	private Course course;
 	
 	public Session() {
 	}
-
+	
+	public Course getCourse() {
+		return course;
+	}
+	
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+	
 	public String getRoom() {
 		return room;
 	}
