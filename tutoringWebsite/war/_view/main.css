@@ -25,6 +25,13 @@ body{
     padding-left: 1%;
     padding-right: 1%;
 }
+.error {
+    color: red;
+}
+		
+td.label {
+    text-align: right;
+}
 
 #annTitle {
     text-align: center;
