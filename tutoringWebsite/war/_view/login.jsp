@@ -4,23 +4,32 @@
 
 <html>
 	<head>
-		<title>CS320 Library Login</title>
-		<style type="text/css">
-		.error {
-			color: red;
-		}
-		
-		td.label {
-			text-align: right;
-		}
-		</style>
+		<title>Login</title>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >		
 	</head>
 
 	<body>
-		<c:if test="${! empty errorMessage}">
+        <c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
-	
+	    <form action="${pageContext.servletContext.contextPath}/index" method="post">
+            <div id = "titleDiv">
+                <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
+            </div>  
+            <div class = "navBar">
+                <input id="navBarItem" name="courses" type="submit" value="Courses" />
+                <input id="navBarItem" name="groups" type="submit" value="Study Groups" />
+                <input id="navBarItem" name="schedule" type="submit" value="Schedule" />
+                <input id="navBarItem" name="tutors" type="submit" value="Tutors" />
+                <input id="navBarItem" name="resources" type="submit" value="Resources" />
+                <input id="navBarItem" name="profile" type="submit" value="Profile" />
+                <input id="navBarItem" name="login" type="submit" value="Login" />
+                <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
+            </div>
+            <div class = "pageDesc">
+	           <p>Login to your Account</p>
+            </div>
+        </form>   
 		<form action="${pageContext.servletContext.contextPath}/login" method="post">
 			<table>
 				<tr>
