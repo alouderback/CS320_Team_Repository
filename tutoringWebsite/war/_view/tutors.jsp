@@ -3,12 +3,12 @@
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Home</Title>
+        <Title>Tutors</Title>
     </head>
     <body>
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
-            <div id = "title">
-                <input name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
+            <div id = "titleDiv">
+                <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
             </div>  
             <div class = "navBar">
                 <input id="navBarItem" name="courses" type="submit" value="Courses" />
