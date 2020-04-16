@@ -23,7 +23,7 @@
 	        </div>
 	        
 	        <div class = "pageDesc">
-	            <p>Welcome to the Kinsley Tutorring Service website! This site is used to display information and announcements for Engineeing and Computer Science tutoring.</p>
+	            <p>Welcome to the Kinsley Tutoring Service website! This site is used to display information and announcements for Engineeing and Computer Science tutoring.</p>
 	        </div>
 	        
 	        <div class = "announcements">
