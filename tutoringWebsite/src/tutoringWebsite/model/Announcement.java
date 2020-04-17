@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Announcement {
+	private int announcementId;
 	private String message;
 	private LocalDate date;
 	private LocalTime time;
@@ -18,6 +19,7 @@ public class Announcement {
 		message = null;
 		date= null;
 		time = null;
+		announcementId = (Integer) null;
 	}
 	
 	// Returns the current message in this announcement
@@ -45,6 +47,14 @@ public class Announcement {
 	
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+
+	public int getAnnouncementId() {
+		return announcementId;
+	}
+
+	public void setAnnouncementId(int announcementId) {
+		this.announcementId = announcementId;
 	}
 	
 }

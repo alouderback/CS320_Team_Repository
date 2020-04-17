@@ -20,11 +20,11 @@ public class LoginController {
 		return model.validatePW(name, pw);
 	}
 	//add new account
-	public boolean createAccount(String name, String pw) {
+	public boolean createAccount(String name, String pw, String major, String year) {
 		if(model.isStudent(name)==false) {
 			return false;
 		}
-		model.createAccount(name, pw);
+		model.createAccount(name, pw, major, year);
 		return true;
 		
 	}

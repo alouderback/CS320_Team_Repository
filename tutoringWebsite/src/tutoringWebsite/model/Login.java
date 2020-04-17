@@ -43,7 +43,7 @@ public class Login {
 			return false;
 		}
 		
-		public User createAccount(String email, String password) {
+		public User createAccount(String email, String password, String major, String year) {
 			
 			emails.add(email);
 			passwords.add(password);
@@ -52,6 +52,7 @@ public class Login {
 			User account = new User();
 			account.setEmail(email);
 			account.setPassword(password);
+			
 			return account;	
 		}
 		public boolean isStudent(String name) {
