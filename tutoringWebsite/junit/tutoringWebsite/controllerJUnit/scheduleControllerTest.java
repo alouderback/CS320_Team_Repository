@@ -2,11 +2,8 @@ package tutoringWebsite.controllerJUnit;
 
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-//import org.eclipse.jetty.server.session.Session;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,52 +24,34 @@ public class scheduleControllerTest{
 	
 	@Test
 	public void testGetScheduleWithDate(){
-		ArrayList<Session> test = controller.getScheduleWithDate("SubmitW");
+		ArrayList<session> test = controller.getScheduleWithDate("SubmitW");
 		//System.out.print(test.get(0).getDate() + ", " + test.get(0).getRoom() + ", " + test.get(0).getTime() + ", " + test.get(0).getTutor());
 		
-		ArrayList<Session> sessionList = new ArrayList<Session>();
+		ArrayList<session> sessionList = new ArrayList<session>();
 		
-		Session session1 = new Session();
-		Tutor tutor1 = new Tutor();
-		Course course1 = new Course();
-		tutor1.setName("Eric Bosse");
-		course1.setTitle("CS101");
-		session1.setDate(LocalDate.of(2020, 04, 01));
+		session session1 = new session();
+		session1.setDate("04/01/2020");
 		session1.setRoom("KEC 125");
-		session1.setTime(LocalTime.of(18, 00));
-		session1.setTutor(tutor1);
-		session1.setCourse(course1);
+		session1.setTime("18:00");
+		session1.setTutor("Eric Bosse");
 		
-		Session session2 = new Session();
-		Tutor tutor2 = new Tutor();
-		Course course2 = new Course();
-		tutor2.setName("Caryn Sims");
-		course2.setTitle("CS201");
-		session2.setDate(LocalDate.of(2020, 04, 01));
-		session2.setRoom("KEC 127");github
-		session2.setTime(LocalTime.of(20, 00));
-		session2.setTutor(tutor2);
-		session2.setCourse(course2);
+		session session2 = new session();
+		session2.setDate("04/01/2020");
+		session2.setRoom("KEC 127");
+		session2.setTime("20:00");
+		session2.setTutor("Caryn Sims");
 		
-		Session session3 = new Session();
-		Tutor tutor3 = new Tutor();
-		Course course3 = new Course();
-		tutor3.setName("Alex Louderback");
-		course3.setTitle("PHY160");
-		session3.setDate(LocalDate.of(2020,04,02));
+		session session3 = new session();
+		session3.setDate("04/02/2020");
 		session3.setRoom("KEC 125");
-		session3.setTime(LocalTime.of(18,00));
-		session3.setTutor(tutor3);
-		session3.setCourse(course3);
+		session3.setTime("18:00");
+		session3.setTutor("Alex Louderback");
 		
-		Session session4 = new Session();
-		Tutor tutor4 = new Tutor();
-		tutor4.setName("Isabelle Hoffmann");
-		session4.setDate(LocalDate.of(2020, 04, 02));
+		session session4 = new session();
+		session4.setDate("04/02/2020");
 		session4.setRoom("KEC 127");
-		session4.setTime(LocalTime.of(20, 00));
-		session4.setTutor(tutor4);
-		session4.setCourse(course1);
+		session4.setTime("20:00");
+		session4.setTutor("Isabelle Hoffmann");
 		
 		sessionList.add(session1);
 		sessionList.add(session2);
@@ -100,8 +79,6 @@ public class scheduleControllerTest{
 		assertTrue(sessionList.get(3).getRoom().equals(test.get(3).getRoom()));
 		assertTrue(sessionList.get(3).getTime().equals(test.get(3).getTime()));
 		assertTrue(sessionList.get(3).getTutor().equals(test.get(3).getTutor()));
-		
-		assertTrue(sessionList.size() == (test.size()));
 		
 	}
 }

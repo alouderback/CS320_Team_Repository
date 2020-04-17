@@ -4,17 +4,17 @@
 
 <html>
 	<head>
-		<title>CS320 Library Login</title>
+		<title>Login</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >		
 	</head>
 
 	<body>
-        <c:if test="${! empty errorMessage}">
+		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
 	    <form action="${pageContext.servletContext.contextPath}/index" method="post">
-            <div id = "title">
-                <input name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
+            <div id = "titleDiv">
+                <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
             </div>  
             <div class = "navBar">
                 <input id="navBarItem" name="courses" type="submit" value="Courses" />
