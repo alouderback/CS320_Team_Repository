@@ -9,12 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ycp.cs320.booksdb.model.Author;
-import edu.ycp.cs320.booksdb.model.Book;
-import edu.ycp.cs320.booksdb.model.BookAuthor;
-import edu.ycp.cs320.booksdb.persist.DBUtil;
-import edu.ycp.cs320.booksdb.persist.InitialData;
-import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
+
 import tutoringWebsite.persist.*;
 import tutoringWebsite.model.*;
 
@@ -36,7 +31,7 @@ public class DerbyDatabase implements IDatabase{
 	
 	//our code for website
 	@Override
-	public List<Login> createAccount(final String email, final String password){
+	public List<Login> useLogin(final String email, final String password){
 		return executeTransaction(new Transaction<List<Login>>() {
 			@Override
 			public List<Login> execute(Connection conn) throws SQLException {
@@ -45,7 +40,16 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
+							"select Users.email, Users.password"+
+							" from Users"+
+							"where Users.email = ? and Users.password = ?"
 							);
+					
+					stmt.setString(1, email);
+					stmt.setString(2, password);
+					
+					resultSet = stmt.executeQuery();
+					
 				}finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
@@ -80,24 +84,70 @@ public class DerbyDatabase implements IDatabase{
 			});
 		
 	}
+	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
+		user.setUser_Id((resultSet.getInt(index++)));
+//		book.setAuthorId(resultSet.getInt(index++));  // no longer used
+		user.setEmail((resultSet.getString(index++)));
+		user.setPassword((resultSet.getString(index++)));
+		user.setName((resultSet.getString(index++)));
+		user.setUserType((resultSet.getInt(index++)));
+		
+	}
+	
 	@Override
-	public List<Announcement> createAnnouncementCourse(final String message, final String group){
-		return executeTransaction(new Transaction<List<Announcement>>() {
+	public List<User> createAccount(final String email, final String password, final String name, final int userType){
+		return executeTransaction(new Transaction<List<User>>() {
 			@Override
-			public List<Announcement> execute(Connection conn) throws SQLException {
+			public List<User> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
+				PreparedStatement stmt1 = null;
 				ResultSet resultSet = null;
 				
 				try {
 					stmt = conn.prepareStatement(
+							"insert into Users (email, password, name, userType)" +
+							"values(?,?,?,?)"
 					//sql to add an account to list
 							);
+					stmt.setString(1, email);
+					stmt.setString(2, password);
+					stmt.setString(3, name);
+					stmt.setInt(4, userType);
+					List<User> result = new ArrayList<User>();
+					stmt.executeUpdate();
 					
+					stmt1 = conn.prepareStatement(
+							"select Users.email, Users.password, Users.name, Users.userType" +
+							"from Users" +
+							"where Users.email = ? and Users.password = ? and Users.name = ? and Users.userType = ?"
+							);
+					stmt1.setString(1, email);
+					stmt1.setString(2, password);
+					stmt1.setString(3, name);
+					stmt1.setInt(4, userType);
+					resultSet = stmt1.executeQuery();
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						User user = new User();
+						loadUser(user,resultSet,1);
+						result.add(user);
+					}
+					
+					// check if the title was found
+					if (!found) {
+						System.out.println("<" + email + "> was not found in the user database");
+					}
+					
+					
+					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(stmt1);
 					}
-				return null;
+		
 				}
 			
 		});
@@ -150,8 +200,10 @@ public class DerbyDatabase implements IDatabase{
 		}
 		//EDIT THIS
 		private Connection connect() throws SQLException {
-			Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true");		
-			
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8081/");		
+			// jdbc:mysql://localhost:8081/
+			//jdbc:derby:DerbyDB;create=true
+			//both broken 
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
 			conn.setAutoCommit(false);
@@ -197,9 +249,9 @@ public class DerbyDatabase implements IDatabase{
 								"	user_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), " +
 								"	email varchar(70)," +
-								"	password varchar(15)," +
-								"   year varchar(40)" +
-								"	major varchar(40)"+
+								"	password varchar(70)," +
+								"   name varchar(40)" +
+								"	userType integer"+
 								")"
 						);
 						stmt2.executeUpdate();
@@ -231,19 +283,19 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
-					List<StudyGroup> studyGroupList;
+					//List<StudyGroup> studyGroupList;
 					
 					try {
-						announcementList     = InitialData.getAnnouncement();
-						userList       = InitialData.getUser();
-						studyGroupList = InitialData.getStudyGroup();					
+						announcementList	= InitialData.getAnnouncement();
+						userList       		= InitialData.getUser();
+						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
 
 					PreparedStatement insertAnnouncement     = null;
 					PreparedStatement insertUser       = null;
-					PreparedStatement insertStudyGroup = null;
+					//PreparedStatement insertStudyGroup = null;
 
 					try {
 						// must completely populate Authors table before populating BookAuthors table because of primary keys
@@ -251,45 +303,57 @@ public class DerbyDatabase implements IDatabase{
 						for (Announcement announcement : announcementList) {
 //							insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
 							insertAnnouncement.setString(1, announcement.getMessage());
-							insertAnnouncement.setString(2, announcement.getDate());
-							insertAnnouncement.setString(3, announcement.getTime());
+							//insertAnnouncement.setDate(2, x);
+							//insertAnnouncement.setTime(3, x);
+							insertAnnouncement.setString(2, announcement.getDate().toString());
+							insertAnnouncement.setString(3, announcement.getTime().toString());
 							insertAnnouncement.addBatch();
 						}
 						insertAnnouncement.executeBatch();
 						
-						System.out.println("Authors table populated");
+						System.out.println("Annoucement table populated");
 						
 						// must completely populate Books table before populating BookAuthors table because of primary keys
-						insertAnnouncement = conn.prepareStatement("insert into Users (email, password, year, major) values (?, ?, ?, ?)");
+						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
 //							insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
 //							insertBook.setInt(1, book.getAuthorId());	// this is now in the BookAuthors table
 							insertUser.setString(1, user.getEmail());
 							insertUser.setString(2, user.getPassword());
-							insertUser.setString(3, user.getYear());
-							insertUser.setString(4, user.getMajor());
+							insertUser.setString(3, user.getName());
+							insertUser.setInt(4, user.getUserType());
 							insertUser.addBatch();
 						}
 						insertUser.executeBatch();
 						
-						System.out.println("Books table populated");					
+						System.out.println("User table populated");					
 						
 						// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
 						// since this table consists entirely of foreign keys, with constraints applied
-						insertStudyGroup = conn.prepareStatement("");
+						/*insertStudyGroup = conn.prepareStatement("");
 						for (StudyGroup sg: studyGroupList) {
 							
 						}	
-						
+						*/
 						System.out.println("BookAuthors table populated");					
 						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
-						DBUtil.closeQuietly(insertStudyGroup);				
+						//DBUtil.closeQuietly(insertStudyGroup);				
 					}
 				}
 			});
+		}
+		@Override
+		public List<Announcement> createAnnouncementStudyGroup(String message, String group) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }

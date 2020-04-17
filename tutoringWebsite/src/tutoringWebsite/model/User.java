@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class User {
+	private int user_Id;
 	private String email;
 	private String password;
-	private String year;
-	private String major;
+	private String name;
+	private int userType;
+
 	public User(){
 	}
 	public void setEmail(String email){
@@ -23,22 +25,28 @@ public class User {
 	public String getPassword() {
 		return this.password;
 	}
-	public void setYear(String year) {
-		this.year = year;
+	
+	public int getUser_Id() {
+		return user_Id;
 	}
-	public String getYear() {
-		return this.year;
-	}
-	public void setMajor(String major) {
-		this.major = major;
-	}
-	public String getMajor() {
-		return this.major;
+	public void setUser_Id(int user_Id) {
+		this.user_Id = user_Id;
 	}
 	public void cancel() {
 		email = null;
 		password = null;
-		year = null;
-		major = null;
+		
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getUserType() {
+		return userType;
+	}
+	public void setUserType(int userType) {
+		this.userType = userType;
 	}
 }
