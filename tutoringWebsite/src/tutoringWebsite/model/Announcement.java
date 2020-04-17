@@ -1,11 +1,14 @@
 
 package tutoringWebsite.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Announcement {
 	private int announcementId;
 	private String message;
-	private String date;
-	private String time;
+	private LocalDate date;
+	private LocalTime time;
 	
 	// Constructor for class
 	public Announcement() {
@@ -30,19 +33,19 @@ public class Announcement {
 	}
 	
 	// Returns the current date of the announcement
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 	
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	
-	public String getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 	
-	public void setTime(String time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
 
