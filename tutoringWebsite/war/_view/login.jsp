@@ -9,7 +9,7 @@
 	</head>
 
 	<body>
-        <c:if test="${! empty errorMessage}">
+		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
 	    <form action="${pageContext.servletContext.contextPath}/index" method="post">

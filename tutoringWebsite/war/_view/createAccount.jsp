@@ -4,6 +4,7 @@
 
 <html>
 	<head>
+
 		<title>Create Account</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css"> 
 	</head>
@@ -30,6 +31,7 @@
 	           <p>Create an Account</p>
             </div>
         </form>
+
 		<form action="${pageContext.servletContext.contextPath}/createAccount" method="post">
 			<table>
 				<tr>
