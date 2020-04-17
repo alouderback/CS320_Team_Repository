@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Home</Title>
-    </head>
-    <body>
-        <form action="${pageContext.servletContext.contextPath}/index" method="post">
-            <div id = "title">
-                <input name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
-            </div>  
-            <div class = "navBar">
-                <input id="navBarItem" name="courses" type="submit" value="Courses" />
-                <input id="navBarItem" name="groups" type="submit" value="Study Groups" />
-                <input id="navBarItem" name="schedule" type="submit" value="Schedule" />
-                <input id="navBarItem" name="tutors" type="submit" value="Tutors" />
-                <input id="navBarItem" name="resources" type="submit" value="Resources" />
-                <input id="navBarItem" name="profile" type="submit" value="Profile" />
-                <input id="navBarItem" name="login" type="submit" value="Login" />
-                <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
-            </div>
-            <div class = "pageDesc">
-	           <p>Helpful Links and Resources</p>
-            </div>
-        </form>
-    </body>
+	<form action="${pageContext.servletContext.contextPath}/index" method="post">
+			<input name="index" type="submit" value="Kinsley Tutoring Service" /><br>
+			Resources
+			<div>
+				<ul>
+					<li><input name="courses" type="submit" value="Courses" /></li>
+					<li><input name="groups" type="submit" value="Study Groups" /></li>
+					<li><input name="schedule" type="submit" value="Schedule" /></li>
+					<li><input name="tutors" type="submit" value="Tutors" /></li>
+					<li><input name="resources" type="submit" value="Resources" /></li>
+					<li><input name="profile" type="submit" value="Profile" /></li>
+				</ul>	
+			</div>
+		</form>
 </html>|
