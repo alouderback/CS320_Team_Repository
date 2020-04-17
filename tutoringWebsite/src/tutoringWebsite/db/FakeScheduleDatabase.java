@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import tutoringWebsite.model.Course;
 import tutoringWebsite.model.Session;
 import tutoringWebsite.model.Tutor;
 import java.time.format.DateTimeFormatter;
@@ -33,36 +32,27 @@ public class FakeScheduleDatabase {
 	public void readInitialData() {
 		Session session1 = new Session();
 		Tutor tutor1 = new Tutor();
-		Course course1 = new Course();
 		tutor1.setName("Eric Bosse");
-		course1.setTitle("CS101");
 		session1.setDate(LocalDate.of(2020, 04, 01));
 		session1.setRoom("KEC 125");
 		session1.setTime(LocalTime.of(18, 00));
 		session1.setTutor(tutor1);
-		session1.setCourse(course1);
 		
 		Session session2 = new Session();
 		Tutor tutor2 = new Tutor();
-		Course course2 = new Course();
 		tutor2.setName("Caryn Sims");
-		course2.setTitle("CS201");
 		session2.setDate(LocalDate.of(2020, 04, 01));
 		session2.setRoom("KEC 127");
 		session2.setTime(LocalTime.of(20, 00));
 		session2.setTutor(tutor2);
-		session2.setCourse(course2);
 		
 		Session session3 = new Session();
 		Tutor tutor3 = new Tutor();
-		Course course3 = new Course();
 		tutor3.setName("Alex Louderback");
-		course3.setTitle("PHY160");
 		session3.setDate(LocalDate.of(2020,04,02));
 		session3.setRoom("KEC 125");
 		session3.setTime(LocalTime.of(18,00));
 		session3.setTutor(tutor3);
-		session3.setCourse(course3);
 		
 		Session session4 = new Session();
 		Tutor tutor4 = new Tutor();
@@ -71,14 +61,12 @@ public class FakeScheduleDatabase {
 		session4.setRoom("KEC 127");
 		session4.setTime(LocalTime.of(20, 00));
 		session4.setTutor(tutor4);
-		session4.setCourse(course1);
 		
 		Session session5 = new Session();
 		session5.setDate(LocalDate.of(2020, 04, 29));
 		session5.setRoom("KEC 127");
 		session5.setTime(LocalTime.of(20, 00));
 		session5.setTutor(tutor4);
-		session5.setCourse(course2);
 		
 		sessionList.add(session1);
 		sessionList.add(session2);
