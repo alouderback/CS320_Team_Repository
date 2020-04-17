@@ -2,7 +2,7 @@ package tutoringWebsite.persist;
 
 public class DatabaseProvider {
 	private static IDatabase theInstance;
-	
+	//testing
 	public static void setInstance(IDatabase db) {
 		theInstance = db;
 	}
