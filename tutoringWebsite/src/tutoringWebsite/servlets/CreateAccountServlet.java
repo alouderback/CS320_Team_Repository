@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.LoginController;
 import tutoringWebsite.model.Login;
+import tutoringWebsite.model.User;
 
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,6 +36,7 @@ public class CreateAccountServlet extends HttpServlet {
 		String pw           = null;
 		String major		= null;
 		String year 		= null;
+		User current		= new User();
 		boolean validLogin  = false;
 	
 
@@ -52,8 +54,8 @@ public class CreateAccountServlet extends HttpServlet {
 			model      = new Login();
 			controller = new LoginController(model);
 			
-			validLogin = controller.createAccount(name, pw, major, year);
-
+			current = controller.createAccount(name, pw, major, year);
+			validLogin = controller.checkUserName(name);
 			 if (!validLogin) {
 				errorMessage = "must be a ycp username";
 			}
@@ -74,8 +76,8 @@ public class CreateAccountServlet extends HttpServlet {
 			System.out.println("  Account created - starting session, redirecting to /index");
 
 			// store user object in session
-			req.getSession().setAttribute("user", name);
-
+			req.getSession().setAttribute("user", current);
+			System.out.println(req.getSession());
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");
 

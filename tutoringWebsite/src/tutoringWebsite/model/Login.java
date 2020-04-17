@@ -43,6 +43,12 @@ public class Login {
 			return false;
 		}
 		
+		public User getUser(String name) {
+			User user = new User();
+		
+			return user;
+		}
+		
 		public User createAccount(String email, String password, String major, String year) {
 			
 			emails.add(email);
