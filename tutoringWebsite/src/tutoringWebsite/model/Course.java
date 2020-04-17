@@ -8,7 +8,7 @@ import tutoringWebsite.model.Tutor;
 public class Course {
 	
 	private ArrayList<Tutor> tutorList;
-	private ArrayList<Session> courseSessions; //Actual classtime/classtimes of course
+	private Session courseSession;
 	private String title;
 	
 	
@@ -24,12 +24,12 @@ public class Course {
 		this.tutorList = tutorList;
 	}
 
-	public ArrayList<Session> getCourseSession() {
-		return courseSessions;
+	public Session getCourseSession() {
+		return courseSession;
 	}
 
-	public void setCourseSession(ArrayList<Session> courseSessions) {
-		this.courseSessions = courseSessions;
+	public void setCourseSession(Session courseSession) {
+		this.courseSession = courseSession;
 	}
 
 	public String getTitle() {
