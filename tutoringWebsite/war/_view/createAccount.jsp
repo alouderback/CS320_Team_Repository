@@ -35,7 +35,7 @@
 		<form action="${pageContext.servletContext.contextPath}/createAccount" method="post">
 			<table>
 				<tr>
-					<td class="label">User Name:</td>
+					<td class="label">Email:</td>
 					<td><input type="text" name="email" size="12" value="${email}" /></td>
 				</tr>
 				<tr>
@@ -43,13 +43,20 @@
 					<td><input type="text" name="password" size="12" value="${password}" /></td>
 				</tr>
 				<tr>
-					<td class="label">Class Year:</td>
-					<td><input type="text" name="year" size="12" value="${year}" /></td>
+					<td class="label">Name:</td>
+					<td><input type="text" name="name" size="12" value="${name}" /></td>
 				</tr>
 				<tr>
-					<td class="label">Major:</td>
-					<td><input type="text" name="major" size="12" value="${major}" /></td>
-				</tr>
+					
+  					<input type="radio" id="student" name="userType" value="student">
+  					<label for="student">Student</label><br>
+  					
+					<input type="radio" id="tutor" name="userType" value="tutor">
+					<label for="tutor">Tutor</label><br>
+					
+					<input type="radio" id="faculty" name="userType" value="faculty">
+					<label for="faculty">Faculty</label><br>
+  				</tr>
 			</table>
 			<input type="Submit" name="submit" value="Create Account">
 		</form>
