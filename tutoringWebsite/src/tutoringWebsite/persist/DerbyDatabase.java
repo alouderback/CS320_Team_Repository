@@ -11,10 +11,7 @@ import java.util.List;
 
 import edu.ycp.cs320.booksdb.model.Author;
 import edu.ycp.cs320.booksdb.model.Book;
-import edu.ycp.cs320.booksdb.model.BookAuthor;
-import edu.ycp.cs320.booksdb.persist.DBUtil;
-import edu.ycp.cs320.booksdb.persist.InitialData;
-import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
+import edu.ycp.cs320.booksdb.model.Pair;
 import tutoringWebsite.persist.*;
 import tutoringWebsite.model.*;
 
@@ -46,6 +43,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					stmt = conn.prepareStatement(
 							);
+					
 				}finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
@@ -55,21 +53,65 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
-	public List<Announcement> createAnnouncementStudyGroup(final String message, final String date, final String time){
-		return executeTransaction(new Transaction<List<Announcement>>() {
+	public List<Login> signIntoAccount(final String email, final String password){
+		return executeTransaction(new Transaction<List<Login>>() {
 			@Override
-			public List<Announcement> execute(Connection conn) throws SQLException {
+			public List<Login> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				
 				try {
 					stmt = conn.prepareStatement(
-						"insert into Announcements(message, date, time)"
-							+"values(?, ?, ?)"
+							);
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			return null;
+			}
+				});
+	}
+	@Override
+	public List<Announcement> createAnnouncementStudyGroup(final String message, final String date, final String time, final int groupId){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				PreparedStatement stmt2 = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+						"insert into Announcements(message, date, time, groupId)"
+							+"values(?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
 					stmt.setString(2,  date);
 					stmt.setString(3, time);
+					stmt.setInt(4, groupId);
+					
+					stmt.executeUpdate();
+					
+					stmt2 = conn.prepareStatement(
+						"select announcement_id from Announcements"+
+						"where message = ? and date = ? and time ?"
+					);
+					stmt2.setString(1, message);
+					stmt2.setString(2, date);
+					stmt2.setString(3, time);
+					
+					resultSet = stmt2.executeQuery();
+					int resultId;
+					List<Announcement> result = new ArrayList<Announcement>();
+					if(resultSet.next()) {
+						resultId = resultSet.getInt(1);
+						Announcement announcement = new Announcement();
+						announcement.setAnnouncementId(resultId);
+						announcement.setMessage(message);
+						//announcement.setDate(LocalDate.);
+						//announcement.setTime(time);
+					}
+					
 				}
 				finally {
 					DBUtil.closeQuietly(resultSet);
@@ -291,5 +333,15 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
+		}
+		@Override
+		public List<Announcement> createAnnouncementStudyGroup(String message, String group) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }
