@@ -4,6 +4,7 @@
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
         <Title>Home</Title>
+        <!-- This is a test -->
     </head>
     
     <body>
@@ -23,7 +24,7 @@
 	        </div>
 	        
 	        <div class = "pageDesc">
-	            <p>Welcome to the Kinsley Tutorring Service website! This site is used to display information and announcements for Engineeing and Computer Science tutoring.</p>
+	            <p>Welcome to the Kinsley Tutoring Service website! This site is used to display information and announcements for Engineering and Computer Science tutoring.</p>
 	        </div>
 	        
 	        <div class = "announcements">
@@ -32,3 +33,4 @@
 	      </form>
     </body>
 </html>
+

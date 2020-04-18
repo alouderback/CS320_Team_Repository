@@ -9,7 +9,7 @@ import tutoringWebsite.model.User;
 
 public class UserController {
 	//User type variable
-	private user model;
+	private User model;
 
 	private LoginController model2;
 

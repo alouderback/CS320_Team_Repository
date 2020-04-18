@@ -4,7 +4,8 @@
 
 <html>
 	<head>
-		<title>CS320 Create Account</title>
+
+		<title>Create Account</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css"> 
 	</head>
 
@@ -13,8 +14,8 @@
             <div class="error">${errorMessage}</div>
         </c:if>
 	    <form action="${pageContext.servletContext.contextPath}/index" method="post">
-            <div id = "title">
-                <input name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
+            <div id = "titleDiv">
+                <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
             </div>  
             <div class = "navBar">
                 <input id="navBarItem" name="courses" type="submit" value="Courses" />
@@ -30,10 +31,11 @@
 	           <p>Create an Account</p>
             </div>
         </form>
+
 		<form action="${pageContext.servletContext.contextPath}/createAccount" method="post">
 			<table>
 				<tr>
-					<td class="label">User Name:</td>
+					<td class="label">Email:</td>
 					<td><input type="text" name="email" size="12" value="${email}" /></td>
 				</tr>
 				<tr>
@@ -41,13 +43,20 @@
 					<td><input type="text" name="password" size="12" value="${password}" /></td>
 				</tr>
 				<tr>
-					<td class="label">Class Year:</td>
-					<td><input type="text" name="year" size="12" value="${year}" /></td>
+					<td class="label">Name:</td>
+					<td><input type="text" name="name" size="12" value="${name}" /></td>
 				</tr>
 				<tr>
-					<td class="label">Major:</td>
-					<td><input type="text" name="major" size="12" value="${major}" /></td>
-				</tr>
+					
+  					<input type="radio" id="student" name="userType" value="student">
+  					<label for="student">Student</label><br>
+  					
+					<input type="radio" id="tutor" name="userType" value="tutor">
+					<label for="tutor">Tutor</label><br>
+					
+					<input type="radio" id="faculty" name="userType" value="faculty">
+					<label for="faculty">Faculty</label><br>
+  				</tr>
 			</table>
 			<input type="Submit" name="submit" value="Create Account">
 		</form>
