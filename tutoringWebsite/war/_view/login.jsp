@@ -33,7 +33,7 @@
 		<form action="${pageContext.servletContext.contextPath}/login" method="post">
 			<table>
 				<tr>
-					<td class="label">User Name:</td>
+					<td class="label">User Email:</td>
 					<td><input type="text" name="email" size="12" value="${email}" /></td>
 				</tr>
 				<tr>

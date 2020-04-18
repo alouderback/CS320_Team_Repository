@@ -16,11 +16,11 @@ public class Login {
 			passwords = new ArrayList<String>();
 			credentials = new TreeMap<String, String>();
 			
-			emails.add("student@ycp.edu");
+			//emails.add("student@ycp.edu");
 			emails.add("faculty@ycp.edu");
 			emails.add("tutor@ycp.edu");
 			
-			passwords.add("ycp");
+			//passwords.add("ycp");
 			passwords.add("E&CS");
 			passwords.add("1234");
 			for (int i = 0; i < emails.size(); i++) {
@@ -43,7 +43,13 @@ public class Login {
 			return false;
 		}
 		
-		public User createAccount(String email, String password) {
+		public User getUser(String name) {
+			User user = new User();
+		
+			return user;
+		}
+		
+		public User createAccount(String email, String password, String name, int userType) {
 			
 			emails.add(email);
 			passwords.add(password);
@@ -52,6 +58,9 @@ public class Login {
 			User account = new User();
 			account.setEmail(email);
 			account.setPassword(password);
+			account.setName(name);
+			account.setUserType(userType);
+			
 			return account;	
 		}
 		public boolean isStudent(String name) {
