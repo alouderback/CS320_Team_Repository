@@ -176,6 +176,7 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
+					PreparedStatement stmt4 = null;
 					//PreparedStatement stmt3 = null;				
 				
 					try {
@@ -214,7 +215,20 @@ public class DerbyDatabase implements IDatabase{
 						);
 						stmt3.executeUpdate();
 						
-						System.out.println("BookAuthors table created");*/				
+						System.out.println("BookAuthors table created");*/	
+						stmt4 = conn.prepareStatement(
+								"create table Sessions (" +
+								"	session_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	date varchar(40)," +
+								"	room varchar(40)," +
+								"   time varchar(40)" +
+								"	tutor_id varchar(40)"+
+								")"
+						);
+						stmt4.executeUpdate();
+						
+						System.out.println("Sessions table created");	
 											
 						return true;
 					} finally {

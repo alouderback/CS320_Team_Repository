@@ -6,6 +6,7 @@ public class Tutor extends Student {
 	
 	private Announcement announcement;
 	private ArrayList<Course> courses;
+	private int tutorId;
 	
 	
 	public Tutor() {
@@ -26,6 +27,14 @@ public class Tutor extends Student {
 	
 	public void setCourses(ArrayList<Course> courses) {
 		this.courses = courses;
+	}
+
+	public int getTutorId() {
+		return tutorId;
+	}
+
+	public void setTutorId(int tutorId) {
+		this.tutorId = tutorId;
 	}
 	
 	

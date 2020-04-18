@@ -1,5 +1,7 @@
 package tutoringWebsite.persist;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +22,7 @@ public class InitialData {
 		}
 			Iterator<String> i = tuple.iterator();
 			Announcement announcement = new Announcement();
-			Announcement.setAnnouncementId(announcementId++);
+			announcement.setAnnouncementId(announcementId++);
 			announcement.setMessage(i.next());
 			announcement.setDate(i.next());
 			announcement.setTime(i.next());
@@ -31,6 +33,38 @@ public class InitialData {
 				readAnnouncement.close();
 			}
 		}
+	
+	public static List<Session> getSession() throws IOException {
+		List<Session> sessionList = new ArrayList<Session>();
+		ReadCSV readSession = new ReadCSV("Sessions.csv");
+		try {
+			Integer sessionId = 1;
+			while(true) {
+				
+				List<String> tuple = readSession.next();
+				if(tuple==null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Session session = new Session();
+				session.setSessionID(sessionId++);
+				
+				LocalDate date = LocalDate.parse(i.next());
+				
+				session.setDate(date);
+				session.setRoom(i.next());
+				
+				LocalTime time = LocalTime.parse(i.next());
+				
+				session.setTime(time);
+				session.setTutorId(Integer.decode(i.next()));
+				sessionList.add(session);
+			}
+			return sessionList;
+		}finally {
+			readSession.close();
+		}
+	}
 
 
 }
