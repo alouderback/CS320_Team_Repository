@@ -6,9 +6,9 @@ import tutoringWebsite.model.*;
 
 public interface IDatabase {
 	//list of functions used in Derby Database
-	List<Login> createAccount(String email, String password);
-	List<Announcement> createAnnouncementCourse(String message, String date, String time);
-	List<Announcement> createAnnouncementStudyGroup(String message, String date, String time, int groupId);
+	List<Login> useLogin(String email, String password);
 	List<Login> signIntoAccount(String email, String password);
-	List<Announcement> createAnnouncementCourse(String message, String group);		
+	List<Announcement> createAnnouncementStudyGroup(String message, String date, String time, int groupId);
+	List<User> createAccount(String email, String password, String name, int userType);
+	List<Announcement> createAnnouncementCourse(String message, String date, String time);
 }

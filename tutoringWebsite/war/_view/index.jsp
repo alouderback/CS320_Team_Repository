@@ -4,6 +4,7 @@
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
         <Title>Home</Title>
+        <!-- This is a test -->
     </head>
     
     <body>
