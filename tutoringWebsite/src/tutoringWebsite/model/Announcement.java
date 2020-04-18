@@ -1,13 +1,17 @@
 
 package tutoringWebsite.model;
 
-public class announcement {
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class Announcement {
+	private int announcementId;
 	private String message;
-	private String date;
-	private String time;
+	private LocalDate date;
+	private LocalTime time;
 	
 	// Constructor for class
-	public announcement() {
+	public Announcement() {
 	}
 	
 	//Sets everything to null
@@ -15,6 +19,7 @@ public class announcement {
 		message = null;
 		date= null;
 		time = null;
+		announcementId = (Integer) null;
 	}
 	
 	// Returns the current message in this announcement
@@ -28,20 +33,28 @@ public class announcement {
 	}
 	
 	// Returns the current date of the announcement
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 	
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	
-	public String getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 	
-	public void setTime(String time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+
+	public int getAnnouncementId() {
+		return announcementId;
+	}
+
+	public void setAnnouncementId(int announcementId) {
+		this.announcementId = announcementId;
 	}
 	
 }

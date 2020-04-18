@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class login {
+public class Login {
 	
 	private ArrayList<String> emails;
 	private ArrayList<String> passwords;
 	private Map<String, String> credentials;
 	
 	// create model - test version
-		public login() {
+		public Login() {
 			emails = new ArrayList<String>();
 			passwords = new ArrayList<String>();
 			credentials = new TreeMap<String, String>();
 			
-			emails.add("student@ycp.edu");
+			//emails.add("student@ycp.edu");
 			emails.add("faculty@ycp.edu");
 			emails.add("tutor@ycp.edu");
 			
-			passwords.add("ycp");
+			//passwords.add("ycp");
 			passwords.add("E&CS");
 			passwords.add("1234");
 			for (int i = 0; i < emails.size(); i++) {
@@ -43,17 +43,24 @@ public class login {
 			return false;
 		}
 		
-		public user createAccount(String email, String password, String major, String classYear) {
+		public User getUser(String name) {
+			User user = new User();
+		
+			return user;
+		}
+		
+		public User createAccount(String email, String password, String name, int userType) {
 			
 			emails.add(email);
 			passwords.add(password);
 			credentials.put(email, password);
 			
-			user account = new user();
+			User account = new User();
 			account.setEmail(email);
 			account.setPassword(password);
-			account.setMajor(major);
-			account.setYear(classYear);
+			account.setName(name);
+			account.setUserType(userType);
+			
 			return account;	
 		}
 		public boolean isStudent(String name) {

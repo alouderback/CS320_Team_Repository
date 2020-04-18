@@ -2,48 +2,57 @@ package tutoringWebsite.modelJUnit;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalTime;
+//import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 
-import tutoringWebsite.controllers.sessionController;
-import tutoringWebsite.model.session;
+import tutoringWebsite.controllers.SessionController;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.model.Tutor;
 
 public class sessionJUnit {
-	private session model;
-	private sessionController controller;
+	private Session model;
+	private SessionController controller;
 	
 	@Before
 	public void setUp() { 
-		model = new session();
-		controller = new sessionController();
+		model = new Session();
+		controller = new SessionController();
 		
+		Tutor testTutor = new Tutor();
+		testTutor.setName("Jimmy John");
 		
-		model.setDate("12/12/12");
-		model.setTime("6-8");
+		model.setDate(LocalDate.parse("2012-12-12"));
+		model.setTime(LocalTime.of(12, 0));
 		model.setRoom("123");
-		model.setTutor("john smith");		
+		model.setTutor(testTutor);		
 		
 		controller.setModel(model);
 	}
 	
 	@Test
 	public void testDate() {
-		assertTrue(model.getDate()=="12/12/12");
+		
+		LocalDate testDate = LocalDate.parse("2012-12-12");
+		System.out.println("Model Date: " + model.getDate() + ", Test Date: " + testDate);
+		assertTrue(model.getDate().equals(testDate));
 		
 		
 	}
 	@Test
 	public void testTime() {
-		assertTrue(model.getTime()=="6-8");
+		LocalTime testTime = LocalTime.of(12, 0);
+		assertTrue(model.getTime()==testTime);
 		
 		
 	}
 	@Test
 	public void testTutor() {
-		assertTrue(model.getTutor()=="john smith");
+		assertTrue(model.getTutor().getName()==("Jimmy John"));
 	}
 	@Test
 	public void testRoom() {
