@@ -8,6 +8,16 @@ import tutoringWebsite.model.User;
 public class LoginController {
 	private Login model = null;
 	
+
+	
+	
+	//DatabaseProvider.setInstance(new DerbyDatabase());
+	//IDatabase db = DatabaseProvider.getInstance();
+	
+	private IDatabase db = new DerbyDatabase();
+	//List<User> authorBookList = db.createAccount(email, password, major, year);
+	
+
 	public LoginController(Login model) {
 		this.model = model;
 	}

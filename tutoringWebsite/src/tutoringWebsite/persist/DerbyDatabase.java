@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import edu.ycp.cs320.booksdb.model.Author;
 import edu.ycp.cs320.booksdb.model.Book;
 import edu.ycp.cs320.booksdb.model.BookAuthor;
@@ -92,7 +93,40 @@ public class DerbyDatabase implements IDatabase{
 					stmt = conn.prepareStatement(
 					//sql to add an account to list
 							);
+
+					stmt.setString(1, email);
+					stmt.setString(2, password);
+					stmt.setString(3, name);
+					stmt.setInt(4, userType);
+					List<User> result = new ArrayList<User>();
+					stmt.executeUpdate();
 					
+					stmt1 = conn.prepareStatement(
+							"select Users.email, Users.password, Users.name, Users.userType" +
+							"from Users" +
+							"where Users.email = ? and Users.password = ? and Users.name = ? and Users.userType = ?"
+							);
+					stmt1.setString(1, email);
+					stmt1.setString(2, password);
+					stmt1.setString(3, name);
+					stmt1.setInt(4, userType);
+					resultSet = stmt1.executeQuery();
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						User user = new User();
+						loadUser(user,resultSet,1);
+						result.add(user);
+					}
+					
+					// check if the title was found
+					if (!found) {
+						System.out.println("<" + email + "> was not found in the user database");
+					}
+					
+					
+					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
@@ -150,8 +184,11 @@ public class DerbyDatabase implements IDatabase{
 		}
 		//EDIT THIS
 		private Connection connect() throws SQLException {
-			Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true");		
-			
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8081/");		
+			// jdbc:mysql://localhost:8081/
+			//jdbc:derby:DerbyDB;create=true
+			//both broken 
+
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
 			conn.setAutoCommit(false);
@@ -197,9 +234,9 @@ public class DerbyDatabase implements IDatabase{
 								"	user_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), " +
 								"	email varchar(70)," +
-								"	password varchar(15)," +
-								"   year varchar(40)" +
-								"	major varchar(40)"+
+								"	password varchar(70)," +
+								"   name varchar(40)" +
+								"	userType integer"+
 								")"
 						);
 						stmt2.executeUpdate();
