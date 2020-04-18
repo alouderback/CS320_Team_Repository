@@ -10,20 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import tutoringWebsite.controllers.LoginController;
 import tutoringWebsite.model.Login;
 import tutoringWebsite.model.User;
-import tutoringWebsite.persist.*;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Login model;
 	private LoginController controller;
-	
-	
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		System.out.println("\nLoginServlet: doGet");
+
 		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
 	}
 
@@ -34,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("\nLoginServlet: doPost");
 
 		String errorMessage = null;
-		String email         = null;
+		String name         = null;
 		String pw           = null;
 		User current 		= new User();
 		boolean validLogin  = false;
@@ -42,18 +40,18 @@ public class LoginServlet extends HttpServlet {
 		
 
 		// Decode form parameters and dispatch to controller
-		email = req.getParameter("email");
+		name = req.getParameter("email");
 		pw   = req.getParameter("password");
 
-		System.out.println("   Name: <" + email + "> PW: <" + pw + ">");			
+		System.out.println("   Name: <" + name + "> PW: <" + pw + ">");			
 
-		if (email == null || pw == null || email.equals("") || pw.equals("")) {
+		if (name == null || pw == null || name.equals("") || pw.equals("")) {
 			errorMessage = "Please specify both user name and password";
 		} else {
 			model      = new Login();
 			controller = new LoginController(model);
-			validUser  = controller.checkUserName(email);
-			validLogin = controller.validateCredentials(email, pw);
+			validUser  = controller.checkUserName(name);
+			validLogin = controller.validateCredentials(name, pw);
 			
 			if(!validUser) {
 				///find out how to submit this into allowing a button

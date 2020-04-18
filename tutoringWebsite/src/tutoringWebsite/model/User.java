@@ -1,16 +1,18 @@
 package tutoringWebsite.model;
 
 
+
 import java.util.ArrayList;
 import java.util.Map;
 
+
+
 public class User {
-	private int user_Id;
 	private String email;
 	private String password;
 	private String name;
-	private int userType;
-
+	private String genInfo;
+	
 	public User(){
 	}
 	public void setEmail(String email){
@@ -25,28 +27,15 @@ public class User {
 	public String getPassword() {
 		return this.password;
 	}
-	
-	public int getUser_Id() {
-		return user_Id;
-	}
-	public void setUser_Id(int user_Id) {
-		this.user_Id = user_Id;
-	}
-	public void cancel() {
-		email = null;
-		password = null;
-		
-	}
-	public String getName() {
-		return name;
-	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getUserType() {
-		return userType;
+	public String getName() {
+		return this.name;
 	}
-	public void setUserType(int userType) {
-		this.userType = userType;
+	
+	public void cancel() {
+		email = null;
+		password = null;
 	}
 }

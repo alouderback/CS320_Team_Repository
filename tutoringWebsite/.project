@@ -3,7 +3,6 @@
 	<name>tutoringWebsite</name>
 	<comment></comment>
 	<projects>
-		<project>CS320_Derby</project>
 		<project>CS320_Jetty9</project>
 	</projects>
 	<buildSpec>

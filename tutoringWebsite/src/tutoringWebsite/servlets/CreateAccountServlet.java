@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.LoginController;
 import tutoringWebsite.model.Login;
-import tutoringWebsite.model.User;
 
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,57 +31,40 @@ public class CreateAccountServlet extends HttpServlet {
 		System.out.println("\ncreateAccount: doPost");
 
 		String errorMessage = null;
-		String email         = null;
+		String name         = null;
 		String pw           = null;
-		String name		= null;
-		String temp	= null;
-		int userType = 1;
-		User current		= new User();
+		String major		= null;
+		String year 		= null;
 		boolean validLogin  = false;
 	
 
 		// Decode form parameters and dispatch to controller
-		email = req.getParameter("email");
+		name = req.getParameter("email");
 		pw   = req.getParameter("password");
-		name = req.getParameter("name");
-		temp = req.getParameter("userType");
-	
-		System.out.println("   email: <" + email + "> PW: <" + pw + ">");		
-	
-		String student, tutor, faculty;
-		student= "student";
-		tutor = "tutor";
-		faculty = "faculty";
-		if(temp.contains(student)) {
-			userType=1;
-		}else if(temp.contentEquals(tutor)){
-			userType = 2;
-		}else if(temp.matches(faculty)) {
-			userType = 3;
-		}else {
-			userType = 0;
-		}
-		
-		System.out.println("   temp: <" + temp + "> userType: <" + userType + ">");	
-		if (email == null || pw == null || email.equals("") || pw.equals("")) {
-			errorMessage = "Please specify both username and password";
+		major = req.getParameter("major");
+		year   = req.getParameter("year");
+
+		System.out.println("   Name: <" + name + "> PW: <" + pw + ">");			
+
+		if (name == null || pw == null || name.equals("") || pw.equals("")) {
+			errorMessage = "Please specify both user name and password";
 		} else {
-			validLogin = true;
 			model      = new Login();
 			controller = new LoginController(model);
 			
-			
-			
-			current = controller.createAccount(email, pw, name ,userType);
-			
+			validLogin = controller.createAccount(name, pw);
+
+			 if (!validLogin) {
+				errorMessage = "must be a ycp username";
+			}
 		}
 
 		// Add parameters as request attributes
-		req.setAttribute("email", req.getParameter("email"));
+		req.setAttribute("username", req.getParameter("username"));
 		req.setAttribute("password", req.getParameter("password"));
-		req.setAttribute("name", req.getParameter("name"));
-		req.setAttribute("userType", req.getParameter("UserType"));
-		
+		req.setAttribute("major", req.getParameter("major"));
+		req.setAttribute("year", req.getParameter("year"));
+
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("createAccount",        validLogin);
@@ -92,8 +74,8 @@ public class CreateAccountServlet extends HttpServlet {
 			System.out.println("  Account created - starting session, redirecting to /index");
 
 			// store user object in session
-			req.getSession().setAttribute("user", current);
-			System.out.println(req.getSession());
+			req.getSession().setAttribute("user", name);
+
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");
 
