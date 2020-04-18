@@ -48,7 +48,7 @@ public class InitialData {
 			// auto-generated primary key for authors table
 			Integer userId = 1;
 			Integer userType = 1;
-			String temp;
+			String temp = "1";
 			
 			while (true) {
 				List<String> tuple = readUser.next();
@@ -61,7 +61,7 @@ public class InitialData {
 			user.setEmail(i.next());
 			user.setPassword(i.next());
 			user.setName(i.next());
-			userType = Integer.getInteger(i.next());
+			userType = Integer.decode(i.next());
 			user.setUserType(userType);
 			userList.add(user);
 		}

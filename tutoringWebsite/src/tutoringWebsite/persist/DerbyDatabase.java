@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import tutoringWebsite.persist.*;
 import tutoringWebsite.model.*;
 
 public class DerbyDatabase implements IDatabase{
@@ -103,6 +102,9 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt1 = null;
 				ResultSet resultSet = null;
 				
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("email: "+ email + " password: "+ password);
+				System.out.println("name: "+ name +" userType: "+ userType);
 				try {
 					stmt = conn.prepareStatement(
 							"insert into Users (email, password, name, userType)" +
@@ -114,33 +116,40 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(3, name);
 					stmt.setInt(4, userType);
 					List<User> result = new ArrayList<User>();
+					
 					stmt.executeUpdate();
 					
+					System.out.println("user created");
+					
+					
 					stmt1 = conn.prepareStatement(
-							"select Users.email, Users.password, Users.name, Users.userType" +
-							"from Users" +
-							"where Users.email = ? and Users.password = ? and Users.name = ? and Users.userType = ?"
+							"select user_id from Users" +
+							"where email = ? and password = ? and name = ? and userType = ?"
 							);
+					
 					stmt1.setString(1, email);
 					stmt1.setString(2, password);
 					stmt1.setString(3, name);
 					stmt1.setInt(4, userType);
-					resultSet = stmt1.executeQuery();
-					Boolean found = false;
 					
-					while (resultSet.next()) {
-						found = true;
+					resultSet = stmt1.executeQuery();
+				
+					System.out.println("user found");
+					
+					
+					if (resultSet.next()) {
+						
 						User user = new User();
 						loadUser(user,resultSet,1);
 						result.add(user);
 					}
 					
 					// check if the title was found
-					if (!found) {
+					else {
 						System.out.println("<" + email + "> was not found in the user database");
 					}
 					
-					
+					System.out.println("user returned");
 					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
@@ -200,9 +209,11 @@ public class DerbyDatabase implements IDatabase{
 		}
 		//EDIT THIS
 		private Connection connect() throws SQLException {
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8081/");		
+			Connection conn = DriverManager.getConnection("jdbc:derby:C/test/library.db;create=true");		
 			// jdbc:mysql://localhost:8081/
 			//jdbc:derby:DerbyDB;create=true
+			//"jdbc:derby:C:/Users/isabe/Documents/Cs320/library.db;create=true"
+			//jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true
 			//both broken 
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
@@ -236,7 +247,7 @@ public class DerbyDatabase implements IDatabase{
 							"	announcement_id integer primary key " +
 							"		generated always as identity (start with 1, increment by 1), " +									
 							"	message varchar(40)," +
-							"	date varchar(40)" +
+							"	date varchar(40)," +
 							"	time varchar(40)"+
 							")"
 						);	
@@ -250,7 +261,7 @@ public class DerbyDatabase implements IDatabase{
 								"		generated always as identity (start with 1, increment by 1), " +
 								"	email varchar(70)," +
 								"	password varchar(70)," +
-								"   name varchar(40)" +
+								"   name varchar(40)," +
 								"	userType integer"+
 								")"
 						);
