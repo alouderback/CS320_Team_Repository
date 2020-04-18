@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tutoringWebsite.model.User;
+
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +26,14 @@ public class IndexServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("Index Servlet: doPost");
+		User current 		= new User();
 		
+		 req.getSession().getAttribute("user");
+		
+		System.out.println(req.getSession());
+		System.out.println(req.getSession().getAttribute("user"));
+		//req.getSession().setAttribute("user", current);
+		System.out.println(current.getEmail());
 		// check which button the user pressed
 		if (req.getParameter("index") != null) {
 			// call index JSP
