@@ -1,6 +1,11 @@
 package tutoringWebsite.persist;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +18,8 @@ public class InitialData {
 		try {
 			// auto-generated primary key for authors table
 			Integer announcementId = 1;
+			LocalDate date = LocalDate.now();
+			LocalTime time = LocalTime.now();
 			while (true) {
 				List<String> tuple = readAnnouncement.next();
 				if (tuple == null) {
@@ -20,10 +27,12 @@ public class InitialData {
 		}
 			Iterator<String> i = tuple.iterator();
 			Announcement announcement = new Announcement();
-			Announcement.setAnnouncementId(announcementId++);
+			announcement.setAnnouncementId(announcementId++);
 			announcement.setMessage(i.next());
-			announcement.setDate(i.next());
-			announcement.setTime(i.next());
+			date = LocalDate.parse(i.next());
+			announcement.setDate(date);
+			time = LocalTime.parse(i.next());
+			announcement.setTime(time);
 			announcementList.add(announcement);
 		}
 			return announcementList;
@@ -31,7 +40,6 @@ public class InitialData {
 				readAnnouncement.close();
 			}
 		}
-
 	
 	public static List<User> getUser() throws IOException {
 		List<User> userList = new ArrayList<User>();
@@ -40,7 +48,7 @@ public class InitialData {
 			// auto-generated primary key for authors table
 			Integer userId = 1;
 			Integer userType = 1;
-			String temp;
+			String temp = "1";
 			
 			while (true) {
 				List<String> tuple = readUser.next();
@@ -53,7 +61,7 @@ public class InitialData {
 			user.setEmail(i.next());
 			user.setPassword(i.next());
 			user.setName(i.next());
-			userType = Integer.getInteger(i.next());
+			userType = Integer.decode(i.next());
 			user.setUserType(userType);
 			userList.add(user);
 		}
@@ -62,7 +70,6 @@ public class InitialData {
 				readUser.close();
 			}
 		}
-
 
 
 }
