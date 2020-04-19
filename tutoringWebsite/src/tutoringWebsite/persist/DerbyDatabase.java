@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +64,9 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				try {
-					//stmt = conn.prepareStatement();
+					stmt = conn.prepareStatement(
+							""
+							);
 
 					stmt.setString(1, email);
 					stmt.setString(2, password);
@@ -79,12 +83,12 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
-	public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
+	public List<Announcement> createAnnouncementCourse(final String message, final LocalDate date, final LocalTime time) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public List<Announcement> createAnnouncementStudyGroup(final String message, final String date, final String time, final int groupId){
+	public List<Announcement> createAnnouncementStudyGroup(final String message, final LocalDate date, final LocalTime time, final int groupId){
 		return executeTransaction(new Transaction<List<Announcement>>() {
 			@Override
 			public List<Announcement> execute(Connection conn) throws SQLException {
@@ -109,8 +113,8 @@ public class DerbyDatabase implements IDatabase{
 						"where message = ? and date = ? and time ?"
 					);
 					stmt2.setString(1, message);
-					stmt2.setString(2, date);
-					stmt2.setString(3, time);
+					stmt2.setObject(2, date);
+					stmt2.setObject(3, time);
 					
 					resultSet = stmt2.executeQuery();
 					int resultId;
@@ -120,16 +124,18 @@ public class DerbyDatabase implements IDatabase{
 						Announcement announcement = new Announcement();
 						announcement.setAnnouncementId(resultId);
 						announcement.setMessage(message);
-						//announcement.setDate(LocalDate.);
-						//announcement.setTime(time);
+						announcement.setDate(date);
+						announcement.setTime(time);
+						result.add(announcement);
 					}
 					
 				}
 				finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt2);
 				}
-			return null;
+			return result;
 			}
 			});
 		
@@ -283,61 +289,140 @@ public class DerbyDatabase implements IDatabase{
 			
 			System.out.println("Library DB successfully initialized!");
 		}
-	//  creates the Authors and Books tables
 		public void createTables() {
 			executeTransaction(new Transaction<Boolean>() {
+
 				@Override
+
 				public Boolean execute(Connection conn) throws SQLException {
+
 					PreparedStatement stmt1 = null;
+
 					PreparedStatement stmt2 = null;
+
 					//PreparedStatement stmt3 = null;				
-				
+
+					PreparedStatement stmt4 = null;
+
 					try {
+
 						stmt1 = conn.prepareStatement(
+
 							"create table Announcements (" +
+
 							"	announcement_id integer primary key " +
+
 							"		generated always as identity (start with 1, increment by 1), " +									
+
 							"	message varchar(40)," +
+
 							"	date varchar(40)," +
+
 							"	time varchar(40)"+
+
 							")"
+
 						);	
+
 						stmt1.executeUpdate();
+
 						
+
 						System.out.println("Announcements table created");
+
 						
+
 						stmt2 = conn.prepareStatement(
+
 								"create table Users (" +
+
 								"	user_id integer primary key " +
+
 								"		generated always as identity (start with 1, increment by 1), " +
+
 								"	email varchar(70)," +
+
 								"	password varchar(70)," +
+
 								"   name varchar(40)," +
+
 								"	userType integer"+
+
 								")"
+
 						);
+
 						stmt2.executeUpdate();
+
 						
+
 						System.out.println("Users table created");					
+
 	////////////////////EDIT STUDY GROUPS TABLE MUST BE JUNCTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 						/*stmt3 = conn.prepareStatement(
+
 								"create table StudyGroups (" +
+
 								"	book_id   integer constraint book_id references books, " +
+
 								"	author_id integer constraint author_id references authors " +
+
 								")"
+
 						);
-						stmt3.executeUpdate();
+
+						stmt3.executeUpdate(); */
+
 						
-						System.out.println("BookAuthors table created");*/				
+
+
+
+						stmt4 = conn.prepareStatement(
+
+								"create table Sessions (" +
+
+								"	session_id integer primary key " +
+
+								"		generated always as identity (start with 1, increment by 1), " +
+
+								"	date varchar(40)," +
+
+								"	room varchar(40)," +
+
+								"   time varchar(40)," +
+
+								"	tutor_id integer"+
+
+								")"
+
+						);
+
+						stmt4.executeUpdate();
+
+						
+
+						System.out.println("Sessions table created");	
+
 											
+
 						return true;
+
 					} finally {
+
 						DBUtil.closeQuietly(stmt1);
+
 						DBUtil.closeQuietly(stmt2);
+
+						DBUtil.closeQuietly(stmt4);
+
 					}
+
 				}
+
 			});
-		}
+
+		} 
 		// loads data retrieved from CSV files into DB tables in batch mode
 		public void loadInitialData() {
 			executeTransaction(new Transaction<Boolean>() {
