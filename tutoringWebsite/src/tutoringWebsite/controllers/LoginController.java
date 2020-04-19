@@ -40,8 +40,8 @@ public class LoginController {
 	}
 	public User createAccount(String email, String pw, String name, int userType) {
 		if(model.isStudent(email)) {
-		List<User> userList = db.createAccount(email, pw, name, userType);
-		 return userList.get(0);
+			List<User> userList = db.createAccount(email, pw, name, userType);
+			return userList.get(0);
 		}
 		else {
 			return model.createAccount(name, pw, name, userType);
