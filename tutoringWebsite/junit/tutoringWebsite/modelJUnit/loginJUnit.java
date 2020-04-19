@@ -45,6 +45,6 @@ public class loginJUnit{
 	@Test
 	public void testIsStudent() {
 		assertTrue(testLogin.isStudent("john@ycp.edu") == true);
-		assertTrue(testLogin.isStudent("johnjonglejingle@gmail.com"));
+		assertTrue(testLogin.isStudent("johnjonglejingle@gmail.com") == false);
 	}
 }
