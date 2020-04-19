@@ -80,6 +80,11 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
+	public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
 	public List<Announcement> createAnnouncementStudyGroup(final String message, final String date, final String time, final int groupId){
 		return executeTransaction(new Transaction<List<Announcement>>() {
 			@Override
@@ -417,11 +422,6 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
-		}
-		@Override
-		public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 }
