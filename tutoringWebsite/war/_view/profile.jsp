@@ -22,14 +22,6 @@
             </div>
             <div class = "pageDesc">
 	           <p>Your Profile</p>
-	           
-	           <tr>
-			            	<td>${user.email}</td>
-			            	<td>${user.password}</td>
-			            	<td>${user.name}</td>
-			            	<td>${user.userType}</td>			            
-			        	</tr>
-	           
             </div>
         </form>
     </body>
