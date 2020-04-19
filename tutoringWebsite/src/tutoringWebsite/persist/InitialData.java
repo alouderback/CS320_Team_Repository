@@ -24,17 +24,17 @@ public class InitialData {
 				List<String> tuple = readAnnouncement.next();
 				if (tuple == null) {
 					break;
-		}
-			Iterator<String> i = tuple.iterator();
-			Announcement announcement = new Announcement();
-			announcement.setAnnouncementId(announcementId++);
-			announcement.setMessage(i.next());
-			date = LocalDate.parse(i.next());
-			announcement.setDate(date);
-			time = LocalTime.parse(i.next());
-			announcement.setTime(time);
-			announcementList.add(announcement);
-		}
+				}
+				Iterator<String> i = tuple.iterator();
+				Announcement announcement = new Announcement();
+				announcement.setAnnouncementId(announcementId++);
+				announcement.setMessage(i.next());
+				date = LocalDate.parse(i.next());
+				announcement.setDate(date);
+				time = LocalTime.parse(i.next());
+				announcement.setTime(time);
+				announcementList.add(announcement);
+			}
 			return announcementList;
 		} finally {
 				readAnnouncement.close();
@@ -51,10 +51,10 @@ public class InitialData {
 			String temp = "1";
 			
 			while (true) {
-				List<String> tuple = readUser.next();
-				if (tuple == null) {
-					break;
-		}
+			List<String> tuple = readUser.next();
+			if (tuple == null) {
+				break;
+			}
 			Iterator<String> i = tuple.iterator();
 			User user = new User();
 			user.setUser_Id(userId++);
