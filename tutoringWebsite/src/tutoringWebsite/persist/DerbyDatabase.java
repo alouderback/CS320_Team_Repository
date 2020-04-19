@@ -404,8 +404,10 @@ public class DerbyDatabase implements IDatabase{
 								"	author_id integer constraint author_id references authors " +
 								")"
 						);
-						stmt3.executeUpdate();
-						*/
+
+						stmt3.executeUpdate(); */
+						
+
 
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
@@ -454,13 +456,10 @@ public class DerbyDatabase implements IDatabase{
 					//PreparedStatement insertStudyGroup = null;
 
 					try {
-						// must completely populate Authors table before populating BookAuthors table because of primary keys
+						// populating announcement table
 						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time) values (?, ?, ?)");
 						for (Announcement announcement : announcementList) {
-//							insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
 							insertAnnouncement.setString(1, announcement.getMessage());
-							//insertAnnouncement.setDate(2, x);
-							//insertAnnouncement.setTime(3, x);
 							insertAnnouncement.setString(2, announcement.getDate().toString());
 							insertAnnouncement.setString(3, announcement.getTime().toString());
 							insertAnnouncement.addBatch();
@@ -472,8 +471,6 @@ public class DerbyDatabase implements IDatabase{
 						// must completely populate Books table before populating BookAuthors table because of primary keys
 						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
-//							insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
-//							insertBook.setInt(1, book.getAuthorId());	// this is now in the BookAuthors table
 							insertUser.setString(1, user.getEmail());
 							insertUser.setString(2, user.getPassword());
 							insertUser.setString(3, user.getName());
@@ -484,14 +481,15 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("User table populated");					
 						
-						// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
-						// since this table consists entirely of foreign keys, with constraints applied
+
+						//study group garbage
+
 						/*insertStudyGroup = conn.prepareStatement("");
 						for (StudyGroup sg: studyGroupList) {
 							
 						}	
 						*/
-					//	System.out.println("BookAuthors table populated");					
+
 						
 						return true;
 					} finally {
@@ -501,7 +499,7 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
-		}
+		} 
 		@Override
 		public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
 			// TODO Auto-generated method stub
