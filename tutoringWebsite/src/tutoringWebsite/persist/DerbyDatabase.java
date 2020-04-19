@@ -63,6 +63,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
+							""
 							);
 
 					stmt.setString(1, email);
@@ -332,8 +333,8 @@ public class DerbyDatabase implements IDatabase{
 								"		generated always as identity (start with 1, increment by 1), " +
 								"	date varchar(40)," +
 								"	room varchar(40)," +
-								"   time varchar(40)" +
-								"	tutor_id varchar(40)"+
+								"   time varchar(40)," +
+								"	tutor_id integer"+
 								")"
 						);
 						stmt4.executeUpdate();
@@ -344,6 +345,7 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
+						DBUtil.closeQuietly(stmt4);
 					}
 				}
 			});
@@ -355,11 +357,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
+					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
+						sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
