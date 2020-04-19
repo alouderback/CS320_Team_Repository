@@ -62,7 +62,10 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				try {
-					//stmt = conn.prepareStatement();
+
+					stmt = conn.prepareStatement(
+							""
+							);
 
 					stmt.setString(1, email);
 					stmt.setString(2, password);
@@ -323,16 +326,30 @@ public class DerbyDatabase implements IDatabase{
 						);
 						stmt3.executeUpdate();
 						
-						System.out.println("BookAuthors table created");*/				
+
+						stmt4 = conn.prepareStatement(
+								"create table Sessions (" +
+								"	session_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	date varchar(40)," +
+								"	room varchar(40)," +
+								"   time varchar(40)," +
+								"	tutor_id integer"+
+								")"
+						);
+						stmt4.executeUpdate();
+						
+						System.out.println("Sessions table created");	
 											
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
+						DBUtil.closeQuietly(stmt4);
 					}
 				}
 			});
-		}
+		} */
 		// loads data retrieved from CSV files into DB tables in batch mode
 		public void loadInitialData() {
 			executeTransaction(new Transaction<Boolean>() {
@@ -340,11 +357,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
+					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
-						//userList       		= InitialData.getUser();
+						userList       		= InitialData.getUser();
+						sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
