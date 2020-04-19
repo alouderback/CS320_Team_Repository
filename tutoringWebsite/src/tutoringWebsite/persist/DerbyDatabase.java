@@ -62,6 +62,7 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				try {
+
 					stmt = conn.prepareStatement(
 							""
 							);
@@ -287,7 +288,6 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					PreparedStatement stmt4 = null;
 					//PreparedStatement stmt3 = null;				
 				
 					try {
@@ -326,7 +326,7 @@ public class DerbyDatabase implements IDatabase{
 						);
 						stmt3.executeUpdate();
 						
-						System.out.println("BookAuthors table created");*/	
+
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
@@ -349,7 +349,7 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
-		}
+		} */
 		// loads data retrieved from CSV files into DB tables in batch mode
 		public void loadInitialData() {
 			executeTransaction(new Transaction<Boolean>() {
@@ -390,7 +390,7 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("Annoucement table populated");
 						
 						// must completely populate Books table before populating BookAuthors table because of primary keys
-						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
+						/*insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
 //							insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
 //							insertBook.setInt(1, book.getAuthorId());	// this is now in the BookAuthors table
@@ -403,7 +403,7 @@ public class DerbyDatabase implements IDatabase{
 						insertUser.executeBatch();
 						
 						System.out.println("User table populated");					
-						
+						*/
 						// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
 						// since this table consists entirely of foreign keys, with constraints applied
 						/*insertStudyGroup = conn.prepareStatement("");
