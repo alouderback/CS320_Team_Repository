@@ -31,42 +31,38 @@ public class FakeScheduleDatabase {
 
 	public void readInitialData() {
 		Session session1 = new Session();
-		Tutor tutor1 = new Tutor();
-		tutor1.setName("Eric Bosse");
+		int tutor1 = 1;
 		session1.setDate(LocalDate.of(2020, 04, 01));
 		session1.setRoom("KEC 125");
 		session1.setTime(LocalTime.of(18, 00));
-		session1.setTutor(tutor1);
+		session1.setTutorId(tutor1);
 		
 		Session session2 = new Session();
-		Tutor tutor2 = new Tutor();
-		tutor2.setName("Caryn Sims");
+		int tutor2 = 2;
 		session2.setDate(LocalDate.of(2020, 04, 01));
 		session2.setRoom("KEC 127");
 		session2.setTime(LocalTime.of(20, 00));
-		session2.setTutor(tutor2);
+		session2.setTutorId(tutor2);
 		
 		Session session3 = new Session();
-		Tutor tutor3 = new Tutor();
-		tutor3.setName("Alex Louderback");
+		int tutor3 = 3;
 		session3.setDate(LocalDate.of(2020,04,02));
 		session3.setRoom("KEC 125");
 		session3.setTime(LocalTime.of(18,00));
-		session3.setTutor(tutor3);
+		session3.setTutorId(tutor3);
 		
 		Session session4 = new Session();
-		Tutor tutor4 = new Tutor();
-		tutor4.setName("Isabelle Hoffmann");
+		int tutor4 = 4;
 		session4.setDate(LocalDate.of(2020, 04, 02));
 		session4.setRoom("KEC 127");
 		session4.setTime(LocalTime.of(20, 00));
-		session4.setTutor(tutor4);
+		session4.setTutorId(tutor4);
 		
 		Session session5 = new Session();
 		session5.setDate(LocalDate.of(2020, 04, 29));
 		session5.setRoom("KEC 127");
 		session5.setTime(LocalTime.of(20, 00));
-		session5.setTutor(tutor4);
+		session5.setTutorId(tutor4);
 		
 		sessionList.add(session1);
 		sessionList.add(session2);
@@ -117,11 +113,12 @@ public class FakeScheduleDatabase {
 		System.out.println(result.size());
 		
 		if (result.size() == 0) {
+			int nullTutor = (Integer) null;
 			Session session = new Session();
 			session.setDate(null);
 			session.setRoom(" ");
 			session.setTime(null);
-			session.setTutor(null);
+			session.setTutorId(nullTutor);
 			result.add(session);
 		}
 		return result;
