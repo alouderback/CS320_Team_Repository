@@ -344,7 +344,7 @@ public class DerbyDatabase implements IDatabase{
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
-						userList       		= InitialData.getUser();
+						//userList       		= InitialData.getUser();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -371,7 +371,7 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("Annoucement table populated");
 						
 						// must completely populate Books table before populating BookAuthors table because of primary keys
-						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
+						/*insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
 //							insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
 //							insertBook.setInt(1, book.getAuthorId());	// this is now in the BookAuthors table
@@ -384,7 +384,7 @@ public class DerbyDatabase implements IDatabase{
 						insertUser.executeBatch();
 						
 						System.out.println("User table populated");					
-						
+						*/
 						// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
 						// since this table consists entirely of foreign keys, with constraints applied
 						/*insertStudyGroup = conn.prepareStatement("");
