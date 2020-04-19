@@ -12,5 +12,6 @@ public interface IDatabase {
 	List<Login> signIntoAccount(String email, String password);
 	List<Announcement> createAnnouncementStudyGroup(String message, LocalDate date, LocalTime time, int groupId);
 	List<User> createAccount(String email, String password, String name, int userType);
-	List<Announcement> createAnnouncementCourse(String message, LocalDate date, LocalTime time);
+	List<Announcement> createAnnouncementCourse(String message, LocalDate date, LocalTime time, int courseId);
+	List<Announcement> createAnnouncementMainPage(String message, LocalDate date, LocalTime time);
 }

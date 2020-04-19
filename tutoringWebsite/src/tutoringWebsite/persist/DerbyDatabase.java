@@ -45,7 +45,6 @@ public class DerbyDatabase implements IDatabase{
 							" from Users"+
 							"where Users.email = ? and Users.password = ?"
 							);
-					
 
 				}finally {
 					DBUtil.closeQuietly(resultSet);
@@ -83,7 +82,12 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
-	public List<Announcement> createAnnouncementCourse(final String message, final LocalDate date, final LocalTime time) {
+	public List<Announcement> createAnnouncementCourse(final String message, final LocalDate date, final LocalTime time, final int courseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Announcement> createAnnouncementMainPage(final String message, final LocalDate date, final LocalTime time) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -95,18 +99,23 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt = null;
 				PreparedStatement stmt2 = null;
 				ResultSet resultSet = null;
+				List<Announcement> result;
 				
 				try {
+					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
 						"insert into Announcements(message, date, time, groupId)"
 							+"values(?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
-					stmt.setString(2,  date);
-					stmt.setString(3, time);
+					stmt.setObject(2,  date);
+					stmt.setObject(3, time);
 					stmt.setInt(4, groupId);
 					
 					stmt.executeUpdate();
+					
+					System.out.println("Announcement added");
+					System.out.println("Retreiving announcement ID...");
 					
 					stmt2 = conn.prepareStatement(
 						"select announcement_id from Announcements"+
@@ -117,9 +126,14 @@ public class DerbyDatabase implements IDatabase{
 					stmt2.setObject(3, time);
 					
 					resultSet = stmt2.executeQuery();
+					
+					System.out.println("ID retrieved");
+					System.out.println("Making announcement object and adding info to return...");
+					
 					int resultId;
-					List<Announcement> result = new ArrayList<Announcement>();
+					result = new ArrayList<Announcement>();
 					if(resultSet.next()) {
+						System.out.println("getting id...");
 						resultId = resultSet.getInt(1);
 						Announcement announcement = new Announcement();
 						announcement.setAnnouncementId(resultId);
@@ -127,6 +141,7 @@ public class DerbyDatabase implements IDatabase{
 						announcement.setDate(date);
 						announcement.setTime(time);
 						result.add(announcement);
+						System.out.println("Announcement ready to return");
 					}
 					
 				}
@@ -135,6 +150,7 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(stmt);
 					DBUtil.closeQuietly(stmt2);
 				}
+				System.out.println("Returning announcement");
 			return result;
 			}
 			});
@@ -291,114 +307,54 @@ public class DerbyDatabase implements IDatabase{
 		}
 		public void createTables() {
 			executeTransaction(new Transaction<Boolean>() {
-
 				@Override
-
 				public Boolean execute(Connection conn) throws SQLException {
-
 					PreparedStatement stmt1 = null;
-
 					PreparedStatement stmt2 = null;
-
-					//PreparedStatement stmt3 = null;				
-					PreparedStatement stmt4 = null;
+					PreparedStatement stmt3 = null;				
+					//PreparedStatement stmt4 = null;
+					System.out.println("Making Announcement table...");
 					try {
-
 						stmt1 = conn.prepareStatement(
-
 							"create table Announcements (" +
-
 							"	announcement_id integer primary key " +
-
 							"		generated always as identity (start with 1, increment by 1), " +									
-
 							"	message varchar(40)," +
-
 							"	date varchar(40)," +
-
 							"	time varchar(40)"+
-
 							")"
-
 						);	
 
 						stmt1.executeUpdate();
 
-						
-
 						System.out.println("Announcements table created");
 
-						
-
 						stmt2 = conn.prepareStatement(
-
 								"create table Users (" +
-
 								"	user_id integer primary key " +
-
 								"		generated always as identity (start with 1, increment by 1), " +
-
 								"	email varchar(70)," +
-
 								"	password varchar(70)," +
-
 								"   name varchar(40)," +
-
 								"	userType integer"+
-
 								")"
-
 						);
 
 						stmt2.executeUpdate();
 
-						
-
 						System.out.println("Users table created");					
 
 	////////////////////EDIT STUDY GROUPS TABLE MUST BE JUNCTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 						/*stmt3 = conn.prepareStatement(
-
 								"create table StudyGroups (" +
-
 								"	book_id   integer constraint book_id references books, " +
-
 								"	author_id integer constraint author_id references authors " +
-
 								")"
-
 						);
 
 						stmt3.executeUpdate(); */
 
-						
-
-
-
-						stmt4 = conn.prepareStatement(
-
-								"create table Sessions (" +
-
-								"	session_id integer primary key " +
-
-								"		generated always as identity (start with 1, increment by 1), " +
-
-								"	date varchar(40)," +
-
-								"	room varchar(40)," +
-
-								"   time varchar(40)," +
-
-								"	tutor_id integer"+
-
-								")"
-
-						);
-						stmt3.executeUpdate(); */
-						
-
-						stmt4 = conn.prepareStatement(
+						stmt3 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), " +
@@ -408,24 +364,18 @@ public class DerbyDatabase implements IDatabase{
 								"	tutor_id integer"+
 								")"
 						);
-						stmt4.executeUpdate();
+						stmt3.executeUpdate();
 						
-						System.out.println("Sessions table created");	
-											
+						System.out.println("Sessions table created");					
 
 						return true;
-
 					} finally {
-
 						DBUtil.closeQuietly(stmt1);
-
 						DBUtil.closeQuietly(stmt2);
-
-						DBUtil.closeQuietly(stmt4);
+						DBUtil.closeQuietly(stmt3);
+						//DBUtil.closeQuietly(stmt4);
 					}
-
 				}
-
 			});
 		} 
 		// loads data retrieved from CSV files into DB tables in batch mode
