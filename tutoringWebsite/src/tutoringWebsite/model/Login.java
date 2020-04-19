@@ -45,7 +45,7 @@ public class Login {
 		
 		public User getUser(String name) {
 			User user = new User();
-		
+			//I don't think this method does anything
 			return user;
 		}
 		
