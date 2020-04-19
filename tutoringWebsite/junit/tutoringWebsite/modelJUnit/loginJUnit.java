@@ -41,4 +41,10 @@ public class loginJUnit{
 		assertTrue(Eric.getUserType() == 1);
 		//Should find a way to get user ID
 	}
+	
+	@Test
+	public void testIsStudent() {
+		assertTrue(testLogin.isStudent("john@ycp.edu") == true);
+		assertTrue(testLogin.isStudent("johnjonglejingle@gmail.com"));
+	}
 }
