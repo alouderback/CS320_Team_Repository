@@ -62,8 +62,7 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				try {
-					stmt = conn.prepareStatement(
-							);
+					//stmt = conn.prepareStatement();
 
 					stmt.setString(1, email);
 					stmt.setString(2, password);
