@@ -29,3 +29,9 @@ local.properties
 tutoringWebsite/.idea/workspace.xml
 tutoringWebsite/.classpath
 tutoringWebsite/.project
+*.lck
+*.ctrl
+*.dat
+*.txt
+tutoringWebsite/.classpath
+tutoringWebsite/.classpath
