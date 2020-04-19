@@ -63,6 +63,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
+							""
 							);
 
 					stmt.setString(1, email);
@@ -213,7 +214,7 @@ public class DerbyDatabase implements IDatabase{
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 		public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 			try {
-				return doExecuteTransaction(txn);
+				return doExecuteTransaction(txn); //Failing here////////////////Check doExecuteTransaction
 			} catch (SQLException e) {
 				throw new PersistenceException("Transaction failed", e);
 			}
@@ -230,9 +231,9 @@ public class DerbyDatabase implements IDatabase{
 				
 				while (!success && numAttempts < MAX_ATTEMPTS) {
 					try {
-						result = txn.execute(conn);
-						conn.commit();
-						success = true;
+						result = txn.execute(conn);   //////////////These lines are broken////////////
+						conn.commit();				  //////////////These lines are broken////////////
+						success = true;				  //////////////These lines are broken////////////
 					} catch (SQLException e) {
 						if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
 							// Deadlock: retry (unless max retry count has been reached)
@@ -332,8 +333,8 @@ public class DerbyDatabase implements IDatabase{
 								"		generated always as identity (start with 1, increment by 1), " +
 								"	date varchar(40)," +
 								"	room varchar(40)," +
-								"   time varchar(40)" +
-								"	tutor_id varchar(40)"+
+								"   time varchar(40)," +
+								"	tutor_id integer"+
 								")"
 						);
 						stmt4.executeUpdate();
@@ -355,11 +356,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
+					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
+						sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -367,6 +370,7 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertAnnouncement     = null;
 					PreparedStatement insertUser       = null;
+					PreparedStatement insertSession		= null;
 					//PreparedStatement insertStudyGroup = null;
 
 					try {
@@ -400,14 +404,15 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("User table populated");					
 						
-						// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
-						// since this table consists entirely of foreign keys, with constraints applied
-						/*insertStudyGroup = conn.prepareStatement("");
-						for (StudyGroup sg: studyGroupList) {
-							
-						}	
-						*/
-						System.out.println("BookAuthors table populated");					
+						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, session_id) values (?, ?, ?, ?, ?)");
+						for (Session session : sessionList) {
+							insertSession.setString(1, session.getDate().toString());
+							insertSession.setString(2, session.getRoom());
+							insertSession.setString(3, session.getTime().toString());
+							insertSession.setInt(4, session.getTutorId());
+							insertSession.setInt(5, session.getSessionID());
+						}
+						System.out.println("Session table populated");					
 						
 						return true;
 					} finally {
