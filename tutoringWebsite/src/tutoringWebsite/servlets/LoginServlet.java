@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("\nLoginServlet: doPost");
 
 		String errorMessage = null;
-		String name         = null;
+		String email         = null;
 		String pw           = null;
 		User current 		= new User();
 		boolean validLogin  = false;
@@ -40,18 +40,23 @@ public class LoginServlet extends HttpServlet {
 		
 
 		// Decode form parameters and dispatch to controller
-		name = req.getParameter("email");
+		email = req.getParameter("email");
 		pw   = req.getParameter("password");
 
-		System.out.println("   Name: <" + name + "> PW: <" + pw + ">");			
+		System.out.println("   Email: <" + email + "> PW: <" + pw + ">");			
 
-		if (name == null || pw == null || name.equals("") || pw.equals("")) {
+		if (email == null || pw == null || email.equals("") || pw.equals("")) {
 			errorMessage = "Please specify both user name and password";
 		} else {
 			model      = new Login();
 			controller = new LoginController(model);
-			validUser  = controller.checkUserName(name);
-			validLogin = controller.validateCredentials(name, pw);
+			validUser  = controller.checkUserName(email);
+			System.out.println("email good");	
+			validLogin = controller.validateCredentials(email, pw);
+			System.out.println("account accessed");	
+			current    = controller.getAccount(email, pw);
+			System.out.println("got user");	
+			
 			
 			if(!validUser) {
 				///find out how to submit this into allowing a button
@@ -61,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 				errorMessage = "Username and/or password invalid";
 			}
 		}
-
+		System.out.println("setting attributes");	
 		// Add parameters as request attributes
 		req.setAttribute("email", req.getParameter("email"));
 		req.setAttribute("password", req.getParameter("password"));

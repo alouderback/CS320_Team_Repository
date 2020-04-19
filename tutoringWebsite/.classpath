@@ -8,9 +8,8 @@
 	<classpathentry excluding="tutoringWebsite/html/classes/|tutoringWebsite/html/profiles/|tutoringWebsite/html/resources/|tutoringWebsite/html/schedule/|tutoringWebsite/html/study_groups/|tutoringWebsite/html/tutors/|tutoringWebsite/html/courses/" kind="src" path="src"/>
 	<classpathentry kind="src" path="Main"/>
 	<classpathentry kind="src" path="junit"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/CS320_Jetty9"/>
-<classpathentry combineaccessrules="false" kind="src" path="/CS320_Derby"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/CS320_Derby"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CS320_Jetty9"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
