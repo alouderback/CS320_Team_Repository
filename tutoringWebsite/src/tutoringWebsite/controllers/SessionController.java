@@ -16,11 +16,11 @@ public class SessionController{
 		this.model = model; 
 	}
 	
-	public void createSession( String room, LocalDate date, int tutor, LocalTime time) {
+	public void createSession( String room, LocalDate date, Tutor tutor, LocalTime time) {
 		 model.setRoom(room);
 		 model.setDate(date);
 		 model.setTime(time);
-		 model.setTutorId(tutor);
+		 model.setTutor(tutor);
 	}
 	
 	public Session getSession() {

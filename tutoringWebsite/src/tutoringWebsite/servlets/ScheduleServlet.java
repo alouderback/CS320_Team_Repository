@@ -76,7 +76,7 @@ public class ScheduleServlet extends HttpServlet {
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("sessions", sessions);
 		
-		System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(0).getTutorId());
+		System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(0).getTutor());
 		// Forward to view to render the result HTML document
 		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp);
 	}
