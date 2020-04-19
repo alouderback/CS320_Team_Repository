@@ -62,6 +62,7 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				try {
+
 					stmt = conn.prepareStatement(
 							""
 							);
@@ -214,7 +215,7 @@ public class DerbyDatabase implements IDatabase{
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 		public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 			try {
-				return doExecuteTransaction(txn); //Failing here////////////////Check doExecuteTransaction
+				return doExecuteTransaction(txn);
 			} catch (SQLException e) {
 				throw new PersistenceException("Transaction failed", e);
 			}
@@ -231,9 +232,9 @@ public class DerbyDatabase implements IDatabase{
 				
 				while (!success && numAttempts < MAX_ATTEMPTS) {
 					try {
-						result = txn.execute(conn);   //////////////These lines are broken////////////
-						conn.commit();				  //////////////These lines are broken////////////
-						success = true;				  //////////////These lines are broken////////////
+						result = txn.execute(conn);
+						conn.commit();
+						success = true;
 					} catch (SQLException e) {
 						if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
 							// Deadlock: retry (unless max retry count has been reached)
@@ -287,9 +288,8 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					PreparedStatement stmt4 = null;
 					//PreparedStatement stmt3 = null;				
-				
+					PreparedStatement stmt4 = null;
 					try {
 						stmt1 = conn.prepareStatement(
 							"create table Announcements (" +
@@ -324,9 +324,9 @@ public class DerbyDatabase implements IDatabase{
 								"	author_id integer constraint author_id references authors " +
 								")"
 						);
-						stmt3.executeUpdate();
+						stmt3.executeUpdate(); */
 						
-						System.out.println("BookAuthors table created");*/	
+
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
@@ -345,10 +345,11 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
+						DBUtil.closeQuietly(stmt4);
 					}
 				}
 			});
-		}
+		} 
 		// loads data retrieved from CSV files into DB tables in batch mode
 		public void loadInitialData() {
 			executeTransaction(new Transaction<Boolean>() {
@@ -362,7 +363,7 @@ public class DerbyDatabase implements IDatabase{
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
-						sessionList			= InitialData.getSession();
+						//sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -370,17 +371,13 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertAnnouncement     = null;
 					PreparedStatement insertUser       = null;
-					PreparedStatement insertSession		= null;
 					//PreparedStatement insertStudyGroup = null;
 
 					try {
-						// must completely populate Authors table before populating BookAuthors table because of primary keys
+						// populating announcement table
 						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time) values (?, ?, ?)");
 						for (Announcement announcement : announcementList) {
-//							insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
 							insertAnnouncement.setString(1, announcement.getMessage());
-							//insertAnnouncement.setDate(2, x);
-							//insertAnnouncement.setTime(3, x);
 							insertAnnouncement.setString(2, announcement.getDate().toString());
 							insertAnnouncement.setString(3, announcement.getTime().toString());
 							insertAnnouncement.addBatch();
@@ -392,8 +389,6 @@ public class DerbyDatabase implements IDatabase{
 						// must completely populate Books table before populating BookAuthors table because of primary keys
 						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
-//							insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
-//							insertBook.setInt(1, book.getAuthorId());	// this is now in the BookAuthors table
 							insertUser.setString(1, user.getEmail());
 							insertUser.setString(2, user.getPassword());
 							insertUser.setString(3, user.getName());
@@ -404,15 +399,13 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("User table populated");					
 						
-						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, session_id) values (?, ?, ?, ?, ?)");
-						for (Session session : sessionList) {
-							insertSession.setString(1, session.getDate().toString());
-							insertSession.setString(2, session.getRoom());
-							insertSession.setString(3, session.getTime().toString());
-							insertSession.setInt(4, session.getTutorId());
-							insertSession.setInt(5, session.getSessionID());
-						}
-						System.out.println("Session table populated");					
+						//study group garbage
+						/*insertStudyGroup = conn.prepareStatement("");
+						for (StudyGroup sg: studyGroupList) {
+							
+						}	
+						*/
+									
 						
 						return true;
 					} finally {
@@ -422,7 +415,7 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
-		}
+		} 
 		@Override
 		public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
 			// TODO Auto-generated method stub
