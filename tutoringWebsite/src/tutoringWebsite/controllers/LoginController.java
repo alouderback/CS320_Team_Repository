@@ -53,4 +53,4 @@ public class LoginController {
 	public boolean validateUsername(String name) {
 		return model.isStudent(name);
 	}
-}	
+}

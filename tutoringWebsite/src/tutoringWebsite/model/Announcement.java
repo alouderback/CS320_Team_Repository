@@ -19,8 +19,7 @@ public class Announcement {
 		message = null;
 		date= null;
 		time = null;
-		announcementId = 0;
-	
+		announcementId = (Integer) null;
 	}
 	
 	// Returns the current message in this announcement
@@ -38,8 +37,8 @@ public class Announcement {
 		return date;
 	}
 	
-	public void setDate(LocalDate string) {
-		this.date = string;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 	
 	public LocalTime getTime() {

@@ -68,7 +68,6 @@ public class CoursesServlet extends HttpServlet {
 				Tutor tutor = new Tutor();
 				tutor.setName(tutorString);
 				
-				
 				LocalDate date = LocalDate.of(2020,04,01);
 				
 				LocalTime time = LocalTime.of(03, 49);
