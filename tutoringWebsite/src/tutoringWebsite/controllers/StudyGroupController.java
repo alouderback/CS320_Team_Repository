@@ -2,6 +2,7 @@ package tutoringWebsite.controllers;
 
 import java.util.ArrayList;
 
+
 import tutoringWebsite.db.StudyGroupDB;
 import tutoringWebsite.model.Course;
 import tutoringWebsite.model.Session;
@@ -39,7 +40,7 @@ public class StudyGroupController {
 	}
 	
 	public void deleteModel() {
-		db.deleteStudyGroup(model);
+		//db.deleteStudyGroup(model);
 		model.delete();
 	}
 	

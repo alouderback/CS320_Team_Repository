@@ -49,9 +49,9 @@ public class LoginController {
 	}
 	public User createAccount(String email, String pw, String name, int userType) {
 		if(model.isStudent(email)) {
-		List<User> userList = db.createAccount(email, pw, name, userType);
-		int temp = userList.size()-1;
-		 return userList.get(temp);
+
+			List<User> userList = db.createAccount(email, pw, name, userType);
+			return userList.get(0);
 		}
 		else {
 			System.out.println("email invalid");
