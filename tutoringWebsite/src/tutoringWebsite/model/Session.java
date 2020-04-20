@@ -8,8 +8,9 @@ public class Session {
 	
 	private String room;
 	private LocalDate date;
-	private Tutor tutor;
+	private int tutorId;
 	private LocalTime time;
+	private int sessionId;
 	
 	public Session() {
 	}
@@ -30,20 +31,28 @@ public class Session {
 		this.date = date;
 	}
 
-	public Tutor getTutor() {
-		return tutor;
-	}
-
-	public void setTutor(Tutor tutor) {
-		this.tutor = tutor;
-	}
-
 	public LocalTime getTime() {
 		return time;
 	}
 
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+
+	public int getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(int sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public int getTutorId() {
+		return tutorId;
+	}
+
+	public void setTutorId(int tutorId) {
+		this.tutorId = tutorId;
 	}
 		
 }
