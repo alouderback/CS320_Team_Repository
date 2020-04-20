@@ -2,12 +2,15 @@ package tutoringWebsite.persist;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,18 +84,10 @@ public class DerbyDatabase implements IDatabase{
 			}
 				});
 	}
+	//can create any announcement for study group or a session
+	//all printed on main page
 	@Override
-	public List<Announcement> createAnnouncementCourse(final String message, final LocalDate date, final LocalTime time, final int courseId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public List<Announcement> createAnnouncementMainPage(final String message, final LocalDate date, final LocalTime time) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public List<Announcement> createAnnouncementStudyGroup(final String message, final LocalDate date, final LocalTime time, final int groupId){
+	public List<Announcement> createAnnouncement(final String message, final LocalDate date, final LocalTime time, final int announcementType){
 		return executeTransaction(new Transaction<List<Announcement>>() {
 			@Override
 			public List<Announcement> execute(Connection conn) throws SQLException {
@@ -104,13 +99,13 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
-						"insert into Announcements(message, date, time, groupId)"
+						"insert into Announcements(message, date, time, announcementType)"
 							+"values(?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
 					stmt.setObject(2,  date);
 					stmt.setObject(3, time);
-					stmt.setInt(4, groupId);
+					stmt.setInt(4, announcementType);
 					
 					stmt.executeUpdate();
 					
@@ -140,6 +135,7 @@ public class DerbyDatabase implements IDatabase{
 						announcement.setMessage(message);
 						announcement.setDate(date);
 						announcement.setTime(time);
+						announcement.setAnnouncementType(announcementType);
 						result.add(announcement);
 						System.out.println("Announcement ready to return");
 					}
@@ -156,6 +152,80 @@ public class DerbyDatabase implements IDatabase{
 			});
 		
 	}
+	//receive announcements for the sessionId sent over
+	@Override
+	public List<Announcement> getAnnouncementsforSessionWithSessionId(final int sessionId){
+		//using SQl, get list of announcements for one particular session
+		//using the session Id, find all announcements that match it
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcement.*"+
+					"from Announcements, Sessions, SessionAnnouncement"+
+					"where session_id = ? and Sessions.session_id = SessionAnnouncement.session_id"+
+					"order by Sessions.date desc"
+					);
+					
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
+	//receive announcements for the studyGroupId sent over
+	@Override
+	public List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(final int studyGroupId){
+		//using SQl, get list of announcements for one particular study group
+		//using the study group Id, find all announcements that match it
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcement.*"+
+					"from Announcements, StudyGroups, StudyGroupAnnouncement"+
+					"where studyGroup_id = ? and StudyGroups.studyGroup_id = StudyGroupAnnouncement.stduyGroup_id"+
+					"order by StudyGroups.date desc"
+					);
+					
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
 		user.setUser_Id((resultSet.getInt(index++)));
 //		book.setAuthorId(resultSet.getInt(index++));  // no longer used
@@ -164,6 +234,17 @@ public class DerbyDatabase implements IDatabase{
 		user.setName((resultSet.getString(index++)));
 		user.setUserType((resultSet.getInt(index++)));
 		
+	}
+	private void loadAnnouncement(Announcement announcement, ResultSet resultSet, int index) throws SQLException {
+		announcement.setAnnouncementId(resultSet.getInt(index++));
+		announcement.setMessage(resultSet.getString(index++));
+		announcement.setAnnouncementType(resultSet.getInt(index++));
+		Date date = new Date(index++);
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		Instant instant = date.toInstant();
+		LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+		//announcement.setDate(resultSet.getDate(localDate));
+		//announcement.setTime(resultSet.getTime(index++));
 	}
 	
 	@Override
@@ -311,8 +392,10 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					PreparedStatement stmt3 = null;				
-					//PreparedStatement stmt4 = null;
+					//PreparedStatement stmt3 = null;	
+					PreparedStatement stmt4 = null;
+					PreparedStatement stmt5 = null;
+					PreparedStatement stmt6 = null; 
 					System.out.println("Making Announcement table...");
 					try {
 						stmt1 = conn.prepareStatement(
@@ -354,7 +437,7 @@ public class DerbyDatabase implements IDatabase{
 
 						stmt3.executeUpdate(); */
 
-						stmt3 = conn.prepareStatement(
+						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), " +
@@ -364,16 +447,39 @@ public class DerbyDatabase implements IDatabase{
 								"	tutor_id integer"+
 								")"
 						);
-						stmt3.executeUpdate();
+						stmt4.executeUpdate();
 						
-						System.out.println("Sessions table created");					
+						System.out.println("Sessions table created");	
+						
+						stmt5 = conn.prepareStatement(
+							"create table SessionAnnouncement ("+
+							"session_id integer primary key " +
+							"generated always as identity (start with 1, increment by 1)," +
+							"announcement_id integer"+
+							")"
+						);
+						stmt5.executeUpdate();
+						
+						System.out.println("SessionAnnouncement table created");
+						
+						stmt6 = conn.prepareStatement(
+								"create table StudyGroupAnnouncement ("+
+								"session_id integer primary key " +
+								"generated always as identity (start with 1, increment by 1)," +
+								"studyGroup_id integer"+
+								")"
+							);
+							stmt6.executeUpdate();
+							
+							System.out.println("StudyGroupAnnouncement table created");
 
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
-						DBUtil.closeQuietly(stmt3);
-						//DBUtil.closeQuietly(stmt4);
+						//DBUtil.closeQuietly(stmt3);
+						DBUtil.closeQuietly(stmt4);
+						DBUtil.closeQuietly(stmt5);;
 					}
 				}
 			});

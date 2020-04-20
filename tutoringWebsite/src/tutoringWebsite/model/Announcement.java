@@ -9,6 +9,7 @@ public class Announcement {
 	private String message;
 	private LocalDate date;
 	private LocalTime time;
+	private int announcementType;
 	
 	// Constructor for class
 	public Announcement() {
@@ -55,6 +56,14 @@ public class Announcement {
 
 	public void setAnnouncementId(int announcementId) {
 		this.announcementId = announcementId;
+	}
+
+	public int getAnnouncementType() {
+		return announcementType;
+	}
+
+	public void setAnnouncementType(int announcementType) {
+		this.announcementType = announcementType;
 	}
 	
 }

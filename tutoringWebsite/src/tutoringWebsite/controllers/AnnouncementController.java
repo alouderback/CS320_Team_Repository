@@ -12,11 +12,12 @@ public class AnnouncementController{
 		this.model = model;
 	}
 	
-	public Announcement create(LocalDate date, LocalTime time, String message) {
+	public Announcement create(LocalDate date, LocalTime time, String message, int announcementType) {
 		Announcement newAnnouncement = new Announcement();
 		newAnnouncement.setDate(date);
 		newAnnouncement.setTime(time);
 		newAnnouncement.setMessage(message);
+		newAnnouncement.setAnnouncementType(announcementType);
 		
 		return newAnnouncement;
 	}
