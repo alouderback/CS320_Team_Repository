@@ -239,12 +239,12 @@ public class DerbyDatabase implements IDatabase{
 		announcement.setAnnouncementId(resultSet.getInt(index++));
 		announcement.setMessage(resultSet.getString(index++));
 		announcement.setAnnouncementType(resultSet.getInt(index++));
-		Date date = new Date(index++);
-		ZoneId defaultZoneId = ZoneId.systemDefault();
-		Instant instant = date.toInstant();
-		LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
-		//announcement.setDate(resultSet.getDate(localDate));
-		//announcement.setTime(resultSet.getTime(index++));
+		LocalDate date = LocalDate.now();
+		date = LocalDate.parse(resultSet.getString(index++));
+		announcement.setDate(date);
+		LocalTime time = LocalTime.now();
+		time = LocalTime.parse(resultSet.getString(index++));
+		announcement.setTime(time);
 	}
 	
 	@Override
