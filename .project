@@ -3,6 +3,7 @@
 	<name>CS320_Team_Repository</name>
 	<comment></comment>
 	<projects>
+		<project>tutoringWebsite</project>
 	</projects>
 	<buildSpec>
 	</buildSpec>
