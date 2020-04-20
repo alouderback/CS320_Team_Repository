@@ -363,6 +363,7 @@ public class DerbyDatabase implements IDatabase{
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
+						sessionList			= InitialData.getSession();
 						//sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
@@ -371,6 +372,7 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertAnnouncement     = null;
 					PreparedStatement insertUser       = null;
+					PreparedStatement insertSession    = null;
 					//PreparedStatement insertStudyGroup = null;
 
 					try {
@@ -405,7 +407,16 @@ public class DerbyDatabase implements IDatabase{
 							
 						}	
 						*/
-									
+						
+						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, session_id) values (?, ?, ?, ?, ?)");
+						for (Session session : sessionList) {
+							insertSession.setString(1, session.getDate().toString());
+							insertSession.setString(2, session.getRoom());
+							insertSession.setString(3, session.getTime().toString());
+							insertSession.setInt(4, session.getTutorId());
+							insertSession.setInt(5, session.getSessionId());
+						}
+						System.out.println("Session table populated");	
 						
 						return true;
 					} finally {
