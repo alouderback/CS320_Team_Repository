@@ -30,20 +30,31 @@ public class LoginController {
 	}
 	
 	public boolean validateCredentials(String name, String pw) {
-		return model.validatePW(name, pw);
+		
+		List<User> loginList = db.useLogin(name,pw);
+		if(!loginList.isEmpty()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 	//add new account
 	public User getAccount(String name, String pw) {
-		//model.
-		return model.getUser(name);
+		List<User> currentUser = db.getAccount(name, pw);
+		return	currentUser.get(0);
+	
 		
 	}
 	public User createAccount(String email, String pw, String name, int userType) {
 		if(model.isStudent(email)) {
-		List<User> userList = db.createAccount(email, pw, name, userType);
-		 return userList.get(0);
+
+			List<User> userList = db.createAccount(email, pw, name, userType);
+			return userList.get(0);
 		}
 		else {
+			System.out.println("email invalid");
 			return model.createAccount(name, pw, name, userType);
 		}
 		
