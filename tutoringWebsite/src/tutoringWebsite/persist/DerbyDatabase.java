@@ -501,7 +501,7 @@ public class DerbyDatabase implements IDatabase{
 							insertSession.setInt(4, session.getTutorId());
 							insertSession.addBatch();
 						}
-						insertUser.executeBatch();
+						insertSession.executeBatch();
 						System.out.println("Session table populated");	
 						
 						return true;
