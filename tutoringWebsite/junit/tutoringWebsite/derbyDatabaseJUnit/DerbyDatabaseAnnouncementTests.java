@@ -2,6 +2,8 @@ package tutoringWebsite.persist;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,3 +71,13 @@ public class DerbyDatabaseTests {
 			}			
 		}
 	}
+	@Test
+	public void testCreateAnnouncementforASession() {
+		System.out.println("\n*** Testing createAnnouncement ***");
+		
+		String message = "first test to create an Announcement";
+		LocalDate date = LocalDate.of(2020, 04, 20);
+		LocalTime time = LocalTime.of(10, 10);
+		int announcementType = 1; //this type is session
+	}
+}	
