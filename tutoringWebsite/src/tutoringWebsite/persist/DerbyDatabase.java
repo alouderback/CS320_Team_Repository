@@ -226,6 +226,40 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	//get all Announcements for the main page
+	@Override
+	public List<Announcement> getAllAnnouncements(){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcement.*"+
+					"from Announcements"+
+					"order by Announcements.date desc"
+					);
+					
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
 		user.setUser_Id((resultSet.getInt(index++)));
 //		book.setAuthorId(resultSet.getInt(index++));  // no longer used

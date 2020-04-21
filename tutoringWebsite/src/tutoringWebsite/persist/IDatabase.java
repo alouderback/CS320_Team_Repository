@@ -14,4 +14,5 @@ public interface IDatabase {
 	List<User> createAccount(String email, String password, String name, int userType);
 	List<Announcement> getAnnouncementsforSessionWithSessionId(int sessionId);
 	List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(int studyGroupId);
+	List<Announcement> getAllAnnouncements();
 }
