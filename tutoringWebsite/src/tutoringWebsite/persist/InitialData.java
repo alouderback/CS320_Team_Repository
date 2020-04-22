@@ -95,6 +95,7 @@ public class InitialData {
 
 				session.setTime(time);
 				session.setTutorId(Integer.decode(i.next()));
+				session.setCourse(i.next());
 				sessionList.add(session);
 			}
 			return sessionList;

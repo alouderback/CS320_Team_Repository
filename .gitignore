@@ -35,5 +35,10 @@ tutoringWebsite/.project
 *.txt
 tutoringWebsite/.classpath
 tutoringWebsite/.classpath
+
 *.properties
 *.log
+
+tutoringWebsite/C/test/library.db/service.properties
+tutoringWebsite/derby.log
+

@@ -2,6 +2,8 @@ package tutoringWebsite.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import tutoringWebsite.persist.*;
+
 
 public class Session {
 	
@@ -10,7 +12,9 @@ public class Session {
 	private LocalDate date;
 	private int tutorId;
 	private LocalTime time;
+	private String course;
 	private int sessionId;
+	
 	
 	public Session() {
 	}
@@ -39,20 +43,28 @@ public class Session {
 		this.time = time;
 	}
 
-	public int getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(int sessionId) {
-		this.sessionId = sessionId;
-	}
-
 	public int getTutorId() {
 		return tutorId;
 	}
 
 	public void setTutorId(int tutorId) {
 		this.tutorId = tutorId;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public int getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(int sessionId) {
+		this.sessionId = sessionId;
 	}
 		
 }
