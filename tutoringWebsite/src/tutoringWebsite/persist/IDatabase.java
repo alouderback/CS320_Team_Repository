@@ -11,4 +11,5 @@ public interface IDatabase {
 	List<Announcement> createAnnouncementStudyGroup(String message, String date, String time, int groupId);
 	List<User> createAccount(String email, String password, String name, int userType);
 	List<Announcement> createAnnouncementCourse(String message, String date, String time);
+	List<Session> getScheduleByDate(String timeframe);
 }
