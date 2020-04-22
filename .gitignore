@@ -35,3 +35,5 @@ tutoringWebsite/.project
 *.txt
 tutoringWebsite/.classpath
 tutoringWebsite/.classpath
+*.properties
+*.log
