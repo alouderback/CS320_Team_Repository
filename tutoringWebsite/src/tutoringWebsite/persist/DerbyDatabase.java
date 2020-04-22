@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,6 +142,70 @@ public class DerbyDatabase implements IDatabase{
 		user.setName((resultSet.getString(index++)));
 		user.setUserType((resultSet.getInt(index++)));
 		
+	}
+	
+	
+	public List<Session> getScheduleByDate(String timeframe){
+		return executeTransaction(new Transaction<List<Session>>() {
+			
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Session> result = null;
+				
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("In getScheduleByDate");
+				try {
+					stmt = conn.prepareStatement(
+							"select sessions.* " +
+							" from Sessions "
+					//Trying to get all sessions
+							);
+					
+					resultSet = stmt.executeQuery();
+					
+					System.out.println("Query Executed");
+					
+					System.out.println("Got all sessions");
+					
+					result = new ArrayList<Session>();
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+
+			
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						System.out.println("Closed");
+					}
+			System.out.println("Result size:" + result.size());
+			return result;
+				}
+			
+		});
+		
+		
+	}
+	
+	private void loadSession(Session session, ResultSet resultSet, int index) throws SQLException {
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		
+		session.setSessionId((resultSet.getInt(index++)));
+		date = LocalDate.parse(resultSet.getString(index++));
+		session.setDate(date);
+		session.setRoom(resultSet.getString(index++));
+		time = LocalTime.parse(resultSet.getString(index++));
+		session.setTime(time);
+		session.setTutorId(resultSet.getInt(index++));
+		session.setCourse(resultSet.getString(index++));
+		System.out.println("See below for course:");
+		System.out.println("Course for session that is being loaded: " + session.getCourse());
 	}
 	
 	@Override
@@ -334,7 +400,8 @@ public class DerbyDatabase implements IDatabase{
 								"	date varchar(40)," +
 								"	room varchar(40)," +
 								"   time varchar(40)," +
-								"	tutor_id integer"+
+								"	tutor_id integer," +
+								"   course varchar(40)" +
 								")"
 						);
 						stmt4.executeUpdate();
@@ -408,20 +475,24 @@ public class DerbyDatabase implements IDatabase{
 						}	
 						*/
 						
-						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, session_id) values (?, ?, ?, ?, ?)");
+						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
 							insertSession.setString(1, session.getDate().toString());
 							insertSession.setString(2, session.getRoom());
 							insertSession.setString(3, session.getTime().toString());
 							insertSession.setInt(4, session.getTutorId());
-							insertSession.setInt(5, session.getSessionId());
+							insertSession.setString(5, session.getCourse());
+							insertSession.addBatch();
 						}
+						insertSession.executeBatch();
+						
 						System.out.println("Session table populated");	
 						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
+						DBUtil.closeQuietly(insertSession);
 						//DBUtil.closeQuietly(insertStudyGroup);				
 					}
 				}
