@@ -41,6 +41,7 @@ public class Schedule {
 	public void setSchedule(String timeframe) {
 		FakeScheduleDatabase fakeSchedule = new FakeScheduleDatabase();	
 		scheduleList = fakeSchedule.findScheduleByDate(timeframe);
+		//This needs to be updated
 		
 	}
 	

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.model.*;
+import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.controllers.*;
 import tutoringWebsite.db.FakeScheduleDatabase;
 
@@ -41,7 +42,7 @@ public class ScheduleServlet extends HttpServlet {
 
 		
 		ScheduleController controller = new ScheduleController();
-		FakeScheduleDatabase db = new FakeScheduleDatabase();
+		DerbyDatabase db = new DerbyDatabase();
 		
 		controller.setModel(model);
 		controller.setDB(db);
@@ -76,7 +77,7 @@ public class ScheduleServlet extends HttpServlet {
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("sessions", sessions);
 		
-		System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(0).getTutor());
+		//System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(1).getTutorId());
 		// Forward to view to render the result HTML document
 		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp);
 	}
