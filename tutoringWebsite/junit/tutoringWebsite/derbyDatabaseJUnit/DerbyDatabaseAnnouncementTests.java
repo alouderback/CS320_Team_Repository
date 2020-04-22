@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.ycp.cs320.booksdb.model.Author;
 import tutoringWebsite.model.*;
 
 public class DerbyDatabaseTests {
@@ -127,13 +128,37 @@ public class DerbyDatabaseTests {
 	public void testCreateAnnouncementforAStudyGroup() {
 		System.out.println("\n*** Testing createAnnouncementforStudyGroup ***");
 		
-		String message = "first test to create an Announcement for a study group";
+		String message = "test 1 for new announcement SG";
 		LocalDate date = LocalDate.of(2020, 04, 20);
 		LocalTime time = LocalTime.of(10, 10);
 		int announcementType = 2; //this type is study group
 		int typeId = 1; //id for the study group
 		
 		Integer id = db.createAnnouncement(message, date, time, announcementType, typeId);
+		
+		// check the return value, if id is greater than 0
+				if (id > 0)
+				{
+					// get the list announcements from DB
+					announcementStudyGroupList = db.getAnnouncementsforStudyGroupWithStudyGroupId(typeId);
+					
+					if (announcementStudyGroupList.isEmpty()) {
+						System.out.println("No announcements found for study group <" + message + ">");
+						fail("Failed to insert new announcement <" + message + "> into DB");
+					}
+					//test was successful
+					else {
+						System.out.println("New announcement (ID: " + id + ") successfully added to Announcement table: <" + message + ">");
+						
+						//delete the announcement from the database
+						List<Announcement> announcement = db.removeAnnouncement(id, announcementType);				
+					}
+				}
+				else
+				{
+					System.out.println("Failed to insert new announcement (ID: " + id + ") into Announcement table: <" + message + ">");
+					fail("Failed to insert new announcement <" + message + "> into DB");
+				}
 	}
 	@Test
 	public void testCreateAnnouncementforASession() {
@@ -146,5 +171,29 @@ public class DerbyDatabaseTests {
 		int typeId = 1; //id for the session
 		
 		Integer id = db.createAnnouncement(message, date, time, announcementType, typeId);
+		
+		// check the return value, if id is greater than 0
+		if (id > 0)
+		{
+			// get the list announcements from DB
+			announcementSessionList = db.getAnnouncementsforSessionWithSessionId(id);
+			
+			if (announcementSessionList.isEmpty()) {
+				System.out.println("No announcements found for session <" + message + ">");
+				fail("Failed to insert new announcement <" + message + "> into DB");
+			}
+			//test was successful
+			else {
+				System.out.println("New announcement (ID: " + id + ") successfully added to Announcement table: <" + message + ">");
+				
+				//delete the announcement from the database
+				List<Announcement> announcement = db.removeAnnouncement(id, announcementType);				
+			}
+		}
+		else
+		{
+			System.out.println("Failed to insert new announcement (ID: " + id + ") into Announcement table: <" + message + ">");
+			fail("Failed to insert new announcement <" + message + "> into DB");
+		}
 	}
 }	
