@@ -1,4 +1,4 @@
-package tutoringWebsite.persist;
+package derbyDatabaseJUnit;
 
 import static org.junit.Assert.*;
 
@@ -13,18 +13,20 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.ycp.cs320.booksdb.model.Author;
 import tutoringWebsite.model.*;
+import tutoringWebsite.persist.DatabaseProvider;
+import tutoringWebsite.persist.DerbyDatabase;
+import tutoringWebsite.persist.IDatabase;
 
-public class DerbyDatabaseTests {
+public class derbyDatabaseAnnouncementTest {
 
 	private IDatabase db = null;
 	
 	ArrayList<Announcement> announcements = null;
-	ArrayList<Sessions> sessions = null;
-	ArrayList<StudyGroups> studyGroups = null;	
-	List<Pair<Announcement, Session>> announcementSessionList = null;	
-	List<Pair<Announcement, StudyGroup>> announcementStudyGroupList = null;	
+	ArrayList<Session> sessions = null;
+	ArrayList<StudyGroup> studyGroups = null;	
+	List<Announcement> announcementSessionList = null;	
+	List<Announcement> announcementStudyGroupList = null;	
 	List<Announcement> allAnnouncementList = null;
 	
 	@BeforeClass
@@ -65,9 +67,7 @@ public class DerbyDatabaseTests {
 		//       inspected for correct content - well-formed objects with correct content
 		else {			
 			announcements = new ArrayList<Announcement>();
-			for (Pair<Announcement, Session> announcementSession : announcementSessionList) {
-				Announcement announcement = announcementSession.getLeft();
-				Session session   = announcementSession.getRight();
+			for (Announcement announcement : announcementSessionList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
 				+ "," + announcement.getDate() + "," + announcement.getTime());
@@ -81,7 +81,7 @@ public class DerbyDatabaseTests {
 		int studyGroupId = 1;
 
 		// get the list of (Author, Book) pairs from DB
-		announcementStudyGroupList = db.getAnnouncementsforStudyGroupWithStudyGroupId(studyGroupId);studyGroupId
+		announcementStudyGroupList = db.getAnnouncementsforStudyGroupWithStudyGroupId(studyGroupId);
 		
 		// NOTE: this is a simple test to check if no results were found in the DB
 		if (announcementStudyGroupList.isEmpty()) {
@@ -92,9 +92,7 @@ public class DerbyDatabaseTests {
 		//       inspected for correct content - well-formed objects with correct content
 		else {			
 			announcements = new ArrayList<Announcement>();
-			for (Pair<Announcement, StudyGroup> announcementStudyGroup : announcementStudyGroupList) {
-				Announcement announcement = announcementStudyGroup.getLeft();
-				StudyGroup studyGroup   = announcementStudyGroup.getRight();
+			for (Announcement announcement : announcementStudyGroupList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
 				+ "," + announcement.getDate() + "," + announcement.getTime());
@@ -124,7 +122,7 @@ public class DerbyDatabaseTests {
 			}			
 		}
 	}
-	@Test
+	/*@Test
 	public void testCreateAnnouncementforAStudyGroup() {
 		System.out.println("\n*** Testing createAnnouncementforStudyGroup ***");
 		
@@ -195,5 +193,5 @@ public class DerbyDatabaseTests {
 			System.out.println("Failed to insert new announcement (ID: " + id + ") into Announcement table: <" + message + ">");
 			fail("Failed to insert new announcement <" + message + "> into DB");
 		}
-	}
+	}*/
 }	

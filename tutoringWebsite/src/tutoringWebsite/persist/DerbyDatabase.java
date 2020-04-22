@@ -14,10 +14,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ycp.cs320.booksdb.model.Author;
-import edu.ycp.cs320.booksdb.model.Book;
-import edu.ycp.cs320.booksdb.persist.DBUtil;
-import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 import tutoringWebsite.persist.*;
 import tutoringWebsite.model.*;
 
@@ -105,12 +101,12 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
-						"insert into Announcements(message, date, time, announcementType)"
+						"insert into Announcements(message, date, time, announcementType) "
 							+"values(?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
-					stmt.setObject(2,  date);
-					stmt.setObject(3, time);
+					stmt.setString(2,  date.toString());
+					stmt.setString(3, time.toString());
 					stmt.setInt(4, announcementType);
 					
 					stmt.executeUpdate();
@@ -119,12 +115,12 @@ public class DerbyDatabase implements IDatabase{
 					System.out.println("Retreiving announcement ID...");
 					
 					stmt2 = conn.prepareStatement(
-						"select announcement_id from Announcements"+
-						"where message = ? and date = ? and time ?"
+						"select announcement_id from Announcements "+
+						"where message = ? and date = ? and time = ?"
 					);
 					stmt2.setString(1, message);
-					stmt2.setObject(2, date);
-					stmt2.setObject(3, time);
+					stmt2.setString(2, date.toString());
+					stmt2.setString(3, time.toString());
 					
 					resultSet = stmt2.executeQuery();
 					
@@ -143,22 +139,22 @@ public class DerbyDatabase implements IDatabase{
 					//check if its session or study group
 					if(announcementType == 1) {//session type
 						stmt3 = conn.prepareStatement(
-								"insert into SessionAnnouncement (session_id, announcement_id) " +
-								"  values(?, ?) "
+								"insert into SessionAnnouncement (announcement_id) " +
+								"  values(?) "
 								);
-						stmt3.setInt(1, typeId);
-						stmt3.setInt(2, resultId);
+						//stmt3.setInt(1, typeId);
+						stmt3.setInt(1, resultId);
 						
 						stmt3.executeUpdate();
 						System.out.println("Announcement ID added to SessionAnnouncement table");
 					}
 					else if(announcementType == 2) {//study group type
 						stmt3 = conn.prepareStatement(
-								"insert into StudyGroupAnnouncement (studyGroup_id, announcement_id) " +
-								"  values(?, ?) "
+								"insert into StudyGroupAnnouncement (announcement_id) " +
+								"  values(?) "
 								);
-						stmt3.setInt(1, typeId);
-						stmt3.setInt(2, resultId);
+						//stmt3.setInt(1, typeId);
+						stmt3.setInt(1, resultId);
 						
 						stmt3.executeUpdate();
 						System.out.println("Announcement ID added to StudyGroupAnnouncement table");
@@ -194,7 +190,8 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					
 					stmt1 = conn.prepareStatement(
-						"select announcement.*"+
+						"select announcements.* "+
+						"from Announcements " +
 						"where announcement_id = ?"
 					);
 					stmt1.setInt(1, announcementId);
@@ -214,7 +211,7 @@ public class DerbyDatabase implements IDatabase{
 						}
 						
 						stmt2 = conn.prepareStatement(
-							"delete from Announcements"+
+							"delete from Announcements "+
 							"where announcement_id = ?"
 						);
 					
@@ -223,7 +220,7 @@ public class DerbyDatabase implements IDatabase{
 					
 						if(announcementType==1) {
 							stmt3 = conn.prepareStatement(
-								"delete from SessionAnnouncement"+
+								"delete from SessionAnnouncement "+
 								"where announcement_id = ?"
 							);
 							stmt3.setInt(1, announcementId);
@@ -231,7 +228,7 @@ public class DerbyDatabase implements IDatabase{
 						}
 						else if(announcementType == 2) {
 							stmt3 = conn.prepareStatement(
-								"delete from StudyGroupAnnouncement"+
+								"delete from StudyGroupAnnouncement "+
 								"where announcement_id = ?"
 							);
 							stmt3.setInt(1, announcementId);
@@ -265,9 +262,9 @@ public class DerbyDatabase implements IDatabase{
 				List<Announcement> result;
 				try {
 					stmt = conn.prepareStatement(
-						"select announcement.*"+
-					"from Announcements, Sessions, SessionAnnouncement"+
-					"where session_id = ? and Sessions.session_id = SessionAnnouncement.session_id"+
+						"select announcements.* "+
+					"from Announcements, Sessions, SessionAnnouncement "+
+					"where session_id = ? and Sessions.session_id = SessionAnnouncement.session_id "+
 					"order by Sessions.date desc"
 					);
 					
@@ -302,9 +299,9 @@ public class DerbyDatabase implements IDatabase{
 				List<Announcement> result;
 				try {
 					stmt = conn.prepareStatement(
-						"select announcement.*"+
-					"from Announcements, StudyGroups, StudyGroupAnnouncement"+
-					"where studyGroup_id = ? and StudyGroups.studyGroup_id = StudyGroupAnnouncement.stduyGroup_id"+
+						"select announcements.* "+
+					"from Announcements, StudyGroups, StudyGroupAnnouncement "+
+					"where studyGroup_id = ? and StudyGroups.studyGroup_id = StudyGroupAnnouncement.studyGroup_id "+
 					"order by StudyGroups.date desc"
 					);
 					
@@ -337,9 +334,9 @@ public class DerbyDatabase implements IDatabase{
 				List<Announcement> result;
 				try {
 					stmt = conn.prepareStatement(
-						"select announcement.*"+
-					"from Announcements"+
-					"order by Announcements.date desc"
+						"select announcements.* "+
+					"from Announcements "+
+					"order by Announcements.date desc "
 					);
 					
 					resultSet = stmt.executeQuery();
@@ -395,7 +392,7 @@ public class DerbyDatabase implements IDatabase{
 				System.out.println("name: "+ name +" userType: "+ userType);
 				try {
 					stmt = conn.prepareStatement(
-							"insert into Users (email, password, name, userType)" +
+							"insert into Users (email, password, name, userType) " +
 							"values(?,?,?,?)"
 					//sql to add an account to list
 							);
@@ -411,8 +408,8 @@ public class DerbyDatabase implements IDatabase{
 					
 					
 					stmt1 = conn.prepareStatement(
-							"select user_id from Users" +
-							"where email = ? and password = ? and name = ? and userType = ?"
+							"select user_id from Users " +
+							"where email = ? and password = ? and name = ? and userType = ? "
 							);
 					
 					stmt1.setString(1, email);
@@ -538,7 +535,8 @@ public class DerbyDatabase implements IDatabase{
 							"		generated always as identity (start with 1, increment by 1), " +									
 							"	message varchar(40)," +
 							"	date varchar(40)," +
-							"	time varchar(40)"+
+							"	time varchar(40),"+
+							" announcementType integer"+
 							")"
 						);	
 
@@ -586,10 +584,10 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("Sessions table created");	
 						
 						stmt5 = conn.prepareStatement(
-							"create table SessionAnnouncement ("+
+							"create table SessionAnnouncement ( "+
 							"session_id integer primary key " +
-							"generated always as identity (start with 1, increment by 1)," +
-							"announcement_id integer"+
+							"generated always as identity (start with 1, increment by 1), " +
+							"announcement_id integer "+
 							")"
 						);
 						stmt5.executeUpdate();
@@ -597,10 +595,10 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("SessionAnnouncement table created");
 						
 						stmt6 = conn.prepareStatement(
-								"create table StudyGroupAnnouncement ("+
-								"session_id integer primary key " +
-								"generated always as identity (start with 1, increment by 1)," +
-								"studyGroup_id integer"+
+								"create table StudyGroupAnnouncement ( "+
+								"studyGroup_id integer primary key " +
+								"generated always as identity (start with 1, increment by 1), " +
+								"announcement_id integer "+
 								")"
 							);
 							stmt6.executeUpdate();
@@ -613,7 +611,9 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt2);
 						//DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
-						DBUtil.closeQuietly(stmt5);;
+						DBUtil.closeQuietly(stmt5);
+						DBUtil.closeQuietly(stmt6);
+						
 					}
 				}
 			});
