@@ -87,14 +87,16 @@ public class DerbyDatabase implements IDatabase{
 	//can create any announcement for study group or a session
 	//all printed on main page
 	@Override
-	public List<Announcement> createAnnouncement(final String message, final LocalDate date, final LocalTime time, final int announcementType){
-		return executeTransaction(new Transaction<List<Announcement>>() {
+	public Integer createAnnouncement(final String message, final LocalDate date, final LocalTime time, final int announcementType, final int typeId){
+		return executeTransaction(new Transaction <Integer>() {
 			@Override
-			public List<Announcement> execute(Connection conn) throws SQLException {
+			public Integer execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				PreparedStatement stmt2 = null;
+				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
 				List<Announcement> result;
+				int resultId = -1;
 				
 				try {
 					System.out.println("Adding Announcement...");
@@ -123,21 +125,42 @@ public class DerbyDatabase implements IDatabase{
 					resultSet = stmt2.executeQuery();
 					
 					System.out.println("ID retrieved");
-					System.out.println("Making announcement object and adding info to return...");
 					
-					int resultId;
-					result = new ArrayList<Announcement>();
-					if(resultSet.next()) {
-						System.out.println("getting id...");
+					if (resultSet.next())
+					{
 						resultId = resultSet.getInt(1);
-						Announcement announcement = new Announcement();
-						announcement.setAnnouncementId(resultId);
-						announcement.setMessage(message);
-						announcement.setDate(date);
-						announcement.setTime(time);
-						announcement.setAnnouncementType(announcementType);
-						result.add(announcement);
-						System.out.println("Announcement ready to return");
+						System.out.println("New announcement <" + message + "> ID: " + resultId);						
+					}
+					else	// really should throw an exception here - the new book should have been inserted, but we didn't find it
+					{
+						System.out.println("New announcement <" + message + "> not found in Books table (ID: " + resultId);
+					}
+					
+					//check if its session or study group
+					if(announcementType == 1) {//session type
+						stmt3 = conn.prepareStatement(
+								"insert into SessionAnnouncement (session_id, announcement_id) " +
+								"  values(?, ?) "
+								);
+						stmt3.setInt(1, typeId);
+						stmt3.setInt(2, resultId);
+						
+						stmt3.executeUpdate();
+						System.out.println("Announcement ID added to SessionAnnouncement table");
+					}
+					else if(announcementType == 2) {//study group type
+						stmt3 = conn.prepareStatement(
+								"insert into StudyGroupAnnouncement (studyGroup_id, announcement_id) " +
+								"  values(?, ?) "
+								);
+						stmt3.setInt(1, typeId);
+						stmt3.setInt(2, resultId);
+						
+						stmt3.executeUpdate();
+						System.out.println("Announcement ID added to StudyGroupAnnouncement table");
+					}
+					else {
+						System.out.println("Incorrect announcementType");
 					}
 					
 				}
@@ -145,9 +168,10 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);
 				}
 				System.out.println("Returning announcement");
-			return result;
+			return resultId;
 			}
 			});
 		
