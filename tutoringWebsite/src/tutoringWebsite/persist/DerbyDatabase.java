@@ -14,6 +14,10 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ycp.cs320.booksdb.model.Author;
+import edu.ycp.cs320.booksdb.model.Book;
+import edu.ycp.cs320.booksdb.persist.DBUtil;
+import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 import tutoringWebsite.persist.*;
 import tutoringWebsite.model.*;
 
@@ -175,6 +179,78 @@ public class DerbyDatabase implements IDatabase{
 			}
 			});
 		
+	}
+	@Override
+	public List<Announcement> removeAnnouncement(final int announcementId, final int announcementType) {
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null;
+				PreparedStatement stmt3 = null;						
+				ResultSet resultSet    = null;
+				List<Announcement> result = null;
+				
+				try {
+					
+					stmt1 = conn.prepareStatement(
+						"select announcement.*"+
+						"where announcement_id = ?"
+					);
+					stmt1.setInt(1, announcementId);
+					resultSet = stmt1.executeQuery();
+					
+					if(resultSet.getFetchSize() == 0) {
+						System.out.println("No announcement with that id");
+					}
+					else {
+						
+						result = new ArrayList<Announcement>();
+						
+						while(resultSet.next()) {
+							Announcement announcement = new Announcement();
+							loadAnnouncement(announcement, resultSet, 1);
+							result.add(announcement);
+						}
+						
+						stmt2 = conn.prepareStatement(
+							"delete from Announcements"+
+							"where announcement_id = ?"
+						);
+					
+						stmt2.setInt(1, announcementId);
+						stmt2.executeUpdate();
+					
+						if(announcementType==1) {
+							stmt3 = conn.prepareStatement(
+								"delete from SessionAnnouncement"+
+								"where announcement_id = ?"
+							);
+							stmt3.setInt(1, announcementId);
+							stmt3.executeUpdate();
+						}
+						else if(announcementType == 2) {
+							stmt3 = conn.prepareStatement(
+								"delete from StudyGroupAnnouncement"+
+								"where announcement_id = ?"
+							);
+							stmt3.setInt(1, announcementId);
+							stmt3.executeUpdate();
+						}
+						else {
+							System.out.println("Incorrect announcementType");
+						}
+					}
+										
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);					
+				}
+			}
+		});
 	}
 	//receive announcements for the sessionId sent over
 	@Override

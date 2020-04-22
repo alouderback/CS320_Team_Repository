@@ -15,4 +15,5 @@ public interface IDatabase {
 	List<Announcement> getAnnouncementsforSessionWithSessionId(int sessionId);
 	List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(int studyGroupId);
 	List<Announcement> getAllAnnouncements();
+	List<Announcement> removeAnnouncement(int announcementId, int announcementType);
 }
