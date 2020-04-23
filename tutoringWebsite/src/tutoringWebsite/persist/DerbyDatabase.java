@@ -63,7 +63,7 @@ public class DerbyDatabase implements IDatabase{
 						User user = new User();
 						loadUser(user,resultSet,1);
 						result.add(user);
-					
+					 
 					}
 					for (User temp : result) {
 						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword());
@@ -83,32 +83,78 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
-	public List<Login> signIntoAccount(final String email, final String password){
-		return executeTransaction(new Transaction<List<Login>>() {
+	public List<User> deleteAccount(final String email, final String password){
+		return executeTransaction(new Transaction<List<User>>() {
 			@Override
-			public List<Login> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
+			public List<User> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
 				
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("email: "+ email + " password: "+ password);
+				
 				try {
-
-					stmt = conn.prepareStatement(
-							""
+					
+					List<User> result = new ArrayList<User>();
+					
+					stmt1 = conn.prepareStatement(
+							"delete from Users " +
+							"where email = ? and password = ?"
+					//sql to add an account to list
 							);
-
-					stmt.setString(1, email);
-					stmt.setString(2, password);
+					stmt1.setString(1, email);
+					stmt1.setString(2, password);
 					
-					resultSet = stmt.executeQuery();
 					
+					
+					stmt1.executeUpdate();
+					
+					System.out.println("user deleted");
+					
+					
+					
+					stmt3 = conn.prepareStatement(
+							"select * from Users" 
+							
+							
+							
+					//sql to add an account to list
+							);
+			
+					
+					
+					resultSet = stmt3.executeQuery();
+					Boolean found = false;
 
-				}finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
+					while (resultSet.next()) {
+						found = true;			
+						User user = new User();
+						loadUser(user,resultSet,1);
+						result.add(user);
+					
+					}
+					for (User temp : result) {
+						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword()+", " + temp.getName()+", " + temp.getUserType());
+					}
+
+					if(found = false) {
+						System.out.println("<" + email + "> was not found in the user database");
+					}
+					
+					System.out.println("user gone");
+					return result;
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt3);
+					}
+		
 				}
-			return null;
-			}
-				});
+			
+		});
+		
+		
 	}
 	@Override
 	public List<Announcement> createAnnouncementStudyGroup(final String message, final String date, final String time, final int groupId){
@@ -170,8 +216,6 @@ public class DerbyDatabase implements IDatabase{
 		user.setUserType((resultSet.getInt(index++)));
 		
 	}
-	
-	
 	public List<Session> getScheduleByDate(String timeframe){
 		return executeTransaction(new Transaction<List<Session>>() {
 			
@@ -218,7 +262,6 @@ public class DerbyDatabase implements IDatabase{
 		
 		
 	}
-	
 	private void loadSession(Session session, ResultSet resultSet, int index) throws SQLException {
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
@@ -234,7 +277,6 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("See below for course:");
 		System.out.println("Course for session that is being loaded: " + session.getCourse());
 	}
-	
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
@@ -436,6 +478,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt2 = null;
 					//PreparedStatement stmt3 = null;				
 					PreparedStatement stmt4 = null;
+					PreparedStatement stmt8= null;
 					try {
 						stmt1 = conn.prepareStatement(
 							"create table Announcements (" +
@@ -487,14 +530,31 @@ public class DerbyDatabase implements IDatabase{
 								")"
 						);
 						stmt4.executeUpdate();
-						
+
 						System.out.println("Sessions table created");	
+						
+						stmt8 = conn.prepareStatement(
+								"create table Students (" +
+								"	student_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	major varchar(70), " +
+								"	gradYear varchar(40), " +
+								"   user_id integer" +
+								")"
+						);
+						stmt8.executeUpdate();
+						
+						System.out.println("Students table created");	
+						
+					
+						
 											
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
 						DBUtil.closeQuietly(stmt4);
+						DBUtil.closeQuietly(stmt8);
 					}
 				}
 			});
@@ -506,13 +566,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
-					List<Session> sessionList;
+					//List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
-						sessionList			= InitialData.getSession();
+						//sessionList			= InitialData.getSession();
 						//sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
@@ -559,7 +619,7 @@ public class DerbyDatabase implements IDatabase{
 						}	
 						*/
 
-						
+						/*
 
 						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
@@ -575,12 +635,12 @@ public class DerbyDatabase implements IDatabase{
 						
 
 						System.out.println("Session table populated");	
-						
+						*/
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
-						DBUtil.closeQuietly(insertSession);
+					//	DBUtil.closeQuietly(insertSession);
 						//DBUtil.closeQuietly(insertStudyGroup);				
 					}
 				}

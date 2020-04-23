@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tutoringWebsite.controllers.LoginController;
+import tutoringWebsite.controllers.UserController;
 import tutoringWebsite.controllers.UserController;
 import tutoringWebsite.model.Login;
 import tutoringWebsite.model.User;

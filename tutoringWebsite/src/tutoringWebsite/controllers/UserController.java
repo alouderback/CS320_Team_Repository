@@ -1,71 +1,60 @@
 package tutoringWebsite.controllers;
 
-import java.util.ArrayList;
-
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.List;
 
 import tutoringWebsite.model.User;
+import tutoringWebsite.persist.DerbyDatabase;
+import tutoringWebsite.persist.IDatabase;
 
 public class UserController {
-	//User type variable
-	private User model;
+	private User model = null;
 
-	private LoginController model2;
-
-	private ArrayList<String> emailList = new ArrayList<String>();
-	Scanner keyboard = new Scanner(System.in);
 	
-	//set up the model
-	public void setUser(User model) {
+	
+	//DatabaseProvider.setInstance(new DerbyDatabase());
+	//IDatabase db = DatabaseProvider.getInstance();
+	
+	IDatabase db = new DerbyDatabase();
+	//List<User> authorBookList = db.createAccount(email, password, major, year);
+	
+	public UserController(User model) {
 		this.model = model;
 	}
-	public void setLogin(LoginController model2) {
-		this.model2 = model2;
-	}
 	
-	//Using the search bar
-	public void lookUp(String item) {
+	
+	//add new account
+	public User getAccount(String name, String pw) {
+		List<User> currentUser = db.getAccount(name, pw);
+		return	currentUser.get(0);
+	
 		
 	}
-	
-	//what we want login to do eventually, is check what kind of info can be accessed on each page depending on the user type
-	//and if they are logged in or not
-	public void login(String e, String pass) {
-		//model2.checkLogin();
-	}
-	
-	//go to whatever is selected
-	public String select() {
-		String s = null;
-		return s;
-	}
-	
-	//push a request to whom it may be concerned
-	//parameter is email of person requesting from
-	//message of what the request is
-	public void request(String requestEmail) {
-		int canDoRequest = 0;
-		String message;
-		//check to make sure requestEmail is valid
-		for(int i = 0; i < emailList.size()-1; i++) {
-			if(requestEmail.equals(emailList.get(i))) {
-				canDoRequest++;
-			}
-		}
-		if(canDoRequest == 1) {
-			//put small message for what the request is for
-			System.out.print("Enter message for " + requestEmail + ": ");
-			message = keyboard.nextLine();
-			//send request with message...?
+	public User createAccount(String email, String pw, String name, int userType) {
+		if(model.isStudent(email)) {
+
+			List<User> userList = db.createAccount(email, pw, name, userType);
+			return userList.get(0);
 		}
 		else {
-			throw new NoSuchElementException("Something is wrong");
+			System.out.println("email invalid");
+			return model.createAccount(name, pw, name, userType);
 		}
+		
+		
 	}
-	
-	//cancel making new account, or logging in
-	public void cancel() {
-		model.cancel();
+	public boolean validateCredentials(String name, String pw) {
+		
+		List<User> loginList = db.useLogin(name,pw);
+		if(!loginList.isEmpty()) {
+			
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	public boolean validateUsername(String name) {
+		return model.isStudent(name);
 	}
 }
