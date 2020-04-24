@@ -7,14 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tutoringWebsite.controllers.LoginController;
-import tutoringWebsite.model.Login;
+import tutoringWebsite.controllers.UserController;
 import tutoringWebsite.model.User;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Login model;
-	private LoginController controller;
+	private User model;
+	private UserController controller;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -36,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 		String pw           = null;
 		User current 		= new User();
 		boolean validLogin  = false;
-		boolean validUser   = false;
+	
 		
 
 		// Decode form parameters and dispatch to controller
@@ -48,21 +47,17 @@ public class LoginServlet extends HttpServlet {
 		if (email == null || pw == null || email.equals("") || pw.equals("")) {
 			errorMessage = "Please specify both user name and password";
 		} else {
-			model      = new Login();
-			controller = new LoginController(model);
-			validUser  = controller.checkUserName(email);
-			System.out.println("email good");	
+			model      = new User();
+			controller = new UserController(model);
+			
 			validLogin = controller.validateCredentials(email, pw);
 			System.out.println("account accessed");	
 			current    = controller.getAccount(email, pw);
 			System.out.println("got user");	
 			
 			
-			if(!validUser) {
-				///find out how to submit this into allowing a button
-				errorMessage = "create account";
-			}
-			else if (!validLogin) {
+		
+			 if (!validLogin) {
 				errorMessage = "Username and/or password invalid";
 			}
 		}
@@ -74,7 +69,7 @@ public class LoginServlet extends HttpServlet {
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("login",        validLogin);
-		req.setAttribute("validUser",        validUser);
+		
 
 		// if login is valid, start a session
 		if (validLogin) {

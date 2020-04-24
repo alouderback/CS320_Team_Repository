@@ -7,21 +7,14 @@ import org.junit.Test;
 import tutoringWebsite.model.*;
 import tutoringWebsite.controllers.*;
 
-public class loginControllerJUnit {
-	private LoginController controller;
-	private Login model;
+public class userControllerJUnit {
+	private UserController controller;
+	private User model;
 	
 	@Before
 	public void setUp() {
-		model = new Login();
-		controller = new LoginController(model);
-	}
-	
-	@Test
-	public void testCheckUsername() {
-		assertTrue(controller.checkUserName("faculty@ycp.edu") == true);
-		assertTrue(controller.checkUserName("tutor@ycp.edu") == true);
-		assertTrue(controller.checkUserName("rjames@ycp.edu") == false);
+		model = new User();
+		controller = new UserController(model);
 	}
 	
 	@Test
@@ -43,13 +36,13 @@ public class loginControllerJUnit {
 		//Getting an error with execute transaction in derby database
 		User Eric = new User();
 		Eric = controller.createAccount("ebosse@ycp.edu", "yeenk", "Eric Bosse", 1);
-		
-		assertTrue(controller.validateCredentials("ebosse@ycp.edu", "yeenk") == true);
-		assertFalse(controller.validateCredentials("ebosse@ycp.edu", "yeenky") == false);
-		
-		assertTrue(Eric.getEmail() == "ebosse@ycp.edu");
-		assertTrue(Eric.getName() == "Eric Bosse");
-		assertTrue(Eric.getPassword() == "yeenk");
+		assertTrue(controller.validateCredentials("ebosse@ycp.edu", "yeenk"));
+		assertFalse(controller.validateCredentials("ebosse@ycp.edu", "yeenky"));
+		 
+		 System.out.println("test email: " + Eric.getEmail());
+		assertTrue(Eric.getEmail().equals("ebosse@ycp.edu"));
+		assertTrue(Eric.getName().equals("Eric Bosse"));
+		assertTrue(Eric.getPassword().equals("yeenk"));
 		assertTrue(Eric.getUserType() == 1);
 		//Doesn't assign a user id; need to implement something for this but nobody will answer me
 	}
