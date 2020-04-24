@@ -20,9 +20,7 @@ public class InitialData {
 			Integer announcementId = 1;
 			LocalDate date = LocalDate.now();
 			LocalTime time = LocalTime.now();
-			//*****only two kinds of announcementType... does this work?*********
 			Integer announcementType = 1;
-			//supposed to be a reference to the type it is...should I access another initial data???
 			Integer typeId = 1;
 			while (true) {
 				List<String> tuple = readAnnouncement.next();
@@ -37,8 +35,10 @@ public class InitialData {
 				announcement.setDate(date);
 				time = LocalTime.parse(i.next());
 				announcement.setTime(time);
-				announcement.setAnnouncementType(announcementType++);
-				announcement.setTypeId(typeId++);
+				announcementType = Integer.decode(i.next());
+				announcement.setAnnouncementType(announcementType);
+				typeId = Integer.decode(i.next());
+				announcement.setTypeId(typeId);
 				announcementList.add(announcement);
 			}
 			return announcementList;
