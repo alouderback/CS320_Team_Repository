@@ -24,7 +24,7 @@ public class InitialData {
 			Integer typeId = 1;
 			while (true) {
 				List<String> tuple = readAnnouncement.next();
-				if (tuple == null) {
+				if(tuple==null || tuple.size() == 0) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
