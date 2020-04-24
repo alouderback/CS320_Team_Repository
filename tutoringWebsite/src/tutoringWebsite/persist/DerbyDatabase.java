@@ -400,6 +400,40 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	public List<Integer> getUserId(User user) {
+		//Returns an empty list if user is not found
+		return executeTransaction(new Transaction <List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Integer> result = new ArrayList<Integer>();
+				
+				System.out.println("Currently getting ID number of User...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"select user_id from User " +
+						"where email = ?, and name = ?"
+						);
+					resultSet = stmt.executeQuery();
+				if(resultSet.next()) {
+					Integer userId = resultSet.getInt(1); //////
+					result.add(userId);
+				}
+				
+				return result;
+					
+				}finally {
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+			}
+		});
+	}
+	
 	public List<User> getTutors(){ 
 		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
 		return executeTransaction(new Transaction<List<User>>() {
@@ -412,7 +446,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
-						"select users from User " + //Selects all users who are marked as tutors
+						"select users from Users " + //Selects all users who are marked as tutors
 						"where userType = ?"
 							);
 					
@@ -736,14 +770,14 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
-					//List<Session> sessionList;
+					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
 						//sessionList			= InitialData.getSession();
-						//sessionList			= InitialData.getSession();
+						sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -789,7 +823,7 @@ public class DerbyDatabase implements IDatabase{
 						}	
 						*/
 
-						/*
+						
 
 						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
@@ -805,12 +839,12 @@ public class DerbyDatabase implements IDatabase{
 						
 
 						System.out.println("Session table populated");	
-						*/
+						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
-					//	DBUtil.closeQuietly(insertSession);
+						DBUtil.closeQuietly(insertSession);
 						//DBUtil.closeQuietly(insertStudyGroup);				
 					}
 				}
