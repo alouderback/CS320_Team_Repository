@@ -49,7 +49,7 @@ public class derbyDatabaseAnnouncementTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+	/*@Test
 	public void testgetAnnouncementsforSession() {
 		System.out.println("\n*** Testing getAnnouncementsforSession ***");
 		
@@ -121,77 +121,11 @@ public class derbyDatabaseAnnouncementTest {
 				+ "," + announcement.getDate() + "," + announcement.getTime());
 			}			
 		}
-	}
-	/*@Test
-	public void testCreateAnnouncementforAStudyGroup() {
-		System.out.println("\n*** Testing createAnnouncementforStudyGroup ***");
-		
-		String message = "test 1 for new announcement SG";
-		LocalDate date = LocalDate.of(2020, 04, 20);
-		LocalTime time = LocalTime.of(10, 10);
-		int announcementType = 2; //this type is study group
-		int typeId = 1; //id for the study group
-		
-		Integer id = db.createAnnouncement(message, date, time, announcementType, typeId);
-		
-		// check the return value, if id is greater than 0
-				if (id > 0)
-				{
-					// get the list announcements from DB
-					announcementStudyGroupList = db.getAnnouncementsforStudyGroupWithStudyGroupId(typeId);
-					
-					if (announcementStudyGroupList.isEmpty()) {
-						System.out.println("No announcements found for study group <" + message + ">");
-						fail("Failed to insert new announcement <" + message + "> into DB");
-					}
-					//test was successful
-					else {
-						System.out.println("New announcement (ID: " + id + ") successfully added to Announcement table: <" + message + ">");
-						
-						//delete the announcement from the database
-						List<Announcement> announcement = db.removeAnnouncement(id, announcementType);				
-					}
-				}
-				else
-				{
-					System.out.println("Failed to insert new announcement (ID: " + id + ") into Announcement table: <" + message + ">");
-					fail("Failed to insert new announcement <" + message + "> into DB");
-				}
-	}
-	@Test
-	public void testCreateAnnouncementforASession() {
-		System.out.println("\n*** Testing createAnnouncementforSession ***");
-		
-		String message = "first test to create an Announcement for a session";
-		LocalDate date = LocalDate.of(2020, 04, 20);
-		LocalTime time = LocalTime.of(10, 10);
-		int announcementType = 1; //this type is session
-		int typeId = 1; //id for the session
-		
-		Integer id = db.createAnnouncement(message, date, time, announcementType, typeId);
-		
-		// check the return value, if id is greater than 0
-		if (id > 0)
-		{
-			// get the list announcements from DB
-			announcementSessionList = db.getAnnouncementsforSessionWithSessionId(id);
-			
-			if (announcementSessionList.isEmpty()) {
-				System.out.println("No announcements found for session <" + message + ">");
-				fail("Failed to insert new announcement <" + message + "> into DB");
-			}
-			//test was successful
-			else {
-				System.out.println("New announcement (ID: " + id + ") successfully added to Announcement table: <" + message + ">");
-				
-				//delete the announcement from the database
-				List<Announcement> announcement = db.removeAnnouncement(id, announcementType);				
-			}
-		}
-		else
-		{
-			System.out.println("Failed to insert new announcement (ID: " + id + ") into Announcement table: <" + message + ">");
-			fail("Failed to insert new announcement <" + message + "> into DB");
-		}
 	}*/
+	@Test
+	public void testCreatAnnouncement() {
+		System.out.println("\n*** Testing createAnnouncement***");
+		
+		
+	}
 }	

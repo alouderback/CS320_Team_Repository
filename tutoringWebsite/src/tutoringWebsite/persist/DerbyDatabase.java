@@ -93,21 +93,20 @@ public class DerbyDatabase implements IDatabase{
 			public Integer execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				PreparedStatement stmt2 = null;
-				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
-				List<Announcement> result;
 				int resultId = -1;
 				
 				try {
 					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
-						"insert into Announcements(message, date, time, announcementType) "
+						"insert into Announcements(message, date, time, announcementType, typeId) "
 							+"values(?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
 					stmt.setString(2,  date.toString());
 					stmt.setString(3, time.toString());
 					stmt.setInt(4, announcementType);
+					stmt.setInt(5, typeId);
 					
 					stmt.executeUpdate();
 					
@@ -126,41 +125,12 @@ public class DerbyDatabase implements IDatabase{
 					
 					System.out.println("ID retrieved");
 					
-					if (resultSet.next())
-					{
+					if (resultSet.next()){
 						resultId = resultSet.getInt(1);
 						System.out.println("New announcement <" + message + "> ID: " + resultId);						
 					}
-					else	// really should throw an exception here - the new book should have been inserted, but we didn't find it
-					{
+					else{	// really should throw an exception here - the new book should have been inserted, but we didn't find it
 						System.out.println("New announcement <" + message + "> not found in Books table (ID: " + resultId);
-					}
-					
-					//check if its session or study group
-					if(announcementType == 1) {//session type
-						stmt3 = conn.prepareStatement(
-								"insert into SessionAnnouncement (announcement_id) " +
-								"  values(?) "
-								);
-						//stmt3.setInt(1, typeId);
-						stmt3.setInt(1, resultId);
-						
-						stmt3.executeUpdate();
-						System.out.println("Announcement ID added to SessionAnnouncement table");
-					}
-					else if(announcementType == 2) {//study group type
-						stmt3 = conn.prepareStatement(
-								"insert into StudyGroupAnnouncement (announcement_id) " +
-								"  values(?) "
-								);
-						//stmt3.setInt(1, typeId);
-						stmt3.setInt(1, resultId);
-						
-						stmt3.executeUpdate();
-						System.out.println("Announcement ID added to StudyGroupAnnouncement table");
-					}
-					else {
-						System.out.println("Incorrect announcementType");
 					}
 					
 				}
@@ -168,13 +138,11 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 					DBUtil.closeQuietly(stmt2);
-					DBUtil.closeQuietly(stmt3);
 				}
 				System.out.println("Returning announcement");
 			return resultId;
 			}
-			});
-		
+		});	
 	}
 	@Override
 	public List<Announcement> removeAnnouncement(final int announcementId, final int announcementType) {
@@ -525,8 +493,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt2 = null;
 					//PreparedStatement stmt3 = null;	
 					PreparedStatement stmt4 = null;
-					PreparedStatement stmt5 = null;
-					PreparedStatement stmt6 = null; 
+
 					System.out.println("Making Announcement table...");
 					try {
 						stmt1 = conn.prepareStatement(
@@ -536,7 +503,8 @@ public class DerbyDatabase implements IDatabase{
 							"	message varchar(40)," +
 							"	date varchar(40)," +
 							"	time varchar(40),"+
-							" announcementType integer"+
+							" announcementType integer,"+
+							"typeId integer"+
 							")"
 						);	
 
@@ -583,27 +551,6 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Sessions table created");	
 						
-						stmt5 = conn.prepareStatement(
-							"create table SessionAnnouncement ( "+
-							"session_id integer primary key " +
-							"generated always as identity (start with 1, increment by 1), " +
-							"announcement_id integer "+
-							")"
-						);
-						stmt5.executeUpdate();
-						
-						System.out.println("SessionAnnouncement table created");
-						
-						stmt6 = conn.prepareStatement(
-								"create table StudyGroupAnnouncement ( "+
-								"studyGroup_id integer primary key " +
-								"generated always as identity (start with 1, increment by 1), " +
-								"announcement_id integer "+
-								")"
-							);
-							stmt6.executeUpdate();
-							
-							System.out.println("StudyGroupAnnouncement table created");
 
 						return true;
 					} finally {
@@ -611,8 +558,6 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt2);
 						//DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
-						DBUtil.closeQuietly(stmt5);
-						DBUtil.closeQuietly(stmt6);
 						
 					}
 				}
@@ -643,16 +588,19 @@ public class DerbyDatabase implements IDatabase{
 
 					try {
 						// populating announcement table
-						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time) values (?, ?, ?)");
+						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
+								+ "values (?, ?, ?, ?, ?)");
 						for (Announcement announcement : announcementList) {
 							insertAnnouncement.setString(1, announcement.getMessage());
 							insertAnnouncement.setString(2, announcement.getDate().toString());
 							insertAnnouncement.setString(3, announcement.getTime().toString());
+							insertAnnouncement.setInt(4, announcement.getAnnouncementType());
+							insertAnnouncement.setInt(5, announcement.getTypeId());
 							insertAnnouncement.addBatch();
 						}
 						insertAnnouncement.executeBatch();
 						
-						System.out.println("Annoucement table populated");
+						System.out.println("Announcement table populated");
 						
 						// must completely populate Books table before populating BookAuthors table because of primary keys
 						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
