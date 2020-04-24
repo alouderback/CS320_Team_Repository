@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.UserController;
+import tutoringWebsite.controllers.UserController;
+import tutoringWebsite.model.Login;
 import tutoringWebsite.model.User;
 
-public class LoginServlet extends HttpServlet {
+public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private User model;
 	private UserController controller;
@@ -19,9 +21,9 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("\nLoginServlet: doGet");
+		System.out.println("\nProfileServlet: doGet");
 
-		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/profile.jsp").forward(req, resp);
 	}
 
 	@Override
@@ -35,41 +37,23 @@ public class LoginServlet extends HttpServlet {
 		String pw           = null;
 		User current 		= new User();
 		boolean validLogin  = false;
-	
+		boolean validUser   = false;
 		
 
 		// Decode form parameters and dispatch to controller
-		email = req.getParameter("email");
-		pw   = req.getParameter("password");
-
-		System.out.println("   Email: <" + email + "> PW: <" + pw + ">");			
-
-		if (email == null || pw == null || email.equals("") || pw.equals("")) {
-			errorMessage = "Please specify both user name and password";
-		} else {
-			model      = new User();
-			controller = new UserController(model);
-			
-			validLogin = controller.validateCredentials(email, pw);
-			System.out.println("account accessed");	
-			current    = controller.getAccount(email, pw);
-			System.out.println("got user");	
-			
-			
 		
-			 if (!validLogin) {
-				errorMessage = "Username and/or password invalid";
-			}
-		}
+		current = (User) req.getSession().getAttribute("user");
+		System.out.println("   Email: <" + email + "> PW: <" + pw + ">");			
+		
+		
 		System.out.println("setting attributes");	
 		// Add parameters as request attributes
-		req.setAttribute("email", req.getParameter("email"));
-		req.setAttribute("password", req.getParameter("password"));
+	
 
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("login",        validLogin);
-		
+		//req.setAttribute("user",        current);
 
 		// if login is valid, start a session
 		if (validLogin) {

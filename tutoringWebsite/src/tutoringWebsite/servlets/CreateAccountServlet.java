@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tutoringWebsite.controllers.LoginController;
-import tutoringWebsite.model.Login;
+import tutoringWebsite.controllers.UserController;
+
 import tutoringWebsite.model.User;
 
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Login model;
-	private LoginController controller;
+	private User model;
+	private UserController controller;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -68,8 +68,8 @@ public class CreateAccountServlet extends HttpServlet {
 			errorMessage = "Please specify both username and password";
 		} else {
 			validLogin = true;
-			model      = new Login();
-			controller = new LoginController(model);
+			model      = new User();
+			controller = new UserController(model);
 			
 			
 			

@@ -8,12 +8,14 @@ import tutoringWebsite.model.*;
 
 public interface IDatabase {
 	//list of functions used in Derby Database
-	List<Login> useLogin(String email, String password);
-	List<Login> signIntoAccount(String email, String password);
 	Integer createAnnouncement(String message, LocalDate date, LocalTime time, int announcementType, int typeId);
-	List<User> createAccount(String email, String password, String name, int userType);
 	List<Announcement> getAnnouncementsforSessionWithSessionId(int sessionId);
 	List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(int studyGroupId);
 	List<Announcement> getAllAnnouncements();
 	List<Announcement> removeAnnouncement(int announcementId, int announcementType);
+	List<User> useLogin(String email, String password);
+	List<User> deleteAccount(String email, String password);
+	List<User> getAccount(String email, String password);
+	List<User> createAccount(String email, String password, String name, int userType);
+	List<Session> getScheduleByDate(String timeframe);
 }

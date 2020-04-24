@@ -7,12 +7,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import tutoringWebsite.persist.*;
 import tutoringWebsite.model.*;
@@ -35,54 +37,125 @@ public class DerbyDatabase implements IDatabase{
 	
 	//our code for website
 	@Override
-	public List<Login> useLogin(final String email, final String password){
-		return executeTransaction(new Transaction<List<Login>>() {
+	public List<User> useLogin(final String email, final String password){
+		return executeTransaction(new Transaction<List<User>>() {
 			@Override
-			public List<Login> execute(Connection conn) throws SQLException {
+			public List<User> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+				System.out.println("IN DERBY DATABASE");
 				try {
 					stmt = conn.prepareStatement(
-							"select Users.email, Users.password"+
+							"select * "+
 							" from Users"+
-							"where Users.email = ? and Users.password = ?"
-							);
-
-				}finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
-				}
-			return null;
-			}
-				});
-	}
-	@Override
-	public List<Login> signIntoAccount(final String email, final String password){
-		return executeTransaction(new Transaction<List<Login>>() {
-			@Override
-			public List<Login> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
-				
-				try {
-					stmt = conn.prepareStatement(
-							""
+							" WHERE email=? and password=?"
 							);
 
 					stmt.setString(1, email);
 					stmt.setString(2, password);
-					
+
+					List<User> result = new ArrayList<User>();
 					resultSet = stmt.executeQuery();
 					
+					
+					Boolean found = false;
 
+
+					while (resultSet.next()) {
+						User user = new User();
+						loadUser(user,resultSet,1);
+						result.add(user);
+					 
+					}
+					for (User temp : result) {
+						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword());
+					}
+
+					if(found = false) {
+						System.out.println("<" + email + "> was not found in the user database");
+					
+					}
+					System.out.println("done");
+					return result;
 				}finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 				}
-			return null;
 			}
 				});
+	}
+	@Override
+	public List<User> deleteAccount(final String email, final String password){
+		return executeTransaction(new Transaction<List<User>>() {
+			@Override
+			public List<User> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt3 = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("email: "+ email + " password: "+ password);
+				
+				try {	
+					List<User> result = new ArrayList<User>();
+					
+					stmt1 = conn.prepareStatement(
+							"delete from Users " +
+							"where email = ? and password = ?"
+					//sql to add an account to list
+							);
+					stmt1.setString(1, email);
+					stmt1.setString(2, password);
+					
+					
+					
+					stmt1.executeUpdate();
+					
+					System.out.println("user deleted");
+					
+					
+					
+					stmt3 = conn.prepareStatement(
+							"select * from Users" 
+							
+							
+							
+					//sql to add an account to list
+							);
+			
+					
+					
+					resultSet = stmt3.executeQuery();
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;			
+						User user = new User();
+						loadUser(user,resultSet,1);
+						result.add(user);
+					
+					}
+					for (User temp : result) {
+						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword()+", " + temp.getName()+", " + temp.getUserType());
+					}
+
+					if(found = false) {
+						System.out.println("<" + email + "> was not found in the user database");
+					}
+					
+					System.out.println("user gone");
+					return result;
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt3);
+					}
+		
+				}
+			
+		});
+		
+		
 	}
 	//can create any announcement for study group or a session
 	//all printed on main page
@@ -345,60 +418,131 @@ public class DerbyDatabase implements IDatabase{
 		time = LocalTime.parse(resultSet.getString(index++));
 		announcement.setTime(time);
 	}
-	
+	public List<Session> getScheduleByDate(String timeframe){
+		return executeTransaction(new Transaction<List<Session>>() {
+			
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Session> result = null;
+				
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("In getScheduleByDate");
+				try {
+					stmt = conn.prepareStatement(
+							"select sessions.* " +
+							" from Sessions "
+					//Trying to get all sessions
+							);
+					
+					resultSet = stmt.executeQuery();
+					
+					System.out.println("Query Executed");
+					
+					System.out.println("Got all sessions");
+					
+					result = new ArrayList<Session>();
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+
+			
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						System.out.println("Closed");
+					}
+			System.out.println("Result size:" + result.size());
+			return result;
+				}
+			
+		});
+		
+		
+	}
+	private void loadSession(Session session, ResultSet resultSet, int index) throws SQLException {
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		
+		session.setSessionId((resultSet.getInt(index++)));
+		date = LocalDate.parse(resultSet.getString(index++));
+		session.setDate(date);
+		session.setRoom(resultSet.getString(index++));
+		time = LocalTime.parse(resultSet.getString(index++));
+		session.setTime(time);
+		session.setTutorId(resultSet.getInt(index++));
+		session.setCourse(resultSet.getString(index++));
+		System.out.println("See below for course:");
+		System.out.println("Course for session that is being loaded: " + session.getCourse());
+	}
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
 			@Override
 			public List<User> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
 				PreparedStatement stmt1 = null;
+				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
 				System.out.println("name: "+ name +" userType: "+ userType);
 				try {
-					stmt = conn.prepareStatement(
-							"insert into Users (email, password, name, userType) " +
+					
+					List<User> result = new ArrayList<User>();
+					
+					stmt1 = conn.prepareStatement(
+							"insert into Users (email, password, name, userType)" +
 							"values(?,?,?,?)"
 					//sql to add an account to list
 							);
-					stmt.setString(1, email);
-					stmt.setString(2, password);
-					stmt.setString(3, name);
-					stmt.setInt(4, userType);
-					List<User> result = new ArrayList<User>();
+					stmt1.setString(1, email);
+					stmt1.setString(2, password);
+					stmt1.setString(3, name);
+					stmt1.setInt(4, userType);
 					
-					stmt.executeUpdate();
+					
+					stmt1.executeUpdate();
 					
 					System.out.println("user created");
-					
 					
 					stmt1 = conn.prepareStatement(
 							"select user_id from Users " +
 							"where email = ? and password = ? and name = ? and userType = ? "
 							);
 					
-					stmt1.setString(1, email);
-					stmt1.setString(2, password);
-					stmt1.setString(3, name);
-					stmt1.setInt(4, userType);
 					
-					resultSet = stmt1.executeQuery();
-				
-					System.out.println("user found");
+					stmt3 = conn.prepareStatement(
+							"select * from Users" +
+							" WHERE Users.email = ? and Users.password = ? and Users.name = ? and Users.userType = ?"
+								
+					//sql to add an account to list
+							);
 					
+					stmt3.setString(1, email);
+					stmt3.setString(2, password);
+					stmt3.setString(3, name);
+					stmt3.setInt(4, userType);
 					
-					if (resultSet.next()) {
-						
+					resultSet = stmt3.executeQuery();
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;			
 						User user = new User();
 						loadUser(user,resultSet,1);
 						result.add(user);
-					}
 					
-					// check if the title was found
-					else {
+					}
+					for (User temp : result) {
+						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword()+", " + temp.getName()+", " + temp.getUserType());
+					}
+
+					if(found = false) {
 						System.out.println("<" + email + "> was not found in the user database");
 					}
 					
@@ -406,8 +550,8 @@ public class DerbyDatabase implements IDatabase{
 					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(stmt);
 						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt3);
 					}
 		
 				}
@@ -416,6 +560,51 @@ public class DerbyDatabase implements IDatabase{
 		
 		
 	}
+	@Override
+	public List<User> getAccount(final String email, final String password){
+		return executeTransaction(new Transaction<List<User>>() {
+			@Override
+			public List<User> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * "+
+							" from Users"+
+							" where Users.email = ? and Users.password =?"
+							);
+					
+					List<User> result = new ArrayList<User>();
+					stmt.setString(1, email);
+					stmt.setString(2, password);
+					resultSet = stmt.executeQuery();
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;			
+						User user = new User();
+						loadUser(user,resultSet,1);
+						result.add(user);
+					
+					}
+					for (User temp : result) {
+						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword()+", " + temp.getName()+", " + temp.getUserType());
+					}
+
+					if(found = false) {
+						System.out.println("<" + email + "> was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 		public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 			try {
@@ -493,8 +682,10 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt2 = null;
 					//PreparedStatement stmt3 = null;	
 					PreparedStatement stmt4 = null;
+					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
+
 					try {
 						stmt1 = conn.prepareStatement(
 							"create table Announcements (" +
@@ -537,6 +728,7 @@ public class DerbyDatabase implements IDatabase{
 
 						stmt3.executeUpdate(); */
 
+
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
@@ -544,21 +736,34 @@ public class DerbyDatabase implements IDatabase{
 								"	date varchar(40)," +
 								"	room varchar(40)," +
 								"   time varchar(40)," +
-								"	tutor_id integer"+
+								"	tutor_id integer," +
+								"   course varchar(40)" +
 								")"
 						);
 						stmt4.executeUpdate();
-						
-						System.out.println("Sessions table created");	
-						
 
+						System.out.println("Sessions table created");	
+
+						stmt8 = conn.prepareStatement(
+								"create table Students (" +
+								"	student_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	major varchar(70), " +
+								"	gradYear varchar(40), " +
+								"   user_id integer" +
+								")"
+						);
+						stmt8.executeUpdate();
+						
+						System.out.println("Students table created");	
+						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
 						//DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
-						
+						DBUtil.closeQuietly(stmt8);
 					}
 				}
 			});
@@ -570,12 +775,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
-					List<Session> sessionList;
+					//List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
+						//sessionList			= InitialData.getSession();
 						//sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
@@ -584,6 +790,7 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertAnnouncement     = null;
 					PreparedStatement insertUser       = null;
+					PreparedStatement insertSession    = null;
 					//PreparedStatement insertStudyGroup = null;
 
 					try {
@@ -615,18 +822,37 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("User table populated");					
 						
+
 						//study group garbage
+
 						/*insertStudyGroup = conn.prepareStatement("");
 						for (StudyGroup sg: studyGroupList) {
 							
 						}	
 						*/
-									
+
+						/*
+
+						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
+						for (Session session : sessionList) {
+							insertSession.setString(1, session.getDate().toString());
+							insertSession.setString(2, session.getRoom());
+							insertSession.setString(3, session.getTime().toString());
+							insertSession.setInt(4, session.getTutorId());
+
+							insertSession.setString(5, session.getCourse());
+							insertSession.addBatch();
+						}
+						insertSession.executeBatch();
 						
+
+						System.out.println("Session table populated");	
+						*/
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
+					//	DBUtil.closeQuietly(insertSession);
 						//DBUtil.closeQuietly(insertStudyGroup);				
 					}
 				}

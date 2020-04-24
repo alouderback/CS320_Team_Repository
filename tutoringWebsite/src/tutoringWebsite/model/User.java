@@ -49,4 +49,27 @@ public class User {
 	public void setUserType(int userType) {
 		this.userType = userType;
 	}
+	
+	
+	
+	public User getUser(String name) {
+		User user = new User();
+		//I don't think this method does anything
+		return user;
+	}
+
+	public User createAccount(String email, String password, String name, int userType) {
+		
+		User account = new User();
+		account.setEmail(email);
+		account.setPassword(password);
+		account.setName(name);
+		account.setUserType(userType);
+		
+		return account;	
+	}
+	public boolean isStudent(String name) {
+		return name.contains("@ycp.edu");
+		
+	}
 }
