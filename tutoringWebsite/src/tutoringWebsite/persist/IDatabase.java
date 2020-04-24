@@ -14,8 +14,11 @@ public interface IDatabase {
 	List<Announcement> getAllAnnouncements();
 	List<Announcement> removeAnnouncement(int announcementId, int announcementType);
 	List<User> useLogin(String email, String password);
-	List<User> deleteAccount(String email, String password);
-	List<User> getAccount(String email, String password);
+	User deleteAccount(String email, String password);
 	List<User> createAccount(String email, String password, String name, int userType);
 	List<Session> getScheduleByDate(String timeframe);
+	List<User> getAccount(String email, String password);
+	List<Session> deleteSession(int sessionId);
+	List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course);
+	List<User> getTutors();
 }

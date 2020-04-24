@@ -81,28 +81,39 @@ public class InitialData {
 		List<Session> sessionList = new ArrayList<Session>();
 		ReadCSV readSession = new ReadCSV("Sessions.csv");
 		try {
+			
 			Integer sessionId = 1;
 			while(true) {
 
 				List<String> tuple = readSession.next();
-				if(tuple==null) {
+				if(tuple==null || tuple.size() == 0) {
 					break;
 				}
+			
 				Iterator<String> i = tuple.iterator();
 				Session session = new Session();
 				session.setSessionId(sessionId++);
+				
 
 				LocalDate date = LocalDate.parse(i.next());
-
+				
+				
+				
 				session.setDate(date);
-				session.setRoom(i.next());
-
+				
+				String room = i.next();
+				
+				session.setRoom(room);
+				
 				LocalTime time = LocalTime.parse(i.next());
-
+				
 				session.setTime(time);
 				session.setTutorId(Integer.decode(i.next()));
+				
 				session.setCourse(i.next());
+				
 				sessionList.add(session);
+				
 			}
 			return sessionList;
 		}finally {

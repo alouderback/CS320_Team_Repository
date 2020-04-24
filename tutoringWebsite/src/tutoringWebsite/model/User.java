@@ -59,7 +59,7 @@ public class User {
 	}
 
 	public User createAccount(String email, String password, String name, int userType) {
-		
+		 
 		User account = new User();
 		account.setEmail(email);
 		account.setPassword(password);
@@ -72,4 +72,13 @@ public class User {
 		return name.contains("@ycp.edu");
 		
 	}
+	public void removeAccount(User user) {
+	user.setEmail(null);
+	user.setName(null);
+	user.setPassword(null);
+	user.setUser_Id(-1);
+	user.setUserType(0);
+		
+	}
+	
 }

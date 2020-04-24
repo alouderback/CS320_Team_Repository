@@ -85,19 +85,20 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
-	public List<User> deleteAccount(final String email, final String password){
-		return executeTransaction(new Transaction<List<User>>() {
+	public User deleteAccount(final String email, final String password){
+		return executeTransaction(new Transaction<User>() {
 			@Override
-			public List<User> execute(Connection conn) throws SQLException {
+			public User execute(Connection conn) throws SQLException {
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
-				
-				try {	
-					List<User> result = new ArrayList<User>();
+		
+				try {
+					
+					User result = new User();
 					
 					stmt1 = conn.prepareStatement(
 							"delete from Users " +
@@ -106,25 +107,17 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt1.setString(1, email);
 					stmt1.setString(2, password);
-					
-					
-					
 					stmt1.executeUpdate();
 					
 					System.out.println("user deleted");
-					
-					
-					
 					stmt3 = conn.prepareStatement(
-							"select * from Users" 
-							
-							
-							
-					//sql to add an account to list
+							"select * from Users " +
+							"where email = ? and password = ?"
 							);
 			
 					
-					
+					stmt3.setString(1, email);
+					stmt3.setString(2, password);
 					resultSet = stmt3.executeQuery();
 					Boolean found = false;
 
@@ -132,15 +125,12 @@ public class DerbyDatabase implements IDatabase{
 						found = true;			
 						User user = new User();
 						loadUser(user,resultSet,1);
-						result.add(user);
+						result = user;
+					}
 					
-					}
-					for (User temp : result) {
-						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword()+", " + temp.getName()+", " + temp.getUserType());
-					}
-
+					System.out.println( result.getUser_Id()+", "+result.getEmail()+ ", " + result.getPassword());
 					if(found = false) {
-						System.out.println("<" + email + "> was not found in the user database");
+						System.out.println("<" + email + "> was sucessfully deleted from the user database");
 					}
 					
 					System.out.println("user gone");
@@ -419,6 +409,7 @@ public class DerbyDatabase implements IDatabase{
 		announcement.setTime(time);
 	}
 	public List<Session> getScheduleByDate(String timeframe){
+		//Method currently doesn't use parameter timeframe; returns whole list of sessions
 		return executeTransaction(new Transaction<List<Session>>() {
 			
 			public List<Session> execute(Connection conn) throws SQLException {
@@ -479,6 +470,209 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("See below for course:");
 		System.out.println("Course for session that is being loaded: " + session.getCourse());
 	}
+	
+	public List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				PreparedStatement stmt1 = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("Currently in createSession. Here are the following details of the session being created and inserted:");
+				System.out.println("Room: " + room);
+				System.out.println("Date: " + date);
+				System.out.println("Tutor ID: " + tutorId);
+				System.out.println("Time: " + time);
+				System.out.println("Creating new session...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"insert into Sessions (date, room, time, tutor_id, course) " + //Inserting new session
+						"values(?, ?, ?, ?, ?)" //Where the parameters will be 'inserted'
+							);
+					stmt.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
+					stmt.setString(2, room); 				//Sets the second value to the parameter room
+					stmt.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
+					stmt.setString(5, course); 				//Sets the fifth value to the parameter course
+					
+					List<Session> result = new ArrayList<Session>(); //This will be used later to add the new session to. Utilized after stmt1 is executed.
+					
+					stmt.executeUpdate();					//Executes the SQL statement and inserts new session
+					
+					System.out.println("Session created and inserted into table...");
+					
+					stmt1 = conn.prepareStatement(
+						"select sessions from Sessions " +
+						"where date = ? and room = ? and time = ? and tutor_id = ? and course = ?"
+							);
+							
+					stmt1.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
+					stmt1.setString(2, room); 				//Sets the second value to the parameter room
+					stmt1.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt1.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
+					stmt1.setString(5, course); 			//Sets the fifth value to the parameter course
+					
+					resultSet = stmt1.executeQuery();		//Executes the SQL statement and inserts new session
+					
+					System.out.println("A session was found. Checking to see if it contains the correct data...");
+					
+					if(resultSet.next()) { //Iterates through the resultSet; in a perfect world, it should only return one session
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						result.add(session);
+					}
+					else {
+						System.out.println("Session for course<" + course + ">, room<" + room + "> has not been found...");
+					}
+					
+					System.out.println("Returning session information...");
+					
+					return result;
+					
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(conn);
+					
+				}
+			
+			}
+		});
+	}
+	
+	public List<Session> deleteSession(int sessionId) {
+		//Deletes and returns session and takes sessionId as a parameter
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				PreparedStatement stmt1 = null;
+				ResultSet resultSet = null;
+				try {
+					stmt = conn.prepareStatement(
+						"select sessions from Sessions " + 		//Inserting new session
+						"where session_id = ?"					//Where the parameters will be 'inserted'
+							);
+					stmt.setInt(1, sessionId);					//Sets the value to the parameter, sessionId
+					
+					List<Session> result = new ArrayList<Session>();
+					
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) { 						//Iterates through the resultSet; in a perfect world, it should only return one session
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						result.add(session);
+					}
+					else {
+						System.out.println("Didn't find the session you're trying to delete. Try again, kiddo...");
+					}
+					
+					
+					
+					stmt1 = conn.prepareStatement(
+						"delete from Sessions where session_id = ? "
+							);
+					stmt1.setInt(1, sessionId);
+					
+					stmt1.executeQuery();						//Executes the delete
+					
+					System.out.println("Deleted session...");
+					
+					return result;
+				}finally {
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+				}
+			}
+		});
+	}
+	
+	public List<Integer> getUserId(User user) {
+		//Returns an empty list if user is not found
+		return executeTransaction(new Transaction <List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Integer> result = new ArrayList<Integer>();
+				
+				System.out.println("Currently getting ID number of User...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"select user_id from User " +
+						"where email = ?, and name = ?"
+						);
+					resultSet = stmt.executeQuery();
+				if(resultSet.next()) {
+					Integer userId = resultSet.getInt(1); //////
+					result.add(userId);
+				}
+				
+				return result;
+					
+				}finally {
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+			}
+		});
+	}
+	
+	public List<User> getTutors(){ 
+		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
+		return executeTransaction(new Transaction<List<User>>() {
+			public List<User> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("Currently getting list of tutors...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"select users from Users " + //Selects all users who are marked as tutors
+						"where userType = ?"
+							);
+					
+					stmt.setInt(1, 2); //For pulling users who are tutors from the Users database, their userType will always be 2
+					
+					List<User> result = new ArrayList<User>();
+					
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						User user = new User();
+						loadUser(user, resultSet, 1);
+						result.add(user);
+					}
+					
+					else {
+						System.out.println("That's all the tutors...");
+					}
+					
+					System.out.println("Returning list of tutors...");
+					
+					return result;
+					
+				}finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(conn);
+				}
+				
+			}
+		});
+	}
+	
+
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
@@ -775,14 +969,14 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
-					//List<Session> sessionList;
+					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
 						//sessionList			= InitialData.getSession();
-						//sessionList			= InitialData.getSession();
+						sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -831,7 +1025,7 @@ public class DerbyDatabase implements IDatabase{
 						}	
 						*/
 
-						/*
+						
 
 						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
@@ -847,12 +1041,12 @@ public class DerbyDatabase implements IDatabase{
 						
 
 						System.out.println("Session table populated");	
-						*/
+						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
-					//	DBUtil.closeQuietly(insertSession);
+						DBUtil.closeQuietly(insertSession);
 						//DBUtil.closeQuietly(insertStudyGroup);				
 					}
 				}
