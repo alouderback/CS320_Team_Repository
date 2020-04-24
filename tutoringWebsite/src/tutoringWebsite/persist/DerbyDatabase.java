@@ -2,12 +2,16 @@ package tutoringWebsite.persist;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +51,6 @@ public class DerbyDatabase implements IDatabase{
 							" WHERE email=? and password=?"
 							);
 
-					
-					
-					
 					stmt.setString(1, email);
 					stmt.setString(2, password);
 
@@ -58,6 +59,7 @@ public class DerbyDatabase implements IDatabase{
 					
 					
 					Boolean found = false;
+
 
 					while (resultSet.next()) {
 						User user = new User();
@@ -93,7 +95,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
-				
+		
 				try {
 					
 					User result = new User();
@@ -145,56 +147,246 @@ public class DerbyDatabase implements IDatabase{
 		
 		
 	}
+	//can create any announcement for study group or a session
+	//all printed on main page
 	@Override
-	public List<Announcement> createAnnouncementStudyGroup(final String message, final String date, final String time, final int groupId){
-		return executeTransaction(new Transaction<List<Announcement>>() {
+	public Integer createAnnouncement(final String message, final LocalDate date, final LocalTime time, final int announcementType, final int typeId){
+		return executeTransaction(new Transaction <Integer>() {
 			@Override
-			public List<Announcement> execute(Connection conn) throws SQLException {
+			public Integer execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				PreparedStatement stmt2 = null;
 				ResultSet resultSet = null;
+				int resultId = -1;
 				
 				try {
+					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
-						"insert into Announcements(message, date, time, groupId)"
+						"insert into Announcements(message, date, time, announcementType, typeId) "
 							+"values(?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
-					stmt.setString(2,  date);
-					stmt.setString(3, time);
-					stmt.setInt(4, groupId);
+					stmt.setString(2,  date.toString());
+					stmt.setString(3, time.toString());
+					stmt.setInt(4, announcementType);
+					stmt.setInt(5, typeId);
 					
 					stmt.executeUpdate();
 					
+					System.out.println("Announcement added");
+					System.out.println("Retreiving announcement ID...");
+					
 					stmt2 = conn.prepareStatement(
-						"select announcement_id from Announcements"+
-						"where message = ? and date = ? and time ?"
+						"select announcement_id from Announcements "+
+						"where message = ? and date = ? and time = ?"
 					);
 					stmt2.setString(1, message);
-					stmt2.setString(2, date);
-					stmt2.setString(3, time);
+					stmt2.setString(2, date.toString());
+					stmt2.setString(3, time.toString());
 					
 					resultSet = stmt2.executeQuery();
-					int resultId;
-					List<Announcement> result = new ArrayList<Announcement>();
-					if(resultSet.next()) {
+					
+					System.out.println("ID retrieved");
+					
+					if (resultSet.next()){
 						resultId = resultSet.getInt(1);
-						Announcement announcement = new Announcement();
-						announcement.setAnnouncementId(resultId);
-						announcement.setMessage(message);
-						//announcement.setDate(LocalDate.);
-						//announcement.setTime(time);
+						System.out.println("New announcement <" + message + "> ID: " + resultId);						
+					}
+					else{	// really should throw an exception here - the new book should have been inserted, but we didn't find it
+						System.out.println("New announcement <" + message + "> not found in Books table (ID: " + resultId);
 					}
 					
 				}
 				finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt2);
 				}
-			return null;
+				System.out.println("Returning announcement");
+			return resultId;
 			}
-			});
-		
+		});	
+	}
+	@Override
+	public List<Announcement> removeAnnouncement(final int announcementId, final int announcementType) {
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null;
+				PreparedStatement stmt3 = null;						
+				ResultSet resultSet    = null;
+				List<Announcement> result = null;
+				
+				try {
+					
+					stmt1 = conn.prepareStatement(
+						"select announcements.* "+
+						"from Announcements " +
+						"where announcement_id = ?"
+					);
+					stmt1.setInt(1, announcementId);
+					resultSet = stmt1.executeQuery();
+					
+					if(resultSet.getFetchSize() == 0) {
+						System.out.println("No announcement with that id");
+					}
+					else {
+						
+						result = new ArrayList<Announcement>();
+						
+						while(resultSet.next()) {
+							Announcement announcement = new Announcement();
+							loadAnnouncement(announcement, resultSet, 1);
+							result.add(announcement);
+						}
+						
+						stmt2 = conn.prepareStatement(
+							"delete from Announcements "+
+							"where announcement_id = ?"
+						);
+					
+						stmt2.setInt(1, announcementId);
+						stmt2.executeUpdate();
+					
+						if(announcementType==1) {
+							stmt3 = conn.prepareStatement(
+								"delete from SessionAnnouncement "+
+								"where announcement_id = ?"
+							);
+							stmt3.setInt(1, announcementId);
+							stmt3.executeUpdate();
+						}
+						else if(announcementType == 2) {
+							stmt3 = conn.prepareStatement(
+								"delete from StudyGroupAnnouncement "+
+								"where announcement_id = ?"
+							);
+							stmt3.setInt(1, announcementId);
+							stmt3.executeUpdate();
+						}
+						else {
+							System.out.println("Incorrect announcementType");
+						}
+					}
+										
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);					
+				}
+			}
+		});
+	}
+	//receive announcements for the sessionId sent over
+	@Override
+	public List<Announcement> getAnnouncementsforSessionWithSessionId(final int sessionId){
+		//using SQl, get list of announcements for one particular session
+		//using the session Id, find all announcements that match it
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+					"from Announcements, Sessions, SessionAnnouncement "+
+					"where session_id = ? and Sessions.session_id = SessionAnnouncement.session_id "+
+					"order by Sessions.date desc"
+					);
+					
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
+	//receive announcements for the studyGroupId sent over
+	@Override
+	public List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(final int studyGroupId){
+		//using SQl, get list of announcements for one particular study group
+		//using the study group Id, find all announcements that match it
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+					"from Announcements, StudyGroups, StudyGroupAnnouncement "+
+					"where studyGroup_id = ? and StudyGroups.studyGroup_id = StudyGroupAnnouncement.studyGroup_id "+
+					"order by StudyGroups.date desc"
+					);
+					
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
+	//get all Announcements for the main page
+	@Override
+	public List<Announcement> getAllAnnouncements(){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+					"from Announcements "+
+					"order by Announcements.date desc "
+					);
+					
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
 	}
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
 		user.setUser_Id((resultSet.getInt(index++)));
@@ -204,6 +396,17 @@ public class DerbyDatabase implements IDatabase{
 		user.setName((resultSet.getString(index++)));
 		user.setUserType((resultSet.getInt(index++)));
 		
+	}
+	private void loadAnnouncement(Announcement announcement, ResultSet resultSet, int index) throws SQLException {
+		announcement.setAnnouncementId(resultSet.getInt(index++));
+		announcement.setMessage(resultSet.getString(index++));
+		announcement.setAnnouncementType(resultSet.getInt(index++));
+		LocalDate date = LocalDate.now();
+		date = LocalDate.parse(resultSet.getString(index++));
+		announcement.setDate(date);
+		LocalTime time = LocalTime.now();
+		time = LocalTime.parse(resultSet.getString(index++));
+		announcement.setTime(time);
 	}
 	public List<Session> getScheduleByDate(String timeframe){
 		//Method currently doesn't use parameter timeframe; returns whole list of sessions
@@ -501,13 +704,16 @@ public class DerbyDatabase implements IDatabase{
 					
 					System.out.println("user created");
 					
+					stmt1 = conn.prepareStatement(
+							"select user_id from Users " +
+							"where email = ? and password = ? and name = ? and userType = ? "
+							);
 					
 					
 					stmt3 = conn.prepareStatement(
 							"select * from Users" +
 							" WHERE Users.email = ? and Users.password = ? and Users.name = ? and Users.userType = ?"
-							
-							
+								
 					//sql to add an account to list
 							);
 					
@@ -662,16 +868,18 @@ public class DerbyDatabase implements IDatabase{
 			
 			System.out.println("Library DB successfully initialized!");
 		}
-	//  creates the Authors and Books tables
 		public void createTables() {
 			executeTransaction(new Transaction<Boolean>() {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					//PreparedStatement stmt3 = null;				
+					//PreparedStatement stmt3 = null;	
 					PreparedStatement stmt4 = null;
 					PreparedStatement stmt8= null;
+
+					System.out.println("Making Announcement table...");
+
 					try {
 						stmt1 = conn.prepareStatement(
 							"create table Announcements (" +
@@ -679,13 +887,16 @@ public class DerbyDatabase implements IDatabase{
 							"		generated always as identity (start with 1, increment by 1), " +									
 							"	message varchar(40)," +
 							"	date varchar(40)," +
-							"	time varchar(40)"+
+							"	time varchar(40),"+
+							" announcementType integer,"+
+							"typeId integer"+
 							")"
 						);	
+
 						stmt1.executeUpdate();
-						
+
 						System.out.println("Announcements table created");
-						
+
 						stmt2 = conn.prepareStatement(
 								"create table Users (" +
 								"	user_id integer primary key " +
@@ -696,9 +907,11 @@ public class DerbyDatabase implements IDatabase{
 								"	userType integer"+
 								")"
 						);
+
 						stmt2.executeUpdate();
-						
+
 						System.out.println("Users table created");					
+
 	////////////////////EDIT STUDY GROUPS TABLE MUST BE JUNCTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 						/*stmt3 = conn.prepareStatement(
 								"create table StudyGroups (" +
@@ -708,7 +921,6 @@ public class DerbyDatabase implements IDatabase{
 						);
 
 						stmt3.executeUpdate(); */
-						
 
 
 						stmt4 = conn.prepareStatement(
@@ -725,7 +937,7 @@ public class DerbyDatabase implements IDatabase{
 						stmt4.executeUpdate();
 
 						System.out.println("Sessions table created");	
-						
+
 						stmt8 = conn.prepareStatement(
 								"create table Students (" +
 								"	student_id integer primary key " +
@@ -739,13 +951,11 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Students table created");	
 						
-					
-						
-											
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
+						//DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
 						DBUtil.closeQuietly(stmt8);
 					}
@@ -779,16 +989,19 @@ public class DerbyDatabase implements IDatabase{
 
 					try {
 						// populating announcement table
-						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time) values (?, ?, ?)");
+						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
+								+ "values (?, ?, ?, ?, ?)");
 						for (Announcement announcement : announcementList) {
 							insertAnnouncement.setString(1, announcement.getMessage());
 							insertAnnouncement.setString(2, announcement.getDate().toString());
 							insertAnnouncement.setString(3, announcement.getTime().toString());
+							insertAnnouncement.setInt(4, announcement.getAnnouncementType());
+							insertAnnouncement.setInt(5, announcement.getTypeId());
 							insertAnnouncement.addBatch();
 						}
 						insertAnnouncement.executeBatch();
 						
-						System.out.println("Annoucement table populated");
+						System.out.println("Announcement table populated");
 						
 						// must completely populate Books table before populating BookAuthors table because of primary keys
 						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
@@ -838,11 +1051,6 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
-		} 
-		@Override
-		public List<Announcement> createAnnouncementCourse(String message, String date, String time) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 }
