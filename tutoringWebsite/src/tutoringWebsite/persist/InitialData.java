@@ -20,9 +20,11 @@ public class InitialData {
 			Integer announcementId = 1;
 			LocalDate date = LocalDate.now();
 			LocalTime time = LocalTime.now();
+			Integer announcementType = 1;
+			Integer typeId = 1;
 			while (true) {
 				List<String> tuple = readAnnouncement.next();
-				if (tuple == null) {
+				if(tuple==null || tuple.size() == 0) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
@@ -33,6 +35,10 @@ public class InitialData {
 				announcement.setDate(date);
 				time = LocalTime.parse(i.next());
 				announcement.setTime(time);
+				announcementType = Integer.decode(i.next());
+				announcement.setAnnouncementType(announcementType);
+				typeId = Integer.decode(i.next());
+				announcement.setTypeId(typeId);
 				announcementList.add(announcement);
 			}
 			return announcementList;
