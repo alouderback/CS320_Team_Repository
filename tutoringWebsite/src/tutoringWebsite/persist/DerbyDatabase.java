@@ -146,6 +146,7 @@ public class DerbyDatabase implements IDatabase{
 	
 	
 	public List<Session> getScheduleByDate(String timeframe){
+		//Method currently doesn't use parameter timeframe; returns whole list of sessions
 		return executeTransaction(new Transaction<List<Session>>() {
 			
 			public List<Session> execute(Connection conn) throws SQLException {
@@ -206,6 +207,173 @@ public class DerbyDatabase implements IDatabase{
 		session.setCourse(resultSet.getString(index++));
 		System.out.println("See below for course:");
 		System.out.println("Course for session that is being loaded: " + session.getCourse());
+	}
+	
+	public List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				PreparedStatement stmt1 = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("Currently in createSession. Here are the following details of the session being created and inserted:");
+				System.out.println("Room: " + room);
+				System.out.println("Date: " + date);
+				System.out.println("Tutor ID: " + tutorId);
+				System.out.println("Time: " + time);
+				System.out.println("Creating new session...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"insert into Sessions (date, room, time, tutor_id, course) " + //Inserting new session
+						"values(?, ?, ?, ?, ?)" //Where the parameters will be 'inserted'
+							);
+					stmt.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
+					stmt.setString(2, room); 				//Sets the second value to the parameter room
+					stmt.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
+					stmt.setString(5, course); 				//Sets the fifth value to the parameter course
+					
+					List<Session> result = new ArrayList<Session>(); //This will be used later to add the new session to. Utilized after stmt1 is executed.
+					
+					stmt.executeUpdate();					//Executes the SQL statement and inserts new session
+					
+					System.out.println("Session created and inserted into table...");
+					
+					stmt1 = conn.prepareStatement(
+						"select sessions from Sessions " +
+						"where date = ? and room = ? and time = ? and tutor_id = ? and course = ?"
+							);
+							
+					stmt1.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
+					stmt1.setString(2, room); 				//Sets the second value to the parameter room
+					stmt1.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt1.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
+					stmt1.setString(5, course); 			//Sets the fifth value to the parameter course
+					
+					resultSet = stmt1.executeQuery();		//Executes the SQL statement and inserts new session
+					
+					System.out.println("A session was found. Checking to see if it contains the correct data...");
+					
+					if(resultSet.next()) { //Iterates through the resultSet; in a perfect world, it should only return one session
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						result.add(session);
+					}
+					else {
+						System.out.println("Session for course<" + course + ">, room<" + room + "> has not been found...");
+					}
+					
+					System.out.println("Returning session information...");
+					
+					return result;
+					
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(conn);
+					
+				}
+			
+			}
+		});
+	}
+	
+	public List<Session> deleteSession(int sessionId) {
+		//Deletes and returns session and takes sessionId as a parameter
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				PreparedStatement stmt1 = null;
+				ResultSet resultSet = null;
+				try {
+					stmt = conn.prepareStatement(
+						"select sessions from Sessions " + 		//Inserting new session
+						"where session_id = ?"					//Where the parameters will be 'inserted'
+							);
+					stmt.setInt(1, sessionId);					//Sets the value to the parameter, sessionId
+					
+					List<Session> result = new ArrayList<Session>();
+					
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) { 						//Iterates through the resultSet; in a perfect world, it should only return one session
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						result.add(session);
+					}
+					else {
+						System.out.println("Didn't find the session you're trying to delete. Try again, kiddo...");
+					}
+					
+					
+					
+					stmt1 = conn.prepareStatement(
+						"delete from Sessions where session_id = ? "
+							);
+					stmt1.setInt(1, sessionId);
+					
+					stmt1.executeQuery();						//Executes the delete
+					
+					System.out.println("Deleted session...");
+					
+					return result;
+				}finally {
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+				}
+			}
+		});
+	}
+	
+	public List<User> getTutors(){ 
+		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
+		return executeTransaction(new Transaction<List<User>>() {
+			public List<User> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("Currently getting list of tutors...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"select users from User " + //Selects all users who are marked as tutors
+						"where userType = ?"
+							);
+					
+					stmt.setInt(1, 2); //For pulling users who are tutors from the Users database, their userType will always be 2
+					
+					List<User> result = new ArrayList<User>();
+					
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						User user = new User();
+						loadUser(user, resultSet, 1);
+						result.add(user);
+					}
+					
+					else {
+						System.out.println("That's all the tutors...");
+					}
+					
+					System.out.println("Returning list of tutors...");
+					
+					return result;
+					
+				}finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(conn);
+				}
+				
+			}
+		});
 	}
 	
 	@Override
