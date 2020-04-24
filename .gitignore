@@ -37,6 +37,7 @@ tutoringWebsite/.classpath
 tutoringWebsite/.classpath
 
 *.properties
+
 *.log
 
 tutoringWebsite/C/test/library.db/service.properties
