@@ -736,13 +736,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Announcement> announcementList;
 					List<User> userList;
-					//List<Session> sessionList;
+					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
-						//sessionList			= InitialData.getSession();
+						sessionList			= InitialData.getSession();
 						//sessionList			= InitialData.getSession();
 						//studyGroupList 		= InitialData.getStudyGroup();					
 					} catch (IOException e) {
@@ -789,7 +789,7 @@ public class DerbyDatabase implements IDatabase{
 						}	
 						*/
 
-						/*
+						
 
 						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
@@ -805,7 +805,7 @@ public class DerbyDatabase implements IDatabase{
 						
 
 						System.out.println("Session table populated");	
-						*/
+						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
