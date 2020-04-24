@@ -83,10 +83,10 @@ public class DerbyDatabase implements IDatabase{
 				});
 	}
 	@Override
-	public List<User> deleteAccount(final String email, final String password){
-		return executeTransaction(new Transaction<List<User>>() {
+	public User deleteAccount(final String email, final String password){
+		return executeTransaction(new Transaction<User>() {
 			@Override
-			public List<User> execute(Connection conn) throws SQLException {
+			public User execute(Connection conn) throws SQLException {
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
@@ -96,7 +96,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					
-					List<User> result = new ArrayList<User>();
+					User result = new User();
 					
 					stmt1 = conn.prepareStatement(
 							"delete from Users " +
@@ -105,25 +105,17 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt1.setString(1, email);
 					stmt1.setString(2, password);
-					
-					
-					
 					stmt1.executeUpdate();
 					
 					System.out.println("user deleted");
-					
-					
-					
 					stmt3 = conn.prepareStatement(
-							"select * from Users" 
-							
-							
-							
-					//sql to add an account to list
+							"select * from Users " +
+							"where email = ? and password = ?"
 							);
 			
 					
-					
+					stmt3.setString(1, email);
+					stmt3.setString(2, password);
 					resultSet = stmt3.executeQuery();
 					Boolean found = false;
 
@@ -131,15 +123,12 @@ public class DerbyDatabase implements IDatabase{
 						found = true;			
 						User user = new User();
 						loadUser(user,resultSet,1);
-						result.add(user);
+						result = user;
+					}
 					
-					}
-					for (User temp : result) {
-						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getPassword()+", " + temp.getName()+", " + temp.getUserType());
-					}
-
+					System.out.println( result.getUser_Id()+", "+result.getEmail()+ ", " + result.getPassword());
 					if(found = false) {
-						System.out.println("<" + email + "> was not found in the user database");
+						System.out.println("<" + email + "> was sucessfully deleted from the user database");
 					}
 					
 					System.out.println("user gone");
