@@ -1,5 +1,7 @@
 package tutoringWebsite.persist;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import tutoringWebsite.model.*;
@@ -13,5 +15,7 @@ public interface IDatabase {
 	List<Announcement> createAnnouncementCourse(String message, String date, String time);
 	List<Session> getScheduleByDate(String timeframe);
 	List<User> getAccount(String email, String password);
-
+	List<Session> deleteSession(int sessionId);
+	List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course);
+	List<User> getTutors();
 }
