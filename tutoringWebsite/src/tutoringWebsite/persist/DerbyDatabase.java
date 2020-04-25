@@ -95,7 +95,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
-		
+		 
 				try {
 					
 					User result = new User();
@@ -217,8 +217,7 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt3 = null;						
 				ResultSet resultSet    = null;
 				List<Announcement> result = null;
-				
-				try {
+				 				try {
 					
 					stmt1 = conn.prepareStatement(
 						"select announcements.* "+

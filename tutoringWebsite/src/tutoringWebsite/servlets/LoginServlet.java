@@ -47,17 +47,19 @@ public class LoginServlet extends HttpServlet {
 		if (email == null || pw == null || email.equals("") || pw.equals("")) {
 			errorMessage = "Please specify both user name and password";
 		} else {
-			model      = new User();
+			model      = new User(); 
 			controller = new UserController(model);
 			
 			validLogin = controller.validateCredentials(email, pw);
 			System.out.println("account accessed");	
-			current    = controller.getAccount(email, pw);
-			System.out.println("got user");	
-			
-			
 		
-			 if (!validLogin) {
+			if(validLogin) {
+				current    = controller.getAccount(email, pw);
+				System.out.println("got user");	
+				
+			}
+		
+			else {
 				errorMessage = "Username and/or password invalid";
 			}
 		}
