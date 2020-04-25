@@ -36,7 +36,8 @@ public class ProfileServlet extends HttpServlet {
 		String email         = null;
 		String pw           = null;
 		User current 		= new User();
-		boolean validLogin  = false;
+		boolean validLogin  = true;
+		boolean isLogin		= false;
 		
 		
 
@@ -46,15 +47,22 @@ public class ProfileServlet extends HttpServlet {
 		System.out.println("   Email: <" + email + "> PW: <" + pw + ">");			
 		model      = new User();
 		controller = new UserController(model);
+		if(current != null) {
 		email = req.getParameter(current.getEmail());
 		pw   = req.getParameter(current.getPassword());
-
-		controller.removeAccount(current);
-		validLogin = controller.validateCredentials(email, pw);
-		System.out.println("setting attributes");	
+		isLogin = controller.validateCredentials(email, pw);
+		}
+		if(isLogin) {
+			controller.removeAccount(current);
+			validLogin = controller.validateCredentials(email, pw);
+			System.out.println("setting attributes");	
+		}
+		else {
+			errorMessage = "not logged in";
+		}
 		// Add parameters as request attributes
 	
-
+ 
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("deleteAccount", validLogin);

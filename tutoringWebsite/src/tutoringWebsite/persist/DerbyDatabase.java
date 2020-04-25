@@ -703,11 +703,7 @@ public class DerbyDatabase implements IDatabase{
 					
 					System.out.println("user created");
 					
-					stmt1 = conn.prepareStatement(
-							"select user_id from Users " +
-							"where email = ? and password = ? and name = ? and userType = ? "
-							);
-					
+				
 					
 					stmt3 = conn.prepareStatement(
 							"select * from Users" +
