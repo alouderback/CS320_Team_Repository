@@ -12,7 +12,7 @@ public interface IDatabase {
 	List<Announcement> getAnnouncementsforSessionWithSessionId(int sessionId);
 	List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(int studyGroupId);
 	List<Announcement> getAllAnnouncements();
-	List<Announcement> removeAnnouncement(int announcementId, int announcementType);
+	List<Announcement> removeAnnouncement(int announcementId);
 	List<User> useLogin(String email, String password);
 	User deleteAccount(String email, String password);
 	List<User> createAccount(String email, String password, String name, int userType);

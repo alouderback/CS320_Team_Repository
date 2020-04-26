@@ -24,10 +24,8 @@ public class derbyDatabaseAnnouncementTest {
 	
 	ArrayList<Announcement> announcements = null;
 	ArrayList<Session> sessions = null;
-	ArrayList<StudyGroup> studyGroups = null;	
-	List<Announcement> announcementSessionList = null;	
-	List<Announcement> announcementStudyGroupList = null;	
-	List<Announcement> allAnnouncementList = null;
+	ArrayList<StudyGroup> studyGroups = null;		
+	List<Announcement> announcementList = null;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -123,9 +121,75 @@ public class derbyDatabaseAnnouncementTest {
 		}
 	}*/
 	@Test
-	public void testCreatAnnouncement() {
-		System.out.println("\n*** Testing createAnnouncement***");
+	public void testCreatAnnouncementforSession() {
+		System.out.println("\n*** Testing createAnnouncement Session***");
+		//new information for the new Announcement
+		String message     = "testing create announcement session";
+		LocalDate date     = LocalDate.of(2020, 04, 24);
+		LocalTime time = LocalTime.of(12, 30);
+		int announcementType = 1;
+		int typeId = 1;
 		
+		int announcement_id = db.createAnnouncement(message, date, time, announcementType, typeId);
 		
+		System.out.println("Got ID in test");
+		
+		if(announcement_id > 0) {
+			announcementList = db.getAnnouncementsforSessionWithSessionId(typeId);
+			
+			System.out.println("retrieved announcement list");
+			
+			//checks to make sure the announcement is in the table
+			if (announcementList.isEmpty()) {
+				System.out.println("No announcements found for type <" + typeId + ">");
+				fail("Failed to insert new announcement <" + message + "> into Library DB");
+			}
+			else {
+				//the announcement was successfully added
+				System.out.println("New announcement (ID: " + typeId + ") successfully added to Announcements table: <" + message + ">");
+				//remove the announcement
+				List<Announcement> announcements = db.removeAnnouncement(announcement_id);				
+			}
+		}
+		else{
+			System.out.println("Failed to insert new announcement (ID: " + announcement_id + ") into Announcements table: <" + message + ">");
+			fail("Failed to insert new announcement <" + message + "> into Library DB");
+		}
+	}
+	@Test
+	public void testCreatAnnouncementforStudyGroup() {
+		System.out.println("\n*** Testing createAnnouncement Study Group***");
+		//new information for the new Announcement
+		String message     = "testing create announcement study group";
+		LocalDate date     = LocalDate.of(2020, 04, 25);
+		LocalTime time = LocalTime.of(12, 30);
+		int announcementType = 2;
+		int typeId = 1;
+		
+		int announcement_id = db.createAnnouncement(message, date, time, announcementType, typeId);
+		
+		System.out.println("Got ID in test");
+		
+		if(announcement_id > 0) {
+			announcementList = db.getAnnouncementsforStudyGroupWithStudyGroupId(typeId);
+			
+			System.out.println("retrieved announcement list");
+			
+			//checks to make sure the announcement is in the table
+			if (announcementList.isEmpty()) {
+				System.out.println("No announcements found for type <" + typeId + ">");
+				fail("Failed to insert new announcement <" + message + "> into Library DB");
+			}
+			else {
+				//the announcement was successfully added
+				System.out.println("New announcement (ID: " + typeId + ") successfully added to Announcements table: <" + message + ">");
+				//remove the announcement
+				List<Announcement> announcements = db.removeAnnouncement(announcement_id);				
+			}
+		}
+		else{
+			System.out.println("Failed to insert new announcement (ID: " + announcement_id + ") into Announcements table: <" + message + ">");
+			fail("Failed to insert new announcement <" + message + "> into Library DB");
+		}
 	}
 }	
