@@ -860,8 +860,8 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
 					PreparedStatement stmt3 = null;				
-
 					PreparedStatement stmt4 = null;
+					PreparedStatement stmt5 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
@@ -903,16 +903,6 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("Users table created");					
 
 
-	////////////////////EDIT STUDY GROUPS TABLE MUST BE JUNCTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-						/*stmt3 = conn.prepareStatement(
-								"create table StudyGroups (" +
-								"	book_id   integer constraint book_id references books, " +
-								"	author_id integer constraint author_id references authors " +
-								")"
-						);
-
-						stmt3.executeUpdate(); */
-
 						
 						//create study group table
 						stmt3 = conn.prepareStatement(
@@ -943,7 +933,22 @@ public class DerbyDatabase implements IDatabase{
 						stmt4.executeUpdate();
 
 						System.out.println("Sessions table created");	
+						
+						//create course table
+						stmt5 = conn.prepareStatement(
+							"create table Course (" +
+							"	course_id integer primary key " +
+							"		generated always as identity (start with 1, increment by 1), " +									
+							"	title varchar(40)," +
+							"	session_id integer" +
+							")"
+						);	
 
+						stmt5.executeUpdate();
+
+						System.out.println("Announcements table created");
+						
+						//student table
 						stmt8 = conn.prepareStatement(
 								"create table Students (" +
 								"	student_id integer primary key " +
