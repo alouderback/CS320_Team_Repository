@@ -95,7 +95,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
-		
+		 
 				try {
 					
 					User result = new User();
@@ -163,7 +163,7 @@ public class DerbyDatabase implements IDatabase{
 					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
 						"insert into Announcements(message, date, time, announcementType, typeId) "
-							+"values(?, ?, ?, ?)"
+							+"values(?, ?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
 					stmt.setString(2,  date.toString());
@@ -202,13 +202,13 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(stmt);
 					DBUtil.closeQuietly(stmt2);
 				}
-				System.out.println("Returning announcement");
+				System.out.println("Returning announcement ID");
 			return resultId;
 			}
 		});	
 	}
 	@Override
-	public List<Announcement> removeAnnouncement(final int announcementId, final int announcementType) {
+	public List<Announcement> removeAnnouncement(final int announcementId) {
 		return executeTransaction(new Transaction<List<Announcement>>() {
 			@Override
 			public List<Announcement> execute(Connection conn) throws SQLException {
@@ -217,8 +217,7 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt3 = null;						
 				ResultSet resultSet    = null;
 				List<Announcement> result = null;
-				
-				try {
+				 				try {
 					
 					stmt1 = conn.prepareStatement(
 						"select announcements.* "+
@@ -249,25 +248,6 @@ public class DerbyDatabase implements IDatabase{
 						stmt2.setInt(1, announcementId);
 						stmt2.executeUpdate();
 					
-						if(announcementType==1) {
-							stmt3 = conn.prepareStatement(
-								"delete from SessionAnnouncement "+
-								"where announcement_id = ?"
-							);
-							stmt3.setInt(1, announcementId);
-							stmt3.executeUpdate();
-						}
-						else if(announcementType == 2) {
-							stmt3 = conn.prepareStatement(
-								"delete from StudyGroupAnnouncement "+
-								"where announcement_id = ?"
-							);
-							stmt3.setInt(1, announcementId);
-							stmt3.executeUpdate();
-						}
-						else {
-							System.out.println("Incorrect announcementType");
-						}
 					}
 										
 					return result;
@@ -292,14 +272,17 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				List<Announcement> result;
 				try {
+					System.out.println("Retriveing announcements with sessionId");
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
-					"from Announcements, Sessions, SessionAnnouncement "+
-					"where session_id = ? and Sessions.session_id = SessionAnnouncement.session_id "+
-					"order by Sessions.date desc"
+					"from Announcements "+
+					"where typeId = ? and announcementType = 1 "+
+					"order by Announcements.date desc "
 					);
+					stmt.setInt(1, sessionId);
 					
 					resultSet = stmt.executeQuery();
+					System.out.println("Retrieved announcements");
 					result = new ArrayList<Announcement>();
 				
 					while(resultSet.next()) {
@@ -307,12 +290,13 @@ public class DerbyDatabase implements IDatabase{
 						loadAnnouncement(announcement, resultSet, 1);
 						result.add(announcement);
 					}
-					
+					System.out.println("Announcements added to list");
 				}
 				finally {
 					DBUtil.closeQuietly(stmt);
 					DBUtil.closeQuietly(resultSet);
 				}
+				System.out.println("returning list");
 				return result;
 			}
 		});
@@ -331,11 +315,11 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
-					"from Announcements, StudyGroups, StudyGroupAnnouncement "+
-					"where studyGroup_id = ? and StudyGroups.studyGroup_id = StudyGroupAnnouncement.studyGroup_id "+
-					"order by StudyGroups.date desc"
+					"from Announcements "+
+					"where typeId = ? and announcementType = 2 "+
+					"order by Announcements.date desc"
 					);
-					
+					stmt.setInt(1, studyGroupId);
 					resultSet = stmt.executeQuery();
 					result = new ArrayList<Announcement>();
 				
@@ -400,13 +384,14 @@ public class DerbyDatabase implements IDatabase{
 	private void loadAnnouncement(Announcement announcement, ResultSet resultSet, int index) throws SQLException {
 		announcement.setAnnouncementId(resultSet.getInt(index++));
 		announcement.setMessage(resultSet.getString(index++));
-		announcement.setAnnouncementType(resultSet.getInt(index++));
 		LocalDate date = LocalDate.now();
 		date = LocalDate.parse(resultSet.getString(index++));
 		announcement.setDate(date);
 		LocalTime time = LocalTime.now();
 		time = LocalTime.parse(resultSet.getString(index++));
 		announcement.setTime(time);
+		announcement.setAnnouncementType(resultSet.getInt(index++));
+		announcement.setTypeId(resultSet.getInt(index++));
 	}
 	public List<Session> getScheduleByDate(String timeframe){
 		//Method currently doesn't use parameter timeframe; returns whole list of sessions
@@ -992,13 +977,16 @@ public class DerbyDatabase implements IDatabase{
 					List<User> userList;
 					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
+					List<Student> studentList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
 						sessionList			= InitialData.getSession();
 
-						//studyGroupList 		= InitialData.getStudyGroup();					
+						//studyGroupList 		= InitialData.getStudyGroup();		
+						studentList 		= InitialData.getStudent();
+
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
@@ -1007,7 +995,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement insertUser       = null;
 					PreparedStatement insertSession    = null;
 					//PreparedStatement insertStudyGroup = null;
-
+					PreparedStatement insertStudent    = null;
 					try {
 						// populating announcement table
 						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
@@ -1024,7 +1012,7 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Announcement table populated");
 						
-						// must completely populate Books table before populating BookAuthors table because of primary keys
+						
 						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
 							insertUser.setString(1, user.getEmail());
@@ -1045,9 +1033,6 @@ public class DerbyDatabase implements IDatabase{
 							
 						}	
 						*/
-
-						
-
 						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
 							insertSession.setString(1, session.getDate().toString());
@@ -1059,16 +1044,25 @@ public class DerbyDatabase implements IDatabase{
 							insertSession.addBatch();
 						}
 						insertSession.executeBatch();
-						
-
 						System.out.println("Session table populated");	
+						
+						insertStudent = conn.prepareStatement("insert into Students (major, gradYear, user_id) values (?, ?, ?)");
+						for (Student stud : studentList) {
+							insertStudent.setString(1,stud.getMajor());
+							insertStudent.setString(2,stud.getYear());
+							insertStudent.setInt(3,stud.getUser_Id());
+							insertStudent.addBatch();
+						}
+						insertStudent.executeBatch();
+						System.out.println("Students table populated");					
 						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
 						DBUtil.closeQuietly(insertSession);
-						//DBUtil.closeQuietly(insertStudyGroup);				
+						//DBUtil.closeQuietly(insertStudyGroup);		
+						DBUtil.closeQuietly(insertStudent);
 					}
 				}
 			});

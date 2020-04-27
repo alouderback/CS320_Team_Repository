@@ -21,22 +21,17 @@ import tutoringWebsite.persist.IDatabase;
 public class derbyDatabaseAnnouncementTest {
 
 	private IDatabase db = null;
-	
 	ArrayList<Announcement> announcements = null;
 	ArrayList<Session> sessions = null;
-	ArrayList<StudyGroup> studyGroups = null;	
-	List<Announcement> announcementSessionList = null;	
-	List<Announcement> announcementStudyGroupList = null;	
-	List<Announcement> allAnnouncementList = null;
+	ArrayList<StudyGroup> studyGroups = null;		
+	List<Announcement> announcementList = null;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
-
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
-
 	@Before
 	public void setUp() throws Exception {
 		// creating DB instance here
@@ -44,22 +39,20 @@ public class derbyDatabaseAnnouncementTest {
 		db = DatabaseProvider.getInstance();		
 		
 	}
-
 	@After
 	public void tearDown() throws Exception {
 	}
-
-	/*@Test
+	@Test
 	public void testgetAnnouncementsforSession() {
 		System.out.println("\n*** Testing getAnnouncementsforSession ***");
 		
 		int sessionId = 1;
 
 		// get the list of (Author, Book) pairs from DB
-		announcementSessionList = db.getAnnouncementsforSessionWithSessionId(sessionId);
+		announcementList = db.getAnnouncementsforSessionWithSessionId(sessionId);
 		
 		// NOTE: this is a simple test to check if no results were found in the DB
-		if (announcementSessionList.isEmpty()) {
+		if (announcementList.isEmpty()) {
 			System.out.println("No announcements for that session");
 			fail("No announcements retrieved from Announcements DB");
 		}
@@ -67,7 +60,7 @@ public class derbyDatabaseAnnouncementTest {
 		//       inspected for correct content - well-formed objects with correct content
 		else {			
 			announcements = new ArrayList<Announcement>();
-			for (Announcement announcement : announcementSessionList) {
+			for (Announcement announcement : announcementList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
 				+ "," + announcement.getDate() + "," + announcement.getTime());
@@ -81,10 +74,10 @@ public class derbyDatabaseAnnouncementTest {
 		int studyGroupId = 1;
 
 		// get the list of (Author, Book) pairs from DB
-		announcementStudyGroupList = db.getAnnouncementsforStudyGroupWithStudyGroupId(studyGroupId);
+		announcementList = db.getAnnouncementsforStudyGroupWithStudyGroupId(studyGroupId);
 		
 		// NOTE: this is a simple test to check if no results were found in the DB
-		if (announcementStudyGroupList.isEmpty()) {
+		if (announcementList.isEmpty()) {
 			System.out.println("No announcements for that study group");
 			fail("No announcements retrieved from Announcements DB");
 		}
@@ -92,7 +85,7 @@ public class derbyDatabaseAnnouncementTest {
 		//       inspected for correct content - well-formed objects with correct content
 		else {			
 			announcements = new ArrayList<Announcement>();
-			for (Announcement announcement : announcementStudyGroupList) {
+			for (Announcement announcement : announcementList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
 				+ "," + announcement.getDate() + "," + announcement.getTime());
@@ -104,10 +97,10 @@ public class derbyDatabaseAnnouncementTest {
 		System.out.println("\n*** Testing getAllAnnouncements ***");
 
 		// get the list of (Author, Book) pairs from DB
-		allAnnouncementList = db.getAllAnnouncements();
+		announcementList = db.getAllAnnouncements();
 		
 		// NOTE: this is a simple test to check if no results were found in the DB
-		if (allAnnouncementList.isEmpty()) {
+		if (announcementList.isEmpty()) {
 			System.out.println("No announcements at all");
 			fail("No announcements retrieved from Announcements DB");
 		}
@@ -115,17 +108,83 @@ public class derbyDatabaseAnnouncementTest {
 		//       inspected for correct content - well-formed objects with correct content
 		else {			
 			announcements = new ArrayList<Announcement>();
-			for (Announcement announcement : allAnnouncementList) {
+			for (Announcement announcement : announcementList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
 				+ "," + announcement.getDate() + "," + announcement.getTime());
 			}			
 		}
-	}*/
+	}
 	@Test
-	public void testCreatAnnouncement() {
-		System.out.println("\n*** Testing createAnnouncement***");
+	public void testCreatAnnouncementforSession() {
+		System.out.println("\n*** Testing createAnnouncement Session***");
+		//new information for the new Announcement
+		String message     = "testing create announcement session";
+		LocalDate date     = LocalDate.of(2020, 04, 24);
+		LocalTime time = LocalTime.of(12, 30);
+		int announcementType = 1;
+		int typeId = 1;
 		
+		int announcement_id = db.createAnnouncement(message, date, time, announcementType, typeId);
 		
+		System.out.println("Got ID in test");
+		
+		if(announcement_id > 0) {
+			announcementList = db.getAnnouncementsforSessionWithSessionId(typeId);
+			
+			System.out.println("retrieved announcement list");
+			
+			//checks to make sure the announcement is in the table
+			if (announcementList.isEmpty()) {
+				System.out.println("No announcements found for type <" + typeId + ">");
+				fail("Failed to insert new announcement <" + message + "> into Library DB");
+			}
+			else {
+				//the announcement was successfully added
+				System.out.println("New announcement (ID: " + typeId + ") successfully added to Announcements table: <" + message + ">");
+				//remove the announcement
+				List<Announcement> announcements = db.removeAnnouncement(announcement_id);				
+			}
+		}
+		else{
+			System.out.println("Failed to insert new announcement (ID: " + announcement_id + ") into Announcements table: <" + message + ">");
+			fail("Failed to insert new announcement <" + message + "> into Library DB");
+		}
+	}
+	@Test
+	public void testCreatAnnouncementforStudyGroup() {
+		System.out.println("\n*** Testing createAnnouncement Study Group***");
+		//new information for the new Announcement
+		String message     = "testing create announcement study group";
+		LocalDate date     = LocalDate.of(2020, 04, 25);
+		LocalTime time = LocalTime.of(12, 30);
+		int announcementType = 2;
+		int typeId = 1;
+		
+		int announcement_id = db.createAnnouncement(message, date, time, announcementType, typeId);
+		
+		System.out.println("Got ID in test");
+		
+		if(announcement_id > 0) {
+			announcementList = db.getAnnouncementsforStudyGroupWithStudyGroupId(typeId);
+			
+			System.out.println("retrieved announcement list");
+			
+			//checks to make sure the announcement is in the table
+			if (announcementList.isEmpty()) {
+				System.out.println("No announcements found for type <" + typeId + ">");
+				fail("Failed to insert new announcement <" + message + "> into Library DB");
+			}
+			else {
+				//the announcement was successfully added
+				System.out.println("New announcement (ID: " + typeId + ") successfully added to Announcements table: <" + message + ">");
+				//remove the announcement
+				List<Announcement> announcements = db.removeAnnouncement(announcement_id);				
+			}
+		}
+		else{
+			System.out.println("Failed to insert new announcement (ID: " + announcement_id + ") into Announcements table: <" + message + ">");
+			fail("Failed to insert new announcement <" + message + "> into Library DB");
+		}
 	}
 }	

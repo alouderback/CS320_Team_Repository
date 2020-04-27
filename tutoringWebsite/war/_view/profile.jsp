@@ -28,9 +28,20 @@
 			            	<td>${user.password}</td>
 			            	<td>${user.name}</td>
 			            	<td>${user.userType}</td>			            
-			        	</tr>
+			    </tr>
 	           
             </div>
         </form>
+        <form action="${pageContext.servletContext.contextPath}/profile" method="post">
+			<table>
+				<tr>
+					<td><input type="hidden" name="email" size="12" value="${user.email}" /></td>
+				</tr>
+				<tr>
+					<td><input type="hidden" name="password" size="12" value="${user.password}" /></td>
+				</tr>
+			</table>
+			<input type="Submit" name="submit" value="Delete Account">
+		</form>
     </body>
 </html>|
