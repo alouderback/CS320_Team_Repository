@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.UserController;
-import tutoringWebsite.controllers.UserController;
-import tutoringWebsite.model.Login;
+
+
 import tutoringWebsite.model.User;
 
 public class ProfileServlet extends HttpServlet {
@@ -30,39 +30,44 @@ public class ProfileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("\nLoginServlet: doPost");
+		System.out.println("\nProfile Servlet: doPost");
 
 		String errorMessage = null;
 		String email         = null;
 		String pw           = null;
 		User current 		= new User();
 		boolean validLogin  = false;
-		boolean validUser   = false;
+		
 		
 
 		// Decode form parameters and dispatch to controller
 		
 		current = (User) req.getSession().getAttribute("user");
 		System.out.println("   Email: <" + email + "> PW: <" + pw + ">");			
-		
-		
+		model      = new User();
+		controller = new UserController(model);
+		email = req.getParameter(current.getEmail());
+		pw   = req.getParameter(current.getPassword());
+
+		controller.removeAccount(current);
+		validLogin = controller.validateCredentials(email, pw);
 		System.out.println("setting attributes");	
 		// Add parameters as request attributes
 	
 
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
-		req.setAttribute("login",        validLogin);
+		req.setAttribute("deleteAccount", validLogin);
 		//req.setAttribute("user",        current);
 
-		// if login is valid, start a session
-		if (validLogin) {
-			System.out.println("   Valid login - starting session, redirecting to /index");
+		// if login is valid, start a session 
+		if (!validLogin) {
+			System.out.println("   Account Deleted - starting session, redirecting to /index");
 
 			// store user object in session
 			//currently stores onlt the name but but shuld we store the enitre class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
-			req.getSession().setAttribute("user", current);
+			req.getSession().setAttribute("user", null);
 
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");
@@ -70,9 +75,9 @@ public class ProfileServlet extends HttpServlet {
 			return;
 		}
 		
-		System.out.println("   Invalid login - returning to /Login");
+		System.out.println("   Invalid deletion - returning to /profile");
 
 		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/profile.jsp").forward(req, resp);
 	}
 }

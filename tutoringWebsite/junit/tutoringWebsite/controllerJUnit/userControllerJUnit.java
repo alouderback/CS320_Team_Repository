@@ -38,7 +38,7 @@ public class userControllerJUnit {
 		assertTrue(controller.validateCredentials("ebosse@ycp.edu", "yeenk"));
 		assertFalse(controller.validateCredentials("ebosse@ycp.edu", "yeenky"));
 		 
-		 System.out.println("test email: " + Eric.getEmail());
+		
 		assertTrue(Eric2.getEmail().equals("ebosse@ycp.edu"));
 		assertTrue(Eric2.getName().equals("Eric Bosse"));
 		assertTrue(Eric2.getPassword().equals("yeenk"));
@@ -49,10 +49,12 @@ public class userControllerJUnit {
 	public void testGetAccount() {
 		 
 		User test = controller.getAccount("ebosse@ycp.edu","yeenk");
-		assertTrue(Eric.getEmail().equals(test.getEmail()));
-		assertTrue(Eric.getName().equals(test.getName()));
-		assertTrue(Eric.getPassword().equals(test.getPassword()));
-		assertTrue(Eric.getUserType()== test.getUserType());
+		assertFalse(test.equals(null));
+		System.out.println("test email: " + test.getEmail());
+		assertTrue(test.getEmail().equals("ebosse@ycp.edu"));
+		assertTrue(test.getName().equals("Eric Bosse"));
+		assertTrue(test.getPassword().equals("yeenk"));
+		assertTrue(test.getUserType() == 1);
 		
 		//Hey hey this method returns me with a blank user I think
 	}
@@ -68,7 +70,7 @@ public class userControllerJUnit {
 	@Test
 	public void testRemoveAccount() {
 		
-		 System.out.println("test email: " + Eric.getEmail());
+		// System.out.println("test email: " + Eric.getEmail());
 		  Eric = controller.getAccount("ebosse@ycp.edu","yeenk");
 			controller.removeAccount(Eric);
 			 try {
