@@ -277,7 +277,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 					"from Announcements "+
-					"where typeId = ? "+
+					"where typeId = ? and announcementType = 1 "+
 					"order by Announcements.date desc "
 					);
 					stmt.setInt(1, sessionId);
@@ -317,7 +317,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 					"from Announcements "+
-					"where typeId = ? "+
+					"where typeId = ? and announcementType = 2 "+
 					"order by Announcements.date desc"
 					);
 					stmt.setInt(1, studyGroupId);
