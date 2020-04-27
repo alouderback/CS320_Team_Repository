@@ -35,9 +35,11 @@ public class ProfileServlet extends HttpServlet {
 		String errorMessage = null;
 		String email         = null;
 		String pw           = null;
+		int userType		= 0;
 		User current 		= new User();
 		boolean validLogin  = true;
 		boolean isLogin		= false;
+		boolean isStudent	= false;
 		
 		
 
@@ -50,6 +52,10 @@ public class ProfileServlet extends HttpServlet {
 		if(current != null) {
 		email = req.getParameter(current.getEmail());
 		pw   = req.getParameter(current.getPassword());
+		userType = current.getUserType();
+		if(userType == 1|| userType == 2) {
+			isStudent = true;
+		}
 		isLogin = controller.validateCredentials(email, pw);
 		}
 		if(isLogin) {
@@ -66,6 +72,7 @@ public class ProfileServlet extends HttpServlet {
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("deleteAccount", validLogin);
+		req.setAttribute("isStudent", isStudent);
 		//req.setAttribute("user",        current);
 
 		// if login is valid, start a session 

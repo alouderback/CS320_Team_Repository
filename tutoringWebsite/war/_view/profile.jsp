@@ -31,6 +31,10 @@
 			    </tr>
 	           
             </div>
+            <c:if test="${ isStudent}">
+        					 <td>Computer Engieering</td>
+			            	<td>2022</td>
+		</c:if>
         </form>
         <form action="${pageContext.servletContext.contextPath}/profile" method="post">
 			<table>
