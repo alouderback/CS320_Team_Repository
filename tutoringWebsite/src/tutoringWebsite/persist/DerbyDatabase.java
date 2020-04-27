@@ -874,13 +874,15 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					//PreparedStatement stmt3 = null;	
+					PreparedStatement stmt3 = null;				
+
 					PreparedStatement stmt4 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
 
 					try {
+						//create announcement table
 						stmt1 = conn.prepareStatement(
 							"create table Announcements (" +
 							"	announcement_id integer primary key " +
@@ -897,6 +899,9 @@ public class DerbyDatabase implements IDatabase{
 
 						System.out.println("Announcements table created");
 
+						
+						//create user table
+
 						stmt2 = conn.prepareStatement(
 								"create table Users (" +
 								"	user_id integer primary key " +
@@ -912,6 +917,7 @@ public class DerbyDatabase implements IDatabase{
 
 						System.out.println("Users table created");					
 
+
 	////////////////////EDIT STUDY GROUPS TABLE MUST BE JUNCTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 						/*stmt3 = conn.prepareStatement(
 								"create table StudyGroups (" +
@@ -922,7 +928,22 @@ public class DerbyDatabase implements IDatabase{
 
 						stmt3.executeUpdate(); */
 
+						
+						//create study group table
+						stmt3 = conn.prepareStatement(
+								"create table Groups (" +
+								"	group_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	course_id integer, " +
+								"	session_id integer" +
+								")"
+						
+						);
+						stmt3.executeUpdate();
+						System.out.println("Study Group table created");
 
+
+						//create session table
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
@@ -955,7 +976,7 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
-						//DBUtil.closeQuietly(stmt3);
+						DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
 						DBUtil.closeQuietly(stmt8);
 					}
