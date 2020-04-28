@@ -21,20 +21,22 @@
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
             <div class = "pageDesc">
-	           <p>Your Profile</p>
-	           
-	           <tr>
-			            	<td>${user.email}</td>
-			            	<td>${user.password}</td>
-			            	<td>${user.name}</td>
-			            	<td>${user.userType}</td>			            
-			    </tr>
-	           
-            </div>
-            <c:if test="${ isStudent}">
-        					 <td>Computer Engieering</td>
-			            	<td>2022</td>
-		</c:if>
+	           <h1>Profile</h1>
+	        </div>
+	       <body>
+	          
+							<p> Email: 	<td>${user.email}</td></p>	           
+			            	<p> Password: <td>${user.password}</td>
+			            	<p> Name: <td>${user.name}</td>
+			            	<p> Type: <td>${user.userType}</td>			            
+			    
+	          
+          
+            	<c:if test="${ isStudent}">
+        					 <td>Computer Engineering</td>
+			            	 <td>2022</td>
+				</c:if>
+			</body>
         </form>
         <form action="${pageContext.servletContext.contextPath}/profile" method="post">
 			<table>
