@@ -35,7 +35,10 @@
   	<servlet-name>StudyGroupServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.StudyGroupServlet</servlet-class>
   </servlet>
-
+ <servlet>
+  	<servlet-name>ProfileServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.ProfileServlet</servlet-class>
+  </servlet>
 
  
 
@@ -70,7 +73,10 @@
     <servlet-name>ScheduleServlet</servlet-name>
     <url-pattern>/schedule</url-pattern>
   </servlet-mapping>
-
+<servlet-mapping>
+    <servlet-name>ProfileServlet</servlet-name>
+    <url-pattern>/profile</url-pattern>
+  </servlet-mapping>
 
   
 

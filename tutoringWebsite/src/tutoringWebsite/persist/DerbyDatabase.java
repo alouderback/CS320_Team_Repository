@@ -95,7 +95,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
-		
+		 
 				try {
 					
 					User result = new User();
@@ -217,8 +217,7 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt3 = null;						
 				ResultSet resultSet    = null;
 				List<Announcement> result = null;
-				
-				try {
+				 				try {
 					
 					stmt1 = conn.prepareStatement(
 						"select announcements.* "+
@@ -860,13 +859,15 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					//PreparedStatement stmt3 = null;	
+					PreparedStatement stmt3 = null;				
 					PreparedStatement stmt4 = null;
+					PreparedStatement stmt5 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
 
 					try {
+						//create announcement table
 						stmt1 = conn.prepareStatement(
 							"create table Announcements (" +
 							"	announcement_id integer primary key " +
@@ -883,6 +884,9 @@ public class DerbyDatabase implements IDatabase{
 
 						System.out.println("Announcements table created");
 
+						
+						//create user table
+
 						stmt2 = conn.prepareStatement(
 								"create table Users (" +
 								"	user_id integer primary key " +
@@ -898,17 +902,23 @@ public class DerbyDatabase implements IDatabase{
 
 						System.out.println("Users table created");					
 
-	////////////////////EDIT STUDY GROUPS TABLE MUST BE JUNCTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-						/*stmt3 = conn.prepareStatement(
-								"create table StudyGroups (" +
-								"	book_id   integer constraint book_id references books, " +
-								"	author_id integer constraint author_id references authors " +
+
+						
+						//create study group table
+						stmt3 = conn.prepareStatement(
+								"create table Groups (" +
+								"	group_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	course_id integer, " +
+								"	session_id integer" +
 								")"
+						
 						);
+						stmt3.executeUpdate();
+						System.out.println("Study Group table created");
 
-						stmt3.executeUpdate(); */
 
-
+						//create session table
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
 								"	session_id integer primary key " +
@@ -923,7 +933,22 @@ public class DerbyDatabase implements IDatabase{
 						stmt4.executeUpdate();
 
 						System.out.println("Sessions table created");	
+						
+						//create course table
+						stmt5 = conn.prepareStatement(
+							"create table Course (" +
+							"	course_id integer primary key " +
+							"		generated always as identity (start with 1, increment by 1), " +									
+							"	title varchar(40)," +
+							"	session_id integer" +
+							")"
+						);	
 
+						stmt5.executeUpdate();
+
+						System.out.println("Announcements table created");
+						
+						//student table
 						stmt8 = conn.prepareStatement(
 								"create table Students (" +
 								"	student_id integer primary key " +
@@ -941,7 +966,7 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
-						//DBUtil.closeQuietly(stmt3);
+						DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
 						DBUtil.closeQuietly(stmt8);
 					}
@@ -957,13 +982,16 @@ public class DerbyDatabase implements IDatabase{
 					List<User> userList;
 					List<Session> sessionList;
 					//List<StudyGroup> studyGroupList;
+					List<Student> studentList;
 					
 					try {
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
-						//sessionList			= InitialData.getSession();
 						sessionList			= InitialData.getSession();
-						//studyGroupList 		= InitialData.getStudyGroup();					
+
+						//studyGroupList 		= InitialData.getStudyGroup();		
+						studentList 		= InitialData.getStudent();
+
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
@@ -972,7 +1000,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement insertUser       = null;
 					PreparedStatement insertSession    = null;
 					//PreparedStatement insertStudyGroup = null;
-
+					PreparedStatement insertStudent    = null;
 					try {
 						// populating announcement table
 						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
@@ -989,7 +1017,7 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Announcement table populated");
 						
-						// must completely populate Books table before populating BookAuthors table because of primary keys
+						
 						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
 						for (User user : userList) {
 							insertUser.setString(1, user.getEmail());
@@ -1010,9 +1038,6 @@ public class DerbyDatabase implements IDatabase{
 							
 						}	
 						*/
-
-						
-
 						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
 							insertSession.setString(1, session.getDate().toString());
@@ -1024,16 +1049,25 @@ public class DerbyDatabase implements IDatabase{
 							insertSession.addBatch();
 						}
 						insertSession.executeBatch();
-						
-
 						System.out.println("Session table populated");	
+						
+						insertStudent = conn.prepareStatement("insert into Students (major, gradYear, user_id) values (?, ?, ?)");
+						for (Student stud : studentList) {
+							insertStudent.setString(1,stud.getMajor());
+							insertStudent.setString(2,stud.getYear());
+							insertStudent.setInt(3,stud.getUser_Id());
+							insertStudent.addBatch();
+						}
+						insertStudent.executeBatch();
+						System.out.println("Students table populated");					
 						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
 						DBUtil.closeQuietly(insertSession);
-						//DBUtil.closeQuietly(insertStudyGroup);				
+						//DBUtil.closeQuietly(insertStudyGroup);		
+						DBUtil.closeQuietly(insertStudent);
 					}
 				}
 			});

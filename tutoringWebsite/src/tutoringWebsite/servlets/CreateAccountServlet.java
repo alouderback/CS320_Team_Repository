@@ -75,7 +75,7 @@ public class CreateAccountServlet extends HttpServlet {
 			
 			current = controller.createAccount(email, pw, name ,userType);
 			
-		}
+		} 
 
 		// Add parameters as request attributes
 		req.setAttribute("email", req.getParameter("email"));

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 
+
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Profile</Title>
+        <Title>Courses</Title>
     </head>
+    
     <body>
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
             <div id = "titleDiv">
@@ -21,27 +23,29 @@
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
             <div class = "pageDesc">
-	           <p>Your Profile</p>
-	           
-	           <tr>
-			            	<td>${user.email}</td>
-			            	<td>${user.password}</td>
-			            	<td>${user.name}</td>
-			            	<td>${user.userType}</td>			            
-			    </tr>
-	           
+	           <p>Courses</p>
             </div>
         </form>
-        <form action="${pageContext.servletContext.contextPath}/profile" method="post">
-			<table>
-				<tr>
-					<td><input type="hidden" name="email" size="12" value="${user.email}" /></td>
-				</tr>
-				<tr>
-					<td><input type="hidden" name="password" size="12" value="${user.password}" /></td>
-				</tr>
-			</table>
-			<input type="Submit" name="submit" value="Delete Account">
-		</form>
-    </body>
+        <form action="${pageContext.servletContext.contextPath}/groups/create" method="post">
+	            <table>
+	                <tr>
+	                    <td class="label">Title:</td>
+	                    <td><input type="text" name="date" size="12" value="${course.title}" /></td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Date:</td>
+	                    <td><input type="text" name="date" size="12" value="${session.date}" /></td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Time:</td>
+	                    <td><input type="text" name="time" size="12" value="${session.time}" /></td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Room:</td>
+	                    <td><input type="text" name="room" size="12" value="${session.room}" /></td>
+	                </tr>
+	            </table>
+            <input type="Submit" name="submit" value="Create Course">
+        	</form>
+        </body>
 </html>|

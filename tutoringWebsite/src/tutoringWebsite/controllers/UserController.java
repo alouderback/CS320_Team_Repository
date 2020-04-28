@@ -24,8 +24,11 @@ public class UserController {
 	
 	//add new account
 	public User getAccount(String name, String pw) {
-		List<User> currentUser = db.getAccount(name, pw);
+		
+			List<User> currentUser = db.getAccount(name, pw);
+		
 		return	currentUser.get(0);
+		
 	
 		
 	}

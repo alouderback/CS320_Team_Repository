@@ -30,7 +30,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Announcement announcement = new Announcement();
 				announcement.setAnnouncementId(announcementId++);
-				announcement.setMessage(i.next());
+				announcement.setMessage(i.next()); 
 				date = LocalDate.parse(i.next());
 				announcement.setDate(date);
 				time = LocalTime.parse(i.next());
@@ -120,5 +120,34 @@ public class InitialData {
 			readSession.close();
 		}
 	}
+
+	public static List<Student> getStudent() throws IOException {
+		List<Student> studentList = new ArrayList<Student>();
+		ReadCSV readStudent = new ReadCSV("Students.csv");
+		try {
+			// auto-generated primary key for authors table
+			Integer userId = 1;
+			Integer studentId = 1;
+			String temp = "1";
+			
+			while (true) {
+			List<String> tuple = readStudent.next();
+			if (tuple == null) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			Student stud = new Student();
+			stud.setStudent_id(studentId++);
+			stud.setYear(i.next());
+			stud.setMajor(i.next());
+			userId = Integer.decode(i.next());
+			stud.setUser_Id(userId);
+			studentList.add(stud);
+		}
+			return studentList;
+		} finally {
+				readStudent.close();
+			}
+		}
 
 }

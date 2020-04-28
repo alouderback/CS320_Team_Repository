@@ -20,8 +20,8 @@ public class SessionController{
 		 model.setRoom(room);
 		 model.setDate(date);
 		 model.setTime(time);
-		 model.setTutorId(tutorId);
 		 model.setCourse(course);
+		 model.setTutorId(tutor.getUser_Id());
 	}
 	
 	public Session getSession() {
