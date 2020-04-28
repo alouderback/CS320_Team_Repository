@@ -75,7 +75,7 @@ public class InitialData {
 		List<Session> sessionList = new ArrayList<Session>();
 		ReadCSV readSession = new ReadCSV("Sessions.csv");
 		try {
-			System.out.println("IN InitialData, getSession()...");
+			//System.out.println("In InitialData, getSession()...");
 			Integer sessionId = 1;
 			while(true) {
 
@@ -87,25 +87,25 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Session session = new Session();
 				session.setSessionId(sessionId++);
-				System.out.println("Session ID: " + session.getSessionId());
+				//System.out.println("Session ID: " + session.getSessionId());
 
 				LocalDate date = LocalDate.parse(i.next());
 				
-				System.out.println("Date "  + date);
+				//System.out.println("Date "  + date);
 				
 				session.setDate(date);
 				
 				String room = i.next();
-				System.out.println("Room: " + room);
+				//System.out.println("Room: " + room);
 				session.setRoom(room);
 				
 				LocalTime time = LocalTime.parse(i.next());
-				System.out.println("Time: " + time);
+				//System.out.println("Time: " + time);
 				session.setTime(time);
 				session.setTutorId(Integer.decode(i.next()));
-				System.out.println("Tutor ID: " + session.getTutorId());
+				//System.out.println("Tutor ID: " + session.getTutorId());
 				session.setCourse(i.next());
-				System.out.println("Course: " + session.getCourse());
+				//System.out.println("Course: " + session.getCourse());
 				sessionList.add(session);
 				
 			}
