@@ -24,8 +24,11 @@ public class UserController {
 	
 	//add new account
 	public User getAccount(String name, String pw) {
-		List<User> currentUser = db.getAccount(name, pw);
+		
+			List<User> currentUser = db.getAccount(name, pw);
+		
 		return	currentUser.get(0);
+		
 	
 		
 	}
@@ -56,5 +59,18 @@ public class UserController {
 	}
 	public boolean validateUsername(String name) {
 		return model.isStudent(name);
+	}
+	public boolean removeAccount(User user) {
+		User delete = db.deleteAccount(user.getEmail(), user.getPassword());
+		
+		if(delete == null) {
+			return true;
+		}
+		else {
+			return false;
+			//user.removeAccount(user);
+		}
+	
+	
 	}
 }
