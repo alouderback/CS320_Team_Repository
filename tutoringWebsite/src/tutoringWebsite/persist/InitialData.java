@@ -20,19 +20,25 @@ public class InitialData {
 			Integer announcementId = 1;
 			LocalDate date = LocalDate.now();
 			LocalTime time = LocalTime.now();
+			Integer announcementType = 1;
+			Integer typeId = 1;
 			while (true) {
 				List<String> tuple = readAnnouncement.next();
-				if (tuple == null) {
+				if(tuple==null || tuple.size() == 0) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
 				Announcement announcement = new Announcement();
 				announcement.setAnnouncementId(announcementId++);
-				announcement.setMessage(i.next());
+				announcement.setMessage(i.next()); 
 				date = LocalDate.parse(i.next());
 				announcement.setDate(date);
 				time = LocalTime.parse(i.next());
 				announcement.setTime(time);
+				announcementType = Integer.decode(i.next());
+				announcement.setAnnouncementType(announcementType);
+				typeId = Integer.decode(i.next());
+				announcement.setTypeId(typeId);
 				announcementList.add(announcement);
 			}
 			return announcementList;
@@ -75,7 +81,11 @@ public class InitialData {
 		List<Session> sessionList = new ArrayList<Session>();
 		ReadCSV readSession = new ReadCSV("Sessions.csv");
 		try {
+
 			//System.out.println("In InitialData, getSession()...");
+
+			
+
 			Integer sessionId = 1;
 			while(true) {
 
@@ -87,15 +97,24 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Session session = new Session();
 				session.setSessionId(sessionId++);
+
 				//System.out.println("Session ID: " + session.getSessionId());
 
 				LocalDate date = LocalDate.parse(i.next());
 				
 				//System.out.println("Date "  + date);
+
+				
+
+				LocalDate date = LocalDate.parse(i.next());
+				
+				
+
 				
 				session.setDate(date);
 				
 				String room = i.next();
+
 				//System.out.println("Room: " + room);
 				session.setRoom(room);
 				
@@ -106,6 +125,18 @@ public class InitialData {
 				//System.out.println("Tutor ID: " + session.getTutorId());
 				session.setCourse(i.next());
 				//System.out.println("Course: " + session.getCourse());
+
+				
+				session.setRoom(room);
+				
+				LocalTime time = LocalTime.parse(i.next());
+				
+				session.setTime(time);
+				session.setTutorId(Integer.decode(i.next()));
+				
+				session.setCourse(i.next());
+				
+
 				sessionList.add(session);
 				
 			}
@@ -114,5 +145,34 @@ public class InitialData {
 			readSession.close();
 		}
 	}
+
+	public static List<Student> getStudent() throws IOException {
+		List<Student> studentList = new ArrayList<Student>();
+		ReadCSV readStudent = new ReadCSV("Students.csv");
+		try {
+			// auto-generated primary key for authors table
+			Integer userId = 1;
+			Integer studentId = 1;
+			String temp = "1";
+			
+			while (true) {
+			List<String> tuple = readStudent.next();
+			if (tuple == null) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			Student stud = new Student();
+			stud.setStudent_id(studentId++);
+			stud.setYear(i.next());
+			stud.setMajor(i.next());
+			userId = Integer.decode(i.next());
+			stud.setUser_Id(userId);
+			studentList.add(stud);
+		}
+			return studentList;
+		} finally {
+				readStudent.close();
+			}
+		}
 
 }
