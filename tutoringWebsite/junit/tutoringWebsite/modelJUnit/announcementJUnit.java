@@ -2,6 +2,8 @@ package tutoringWebsite.modelJUnit;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +11,7 @@ import org.junit.Test;
 
 import tutoringWebsite.model.Announcement;
 
-public class announcementTest {
+public class announcementJUnit {
 	private Announcement model;
 	
 	@Before
@@ -25,14 +27,16 @@ public class announcementTest {
 	
 	@Test
 	public void testSetDate() {
-		model.setDate("4-7-2020");
-		assertEquals("4-7-2020", model.getDate());
+		LocalDate date = LocalDate.of(2020, 04, 27);
+		model.setDate(date);
+		assertEquals("2020-04-27", model.getDate().toString());
 	}
 	
 	@Test
 	public void testSetTime() {
-		model.setTime("14:00");
-		assertEquals("14:00", model.getTime());
+		LocalTime time = LocalTime.of(10, 30);
+		model.setTime(time);
+		assertEquals("10:30", model.getTime().toString());
 	}
 	
 	@Test
@@ -41,5 +45,7 @@ public class announcementTest {
 		assertEquals(null, model.getDate());
 		assertEquals(null, model.getTime());
 		assertEquals(null, model.getMessage());
+		assertEquals(-1, model.getAnnouncementType());
+		assertEquals(-1, model.getTypeId());
 	}
 }
