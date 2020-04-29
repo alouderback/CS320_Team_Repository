@@ -18,7 +18,7 @@ import tutoringWebsite.persist.DatabaseProvider;
 import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.persist.IDatabase;
 
-public class derbyDatabaseAnnouncementTest {
+public class derbyDatabaseAnnouncementJUnit {
 
 	private IDatabase db = null;
 	ArrayList<Announcement> announcements = null;

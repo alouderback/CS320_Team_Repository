@@ -23,7 +23,9 @@ public class Announcement {
 		message = null;
 		date= null;
 		time = null;
-		announcementId = (Integer) null;
+		announcementType = -1;
+		typeId = -1;
+		//announcementId = -1?;
 	}
 	
 	// Returns the current message in this announcement
