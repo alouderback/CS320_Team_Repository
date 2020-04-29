@@ -102,11 +102,7 @@ public class InitialData {
 
 				LocalDate date = LocalDate.parse(i.next());
 				
-				//System.out.println("Date "  + date);
-
-				
-
-				LocalDate date = LocalDate.parse(i.next());
+				//System.out.println("Date "  + date)
 				
 				
 
@@ -125,16 +121,6 @@ public class InitialData {
 				//System.out.println("Tutor ID: " + session.getTutorId());
 				session.setCourse(i.next());
 				//System.out.println("Course: " + session.getCourse());
-
-				
-				session.setRoom(room);
-				
-				LocalTime time = LocalTime.parse(i.next());
-				
-				session.setTime(time);
-				session.setTutorId(Integer.decode(i.next()));
-				
-				session.setCourse(i.next());
 				
 
 				sessionList.add(session);
