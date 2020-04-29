@@ -832,11 +832,11 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
-			/*	
+				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("major: "+ major + " year: "+ year);
 				System.out.println("userid: "+ userid);
-				*/
+				
 				try {
 					
 					List<Student> result = new ArrayList<Student>();
@@ -853,7 +853,7 @@ public class DerbyDatabase implements IDatabase{
 					
 					stmt1.executeUpdate();
 					
-				//	System.out.println("student created");
+					System.out.println("student created");
 					
 				
 					
@@ -885,7 +885,7 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("<" + userid + "> was not found in the user database");
 					}
 					
-				//	System.out.println("Student returned");
+					System.out.println("Student returned");
 					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
@@ -1094,6 +1094,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt3 = null;				
 					PreparedStatement stmt4 = null;
 					PreparedStatement stmt5 = null;
+					PreparedStatement stmt6 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
@@ -1179,6 +1180,21 @@ public class DerbyDatabase implements IDatabase{
 						stmt5.executeUpdate();
 
 						System.out.println("Course table created");
+						stmt6 = conn.prepareStatement(
+								"create table TutorFaculty (" +
+								"	tf_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	user_id integer," +
+								"	course_id integer," +
+								"	userType integer"+
+								")"
+						);
+
+						stmt6.executeUpdate();
+
+						System.out.println("TutorFaculty table created");					
+
+
 						
 						//student table
 						stmt8 = conn.prepareStatement(
@@ -1201,6 +1217,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
 						DBUtil.closeQuietly(stmt5);
+						DBUtil.closeQuietly(stmt6);
 						DBUtil.closeQuietly(stmt8);
 					}
 				}

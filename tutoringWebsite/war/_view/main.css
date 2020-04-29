@@ -3,14 +3,14 @@ body{
     padding: 0;
     margin: 0;
 }
-p{
-	background-color: lightblue;
+p.profile{
+	
  	border-color: green;
-	width: 100%;
+	border=style: solid;
 	width: 12%;
 }
 h1{
-  	background-color: lightblue;
+  	  text-align: center;
 }
 .pageDesc {
    background-color: white;
@@ -37,7 +37,7 @@ h1{
 .profileDis {
     color: black;
     background-color: white;
-     margin: 1%;
+    margin: 1%;
     text-align: left;
 	padding-left: 3%;
 }

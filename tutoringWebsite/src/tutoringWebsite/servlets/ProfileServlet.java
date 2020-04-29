@@ -7,16 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tutoringWebsite.controllers.StudentController;
 import tutoringWebsite.controllers.UserController;
-
-
+import tutoringWebsite.model.Student;
 import tutoringWebsite.model.User;
 
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private User model;
 	private UserController controller;
-
+	private Student model1;
+	private StudentController controller1;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -37,36 +38,60 @@ public class ProfileServlet extends HttpServlet {
 		String pw           = null;
 		int userType		= 0;
 		User current 		= new User();
-		boolean validLogin  = true;
-		boolean isLogin		= false;
-		boolean isStudent	= false;
-		
+		boolean validLogin  = true;//should be false to if deleted
+		boolean isLogin		= false;//will turn true if loggined in
+		boolean isStudent	= false;//will turn true i student
+		String major = null;
+		String year = null;
+		Student student		= new Student();
 		
 
 		// Decode form parameters and dispatch to controller
+	
+		current = (User) req.getSession().getAttribute("user");	
+		student = (Student) req.getSession().getAttribute("student");
 		
-		current = (User) req.getSession().getAttribute("user");
-		System.out.println("   Email: <" + email + "> PW: <" + pw + ">");			
 		model      = new User();
 		controller = new UserController(model);
+		model1      = new Student();
+		controller1 = new StudentController(model1);
+	
+			
+	
 		if(current != null) {
-		email = req.getParameter(current.getEmail());
-		pw   = req.getParameter(current.getPassword());
-		userType = current.getUserType();
-		if(userType == 1|| userType == 2) {
-			isStudent = true;
-		}
-		isLogin = controller.validateCredentials(email, pw);
-		}
-		if(isLogin) {
-			controller.removeAccount(current);
-			validLogin = controller.validateCredentials(email, pw);
-			System.out.println("setting attributes");	
-		}
-		else {
+			System.out.println(" user is logged in");
+			email = current.getEmail();
+			pw   = current.getPassword();
+			userType = current.getUserType();
+			
+			if(userType == 1|| userType == 2) {
+				System.out.println(" user is student");
+				isStudent = true;
+				major = req.getParameter(student.getMajor());
+				year = req.getParameter(student.getYear());
+			}
+			System.out.println(" validating credentials....");
+			System.out.println("   Email: <" + email + "> PW: <" +pw + ">");	
+			isLogin = controller.validateCredentials(email, pw);
+			System.out.println(isLogin);
+			if(isLogin) {
+				if(isStudent) {
+					controller1.removeStudentt(email, pw);
+				}
+				controller.removeAccount(current);
+				System.out.println(" account removed");
+				validLogin = controller.validateCredentials(email, pw);
+				System.out.println(validLogin);
+
+				System.out.println("setting attributes");	
+			}else {
+				errorMessage = "account curropted";
+			}
+			
+		}else {
 			errorMessage = "not logged in";
 		}
-		// Add parameters as request attributes
+			// Add parameters as request attributes
 	
  
 		// Add result objects as request attributes
@@ -83,7 +108,9 @@ public class ProfileServlet extends HttpServlet {
 			//currently stores onlt the name but but shuld we store the enitre class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
 			req.getSession().setAttribute("user", null);
-
+			if(isStudent) {
+				req.getSession().setAttribute("student", null);
+			}
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");
 
