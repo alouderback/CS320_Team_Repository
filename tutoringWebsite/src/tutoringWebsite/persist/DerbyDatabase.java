@@ -43,7 +43,7 @@ public class DerbyDatabase implements IDatabase{
 			public List<User> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				System.out.println("IN DERBY DATABASE");
+				//System.out.println("IN DERBY DATABASE");
 				try {
 					stmt = conn.prepareStatement(
 							"select * "+
@@ -75,7 +75,7 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("<" + email + "> was not found in the user database");
 					
 					}
-					System.out.println("done");
+				//	System.out.println("done");
 					return result;
 				}finally {
 					DBUtil.closeQuietly(resultSet);
@@ -92,10 +92,10 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
-				
+				/*
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
-		 
+		 */
 				try {
 					
 					User result = new User();
@@ -109,7 +109,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt1.setString(2, password);
 					stmt1.executeUpdate();
 					
-					System.out.println("user deleted");
+					//System.out.println("user deleted");
 					stmt3 = conn.prepareStatement(
 							"select * from Users " +
 							"where email = ? and password = ?"
@@ -133,7 +133,89 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("<" + email + "> was sucessfully deleted from the user database");
 					}
 					
-					System.out.println("user gone");
+					//System.out.println("user gone");
+					return result;
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt3);
+					}
+		
+				}
+			
+		});
+		
+		
+	}
+	@Override
+	public Student deleteStudent(final String email, final String password){
+		return executeTransaction(new Transaction<Student>() {
+			@Override
+			public Student execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null;
+				PreparedStatement stmt3 = null;
+				ResultSet resultSet = null;
+				int userid = 0;
+			
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("email: "+ email + " password: "+ password);
+				try {
+					Student result = new Student();
+					stmt1 = conn.prepareStatement(
+								"select * "+
+								" from Users"+
+								" where Users.email = ? and Users.password =?"
+								);
+						
+						
+						stmt1.setString(1, email);
+						stmt1.setString(2, password);
+						resultSet = stmt1.executeQuery();
+						System.out.println("got user");
+						
+						
+						while (resultSet.next()) {
+						User user = new User();
+						loadUser(user,resultSet,1);
+						System.out.println("load user worked");
+						userid = user.getUser_Id();
+						System.out.println("user id: "+ userid);
+						}
+						
+					stmt2 = conn.prepareStatement(
+							"delete from Students " +
+							"where user_id = ? "
+					//sql to add an account to list
+							);
+					stmt2.setInt(1, userid);
+					stmt2.executeUpdate();
+					
+					//System.out.println("user deleted");
+					stmt3 = conn.prepareStatement(
+							"select * from Students " +
+							"where user_id = ? "
+							);
+			
+					
+					stmt3.setInt(1, userid);
+					
+					resultSet = stmt3.executeQuery();
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;			
+						Student stud = new Student();
+						loadStudent(stud,resultSet,1);
+						result = stud;
+					}
+					
+					System.out.println( result.getUser_Id()+", "+result.getMajor()+ ", " + result.getYear());
+					if(found = false) {
+						System.out.println("<" + email + "> was sucessfully deleted from the user database");
+					}
+					
+					//System.out.println("user gone");
 					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
@@ -380,6 +462,12 @@ public class DerbyDatabase implements IDatabase{
 		user.setName((resultSet.getString(index++)));
 		user.setUserType((resultSet.getInt(index++)));
 		
+	}
+	private void loadStudent(Student stud, ResultSet resultSet, int index) throws SQLException {
+		stud.setStudent_id(resultSet.getInt(index++));
+		stud.setMajor(resultSet.getString(index++));
+		stud.setYear(resultSet.getString(index++));
+		stud.setUser_Id(resultSet.getInt(index++));
 	}
 	private void loadAnnouncement(Announcement announcement, ResultSet resultSet, int index) throws SQLException {
 		announcement.setAnnouncementId(resultSet.getInt(index++));
@@ -666,10 +754,11 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
-				
+				/*
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("email: "+ email + " password: "+ password);
 				System.out.println("name: "+ name +" userType: "+ userType);
+				*/
 				try {
 					
 					List<User> result = new ArrayList<User>();
@@ -687,13 +776,9 @@ public class DerbyDatabase implements IDatabase{
 					
 					stmt1.executeUpdate();
 					
-					System.out.println("user created");
+				//	System.out.println("user created");
 					
-					stmt1 = conn.prepareStatement(
-							"select user_id from Users " +
-							"where email = ? and password = ? and name = ? and userType = ? "
-							);
-					
+				
 					
 					stmt3 = conn.prepareStatement(
 							"select * from Users" +
@@ -725,7 +810,82 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("<" + email + "> was not found in the user database");
 					}
 					
-					System.out.println("user returned");
+				//	System.out.println("user returned");
+					return result;
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt3);
+					}
+		
+				}
+			
+		});
+		
+		
+	}
+	@Override
+	public List<Student> createStudent(final String major, final String year, final int userid){
+		return executeTransaction(new Transaction<List<Student>>() {
+			@Override
+			public List<Student> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt3 = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("major: "+ major + " year: "+ year);
+				System.out.println("userid: "+ userid);
+				
+				try {
+					
+					List<Student> result = new ArrayList<Student>();
+					
+					stmt1 = conn.prepareStatement(
+							"insert into Students (major, gradYear, user_id)" +
+							"values(?,?,?)"
+					//sql to add an account to list
+							);
+					stmt1.setString(1, major);
+					stmt1.setString(2, year);
+					stmt1.setInt(3, userid);
+					
+					
+					stmt1.executeUpdate();
+					
+					System.out.println("student created");
+					
+				
+					
+					stmt3 = conn.prepareStatement(
+							"select * from Students" +
+							" WHERE Students.major = ? and Students.gradYear = ? and Students.user_id = ?"
+								
+					//sql to add an account to list
+							);
+					
+					stmt3.setString(1, major);
+					stmt3.setString(2, year);
+					stmt3.setInt(3, userid);
+					
+					resultSet = stmt3.executeQuery();
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;			
+						Student stud = new Student();
+						loadStudent(stud,resultSet,1);
+						result.add(stud);
+					}
+					for (Student temp : result) {
+						System.out.println(temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getMajor()+ ", " + temp.getYear());
+					}
+
+					if(found = false) {
+						System.out.println("<" + userid + "> was not found in the user database");
+					}
+					
+					System.out.println("Student returned");
 					return result;
 			}finally {
 						DBUtil.closeQuietly(resultSet);
@@ -778,6 +938,78 @@ public class DerbyDatabase implements IDatabase{
 				}finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
+	@Override
+	public List<Student> getStudent(final String email, final String password){
+		return executeTransaction(new Transaction<List<Student>>() {
+			@Override
+			public List<Student> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null;
+				ResultSet resultSet = null;
+				ResultSet resultSet1 = null;
+				int userid = 0;
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("email: "+ email + " password: "+ password);
+				try {
+					stmt1 = conn.prepareStatement(
+							"select * "+
+							" from Users"+
+							" where Users.email = ? and Users.password =?"
+							);
+					
+					
+					stmt1.setString(1, email);
+					stmt1.setString(2, password);
+					resultSet = stmt1.executeQuery();
+					System.out.println("got user");
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+					User user = new User();
+					loadUser(user,resultSet,1);
+					System.out.println("load user worked");
+					userid = user.getUser_Id();
+					System.out.println("user id: "+ userid);
+					}
+					
+					stmt2 = conn.prepareStatement(
+							"select * "+
+							" from Students"+
+							" where Students.user_id = ?"
+							);
+					
+					List<Student> result = new ArrayList<Student>();
+					stmt2.setInt(1, userid);
+					resultSet1 = stmt2.executeQuery();
+					
+					while (resultSet1.next()) {
+						found = true;			
+						Student stud = new Student();
+						loadStudent(stud,resultSet1,1);
+						result.add(stud);
+					
+					}
+					
+				
+					for (Student temp : result) {
+						System.out.println( temp.getUser_Id()+", "+temp.getEmail()+ ", " + temp.getMajor()+ ", " + temp.getYear());
+					}
+
+					if(found = false) {
+						System.out.println("<" + email + "> was not found in the Student database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(resultSet1);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(stmt2);
 				
 				}
 
@@ -862,6 +1094,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt3 = null;				
 					PreparedStatement stmt4 = null;
 					PreparedStatement stmt5 = null;
+					PreparedStatement stmt6 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
@@ -946,7 +1179,22 @@ public class DerbyDatabase implements IDatabase{
 
 						stmt5.executeUpdate();
 
-						System.out.println("Announcements table created");
+						System.out.println("Course table created");
+						stmt6 = conn.prepareStatement(
+								"create table TutorFaculty (" +
+								"	tf_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	user_id integer," +
+								"	course_id integer," +
+								"	userType integer"+
+								")"
+						);
+
+						stmt6.executeUpdate();
+
+						System.out.println("TutorFaculty table created");					
+
+
 						
 						//student table
 						stmt8 = conn.prepareStatement(
@@ -968,6 +1216,8 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt2);
 						DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
+						DBUtil.closeQuietly(stmt5);
+						DBUtil.closeQuietly(stmt6);
 						DBUtil.closeQuietly(stmt8);
 					}
 				}

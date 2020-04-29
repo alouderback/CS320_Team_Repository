@@ -7,14 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tutoringWebsite.controllers.StudentController;
 import tutoringWebsite.controllers.UserController;
-
+import tutoringWebsite.model.Student;
 import tutoringWebsite.model.User;
 
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private User model;
 	private UserController controller;
+	private Student model1;
+	private StudentController controller1;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -36,9 +39,13 @@ public class CreateAccountServlet extends HttpServlet {
 		String pw           = null;
 		String name		= null;
 		String temp	= null;
+		String major = null;
+		String year = null;
 		int userType = 1;
 		User current		= new User();
+		Student isStudent		= new Student();
 		boolean validLogin  = false;
+		boolean createStudent = false;
 	
 
 		// Decode form parameters and dispatch to controller
@@ -46,6 +53,8 @@ public class CreateAccountServlet extends HttpServlet {
 		pw   = req.getParameter("password");
 		name = req.getParameter("name");
 		temp = req.getParameter("userType");
+		major = req.getParameter("major");
+		year = req.getParameter("year");
 	
 		System.out.println("   email: <" + email + "> PW: <" + pw + ">");		
 	
@@ -55,8 +64,11 @@ public class CreateAccountServlet extends HttpServlet {
 		faculty = "faculty";
 		if(temp.contains(student)) {
 			userType=1;
+			createStudent = true;
+			System.out.print("/ntrue");
 		}else if(temp.contentEquals(tutor)){
 			userType = 2;
+			createStudent = true;
 		}else if(temp.matches(faculty)) {
 			userType = 3;
 		}else {
@@ -64,16 +76,20 @@ public class CreateAccountServlet extends HttpServlet {
 		}
 		
 		System.out.println("   temp: <" + temp + "> userType: <" + userType + ">");	
-		if (email == null || pw == null || email.equals("") || pw.equals("")) {
+		if ((email == null || pw == null || email.equals("") || pw.equals(""))) {
 			errorMessage = "Please specify both username and password";
 		} else {
 			validLogin = true;
 			model      = new User();
 			controller = new UserController(model);
-			
-			
-			
+			model1		= new Student();
+			controller1 = new StudentController(model1);
 			current = controller.createAccount(email, pw, name ,userType);
+			if(createStudent) {
+				int id = current.getUser_Id();
+				System.out.println(id);
+				isStudent = controller1.createStudent(major, year, id);
+			}
 			
 		} 
 
@@ -82,17 +98,20 @@ public class CreateAccountServlet extends HttpServlet {
 		req.setAttribute("password", req.getParameter("password"));
 		req.setAttribute("name", req.getParameter("name"));
 		req.setAttribute("userType", req.getParameter("UserType"));
+		req.setAttribute("major", req.getParameter("major"));
+		req.setAttribute("year", req.getParameter("year"));
 		
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("createAccount",        validLogin);
-
+		req.setAttribute("createStudent",        createStudent);
 		// if login is valid, start a session
 		if (validLogin) {
 			System.out.println("  Account created - starting session, redirecting to /index");
 
 			// store user object in session
 			req.getSession().setAttribute("user", current);
+			req.getSession().setAttribute("student", isStudent);
 			System.out.println(req.getSession());
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");

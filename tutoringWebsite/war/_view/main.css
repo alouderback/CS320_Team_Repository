@@ -3,8 +3,17 @@ body{
     padding: 0;
     margin: 0;
 }
+p.profile{
+	
+ 	border-color: green;
+	border=style: solid;
+	width: 12%;
+}
+h1{
+  	  text-align: center;
+}
 .pageDesc {
-    background-color: white;
+   background-color: white;
     color: black;
     margin: 1%;
     text-align: center;
@@ -24,6 +33,13 @@ body{
     font-family: "Times New Roman", Times, serif;
     padding-left: 1%;
     padding-right: 1%;
+}
+.profileDis {
+    color: black;
+    background-color: white;
+    margin: 1%;
+    text-align: left;
+	padding-left: 3%;
 }
 
 #annTitle {
@@ -55,6 +71,7 @@ body{
     background: none;
     border: none;
 }
+
 
 #titleDiv {
     width: 100%;
