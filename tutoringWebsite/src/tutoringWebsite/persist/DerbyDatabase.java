@@ -393,6 +393,7 @@ public class DerbyDatabase implements IDatabase{
 		announcement.setAnnouncementType(resultSet.getInt(index++));
 		announcement.setTypeId(resultSet.getInt(index++));
 	}
+	@Override
 	public List<Session> getScheduleByDate(String timeframe){
 		//Method currently doesn't use parameter timeframe; returns whole list of sessions
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -542,7 +543,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
+	@Override
 	public List<Session> deleteSession(int sessionId) {
 		//Deletes and returns session and takes sessionId as a parameter
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -591,7 +592,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
+	@Override
 	public List<Integer> getUserId(User user) {
 		//Returns an empty list if user is not found
 		return executeTransaction(new Transaction <List<Integer>>() {
@@ -625,7 +626,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
+	@Override
 	public List<User> getTutors(){ 
 		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
 		return executeTransaction(new Transaction<List<User>>() {
@@ -671,7 +672,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {

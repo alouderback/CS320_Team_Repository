@@ -21,4 +21,6 @@ public interface IDatabase {
 	List<Session> deleteSession(int sessionId);
 	List<Session> createSession(final String room, final LocalDate date, final int adminId, final LocalTime startTime, final LocalTime endTime, final int dayOfWeek, final int courseId, final int typeId);
 	List<User> getTutors();
+	List<Integer> getUserId(User user);
+	
 }
