@@ -16,7 +16,7 @@ public class SessionController{
 		this.model = model; 
 	}
 	
-	public void createSession( String room, LocalDate date, int tutorId, LocalTime time, String course) {
+	public void createSession( String room, LocalDate date, Tutor tutor, LocalTime time, String course) {
 		 model.setRoom(room);
 		 model.setDate(date);
 		 model.setTime(time);

@@ -1,9 +1,9 @@
 package tutoringWebsite.controllers;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import tutoringWebsite.db.FakeScheduleDatabase;
 import tutoringWebsite.model.Announcement;
 import tutoringWebsite.model.Schedule;
 import tutoringWebsite.model.Session;
