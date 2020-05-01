@@ -530,21 +530,25 @@ public class DerbyDatabase implements IDatabase{
 	}
 	private void loadSession(Session session, ResultSet resultSet, int index) throws SQLException {
 		LocalDate date = LocalDate.now();
-		LocalTime time = LocalTime.now();
+		LocalTime startTime = LocalTime.now();
+		LocalTime endTime = LocalTime.now();
 		
 		session.setSessionId((resultSet.getInt(index++)));
 		date = LocalDate.parse(resultSet.getString(index++));
 		session.setDate(date);
+		session.setDayOfWeek(resultSet.getInt(index++));
 		session.setRoom(resultSet.getString(index++));
-		time = LocalTime.parse(resultSet.getString(index++));
-		session.setTime(time);
-		session.setTutorId(resultSet.getInt(index++));
-		session.setCourse(resultSet.getString(index++));
+		startTime = LocalTime.parse(resultSet.getString(index++));
+		session.setStartTime(startTime);
+		endTime = LocalTime.parse(resultSet.getString(index++));
+		session.setEndTime(endTime);
+		session.setAdminId(resultSet.getInt(index++));
+		session.setCourseId(resultSet.getInt(index++));
 		System.out.println("See below for course:");
-		System.out.println("Course for session that is being loaded: " + session.getCourse());
+		System.out.println("Course for session that is being loaded: " + session.getCourseId());
 	}
-	
-	public List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course){
+	@Override
+	public List<Session> createSession(final String room, final LocalDate date, final int adminId, final LocalTime startTime, final LocalTime endTime, final int dayOfWeek, final int courseId, final int typeId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
 				
@@ -553,22 +557,30 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				System.out.println("Currently in createSession. Here are the following details of the session being created and inserted:");
-				System.out.println("Room: " + room);
 				System.out.println("Date: " + date);
-				System.out.println("Tutor ID: " + tutorId);
-				System.out.println("Time: " + time);
+				System.out.println("Room: " + room);
+				System.out.println("Start Time: " + startTime);
+				System.out.println("End Time: " + endTime);
+				System.out.println("Day(s) of week: " + dayOfWeek);
+				System.out.println("Admin ID: " + adminId);
+				System.out.println("Course ID: " + courseId);
+				System.out.println("Type ID: " + typeId);
+				
 				System.out.println("Creating new session...");
 				
 				try {
 					stmt = conn.prepareStatement(
-						"insert into Sessions (date, room, time, tutor_id, course) " + //Inserting new session
-						"values(?, ?, ?, ?, ?)" //Where the parameters will be 'inserted'
+						"insert into Sessions (date, room, start_time, end_time, day_of_week, admin_id, course_id, type_id) " + //Inserting new session
+						"values(?, ?, ?, ?, ?, ?, ?, ?)" //Where the parameters will be 'inserted'
 							);
 					stmt.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
 					stmt.setString(2, room); 				//Sets the second value to the parameter room
-					stmt.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
-					stmt.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
-					stmt.setString(5, course); 				//Sets the fifth value to the parameter course
+					stmt.setString(3, startTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt.setString(4, endTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt.setInt(5, dayOfWeek);				// Sets 5th value to day of week
+					stmt.setInt(6, adminId); 				//Sets the 6th value to the parameter adminId
+					stmt.setInt(7, courseId); 				//Sets the 7th value to the parameter courseId
+					stmt.setInt(8, typeId);					//Sets the 8th value to the parameter typeId
 					
 					List<Session> result = new ArrayList<Session>(); //This will be used later to add the new session to. Utilized after stmt1 is executed.
 					
@@ -578,14 +590,17 @@ public class DerbyDatabase implements IDatabase{
 					
 					stmt1 = conn.prepareStatement(
 						"select sessions from Sessions " +
-						"where date = ? and room = ? and time = ? and tutor_id = ? and course = ?"
+						"where date = ? and room = ? and start_time = ? and end_time = ? and day_of_week = ? and admin_id = ? and course_id = ? and type_id = ?"
 							);
 							
 					stmt1.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
 					stmt1.setString(2, room); 				//Sets the second value to the parameter room
-					stmt1.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
-					stmt1.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
-					stmt1.setString(5, course); 			//Sets the fifth value to the parameter course
+					stmt1.setString(3, startTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt1.setString(4, endTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt1.setInt(5, dayOfWeek);				// Sets 5th value to day of week
+					stmt1.setInt(6, adminId); 				//Sets the 6th value to the parameter adminId
+					stmt1.setInt(7, courseId); 				//Sets the 7th value to the parameter courseId
+					stmt1.setInt(8, typeId);					//Sets the 8th value to the parameter typeId
 					
 					resultSet = stmt1.executeQuery();		//Executes the SQL statement and inserts new session
 					
@@ -597,7 +612,7 @@ public class DerbyDatabase implements IDatabase{
 						result.add(session);
 					}
 					else {
-						System.out.println("Session for course<" + course + ">, room<" + room + "> has not been found...");
+						System.out.println("Session for course<" + courseId + ">, room<" + room + "> has not been found...");
 					}
 					
 					System.out.println("Returning session information...");
@@ -615,6 +630,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
 	
 	public List<Session> deleteSession(int sessionId) {
 		//Deletes and returns session and takes sessionId as a parameter
@@ -1127,10 +1143,9 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;
-					PreparedStatement stmt3 = null;				
+					//PreparedStatement stmt3 = null;				
 					PreparedStatement stmt4 = null;
 					PreparedStatement stmt5 = null;
-					PreparedStatement stmt6 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
@@ -1155,7 +1170,6 @@ public class DerbyDatabase implements IDatabase{
 
 						
 						//create user table
-
 						stmt2 = conn.prepareStatement(
 								"create table Users (" +
 								"	user_id integer primary key " +
@@ -1172,21 +1186,6 @@ public class DerbyDatabase implements IDatabase{
 						System.out.println("Users table created");					
 
 
-						
-						//create study group table
-						stmt3 = conn.prepareStatement(
-								"create table Groups (" +
-								"	group_id integer primary key " +
-								"		generated always as identity (start with 1, increment by 1), " +
-								"	course_id integer, " +
-								"	session_id integer" +
-								")"
-						
-						);
-						stmt3.executeUpdate();
-						System.out.println("Study Group table created");
-
-
 						//create session table
 						stmt4 = conn.prepareStatement(
 								"create table Sessions (" +
@@ -1194,9 +1193,12 @@ public class DerbyDatabase implements IDatabase{
 								"		generated always as identity (start with 1, increment by 1), " +
 								"	date varchar(40)," +
 								"	room varchar(40)," +
-								"   time varchar(40)," +
-								"	tutor_id integer," +
-								"   course varchar(40)" +
+								"   start_time varchar(40)," +
+								"	end_time varchar(40)," +
+								"	day_of_week integer," +	
+								"	admin_id integer," +
+								"   course_id integer," +
+								"	type_id integer" +
 								")"
 						);
 						stmt4.executeUpdate();
@@ -1215,22 +1217,7 @@ public class DerbyDatabase implements IDatabase{
 
 						stmt5.executeUpdate();
 
-						System.out.println("Course table created");
-						stmt6 = conn.prepareStatement(
-								"create table TutorFaculty (" +
-								"	tf_id integer primary key " +
-								"		generated always as identity (start with 1, increment by 1), " +
-								"	user_id integer," +
-								"	course_id integer," +
-								"	userType integer"+
-								")"
-						);
-
-						stmt6.executeUpdate();
-
-						System.out.println("TutorFaculty table created");					
-
-
+						System.out.println("Announcements table created");
 						
 						//student table
 						stmt8 = conn.prepareStatement(
@@ -1250,10 +1237,8 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
-						DBUtil.closeQuietly(stmt3);
+						//DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
-						DBUtil.closeQuietly(stmt5);
-						DBUtil.closeQuietly(stmt6);
 						DBUtil.closeQuietly(stmt8);
 					}
 				}
@@ -1316,22 +1301,16 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("User table populated");					
 						
-
-						//study group garbage
-
-						/*insertStudyGroup = conn.prepareStatement("");
-						for (StudyGroup sg: studyGroupList) {
-							
-						}	
-						*/
-						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
+						insertSession = conn.prepareStatement("insert into Sessions (date, room, start_time, end_time, day_of_week, admin_id, course_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?)");
 						for (Session session : sessionList) {
 							insertSession.setString(1, session.getDate().toString());
 							insertSession.setString(2, session.getRoom());
-							insertSession.setString(3, session.getTime().toString());
-							insertSession.setInt(4, session.getTutorId());
-
-							insertSession.setString(5, session.getCourse());
+							insertSession.setString(3, session.getStartTime().toString());
+							insertSession.setString(4, session.getEndTime().toString());
+							insertSession.setInt(5, session.getDayOfWeek());
+							insertSession.setInt(6, session.getAdminId());
+							insertSession.setInt(7, session.getCourseId());
+							insertSession.setInt(8,  session.getTypeId());
 							insertSession.addBatch();
 						}
 						insertSession.executeBatch();
@@ -1358,5 +1337,4 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
-
-}
+	}
