@@ -81,7 +81,11 @@ public class InitialData {
 		List<Session> sessionList = new ArrayList<Session>();
 		ReadCSV readSession = new ReadCSV("Sessions.csv");
 		try {
+
+			//System.out.println("In InitialData, getSession()...");
+
 			
+
 			Integer sessionId = 1;
 			while(true) {
 
@@ -93,13 +97,16 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Session session = new Session();
 				session.setSessionId(sessionId++);
+
 				
 				LocalDate date = LocalDate.parse(i.next());
+
 				session.setDate(date);
 				
 				session.setDayOfWeek(Integer.decode(i.next()));
 					
 				String room = i.next();
+
 				session.setRoom(room);
 				
 				LocalTime startTime = LocalTime.parse(i.next());
@@ -114,6 +121,7 @@ public class InitialData {
 				
 				session.setTypeId(Integer.decode(i.next()));
 			
+
 				sessionList.add(session);
 				
 			}

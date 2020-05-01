@@ -2,7 +2,7 @@ package tutoringWebsite.model;
 
 import java.util.ArrayList;
 
-import tutoringWebsite.db.FakeScheduleDatabase;
+import tutoringWebsite.persist.DerbyDatabase;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,7 +12,7 @@ public class Schedule {
 	private LocalDate date;
 	private LocalTime time;
 	
-	private ArrayList<Session> scheduleList = new ArrayList<Session>();
+	private List<Session> scheduleList = new ArrayList<Session>();
 	
 	public Schedule(){
 	
@@ -34,13 +34,13 @@ public class Schedule {
 		this.time = time;
 	}
 	
-	public ArrayList<Session> getSchedule() {
+	public List<Session> getSchedule() {
 		return scheduleList;
 	}
 	
 	public void setSchedule(String timeframe) {
-		FakeScheduleDatabase fakeSchedule = new FakeScheduleDatabase();	
-		scheduleList = fakeSchedule.findScheduleByDate(timeframe);
+		DerbyDatabase fakeSchedule = new DerbyDatabase();	
+		 scheduleList = fakeSchedule.getScheduleByDate(timeframe);
 		//This needs to be updated
 		
 	}

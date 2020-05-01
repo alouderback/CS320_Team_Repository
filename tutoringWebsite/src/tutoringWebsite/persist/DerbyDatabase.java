@@ -672,6 +672,44 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+
+	
+	public List<Session> getSession(int sessionId){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Session> result = new ArrayList<Session>();
+					
+					stmt = conn.prepareStatement(
+							"select sessions from Sessions " +
+							" where session_id = ?"
+							);
+					
+					stmt.setInt(1, sessionId);
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+
+
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
