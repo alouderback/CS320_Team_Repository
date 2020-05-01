@@ -481,7 +481,6 @@ public class DerbyDatabase implements IDatabase{
 		announcement.setAnnouncementType(resultSet.getInt(index++));
 		announcement.setTypeId(resultSet.getInt(index++));
 	}
-	@Override
 	public List<Session> getScheduleByDate(String timeframe){
 		//Method currently doesn't use parameter timeframe; returns whole list of sessions
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -531,25 +530,21 @@ public class DerbyDatabase implements IDatabase{
 	}
 	private void loadSession(Session session, ResultSet resultSet, int index) throws SQLException {
 		LocalDate date = LocalDate.now();
-		LocalTime startTime = LocalTime.now();
-		LocalTime endTime = LocalTime.now();
+		LocalTime time = LocalTime.now();
 		
 		session.setSessionId((resultSet.getInt(index++)));
 		date = LocalDate.parse(resultSet.getString(index++));
 		session.setDate(date);
-		session.setDayOfWeek(resultSet.getInt(index++));
 		session.setRoom(resultSet.getString(index++));
-		startTime = LocalTime.parse(resultSet.getString(index++));
-		session.setStartTime(startTime);
-		endTime = LocalTime.parse(resultSet.getString(index++));
-		session.setEndTime(endTime);
-		session.setAdminId(resultSet.getInt(index++));
-		session.setCourseId(resultSet.getInt(index++));
+		time = LocalTime.parse(resultSet.getString(index++));
+		session.setTime(time);
+		session.setTutorId(resultSet.getInt(index++));
+		session.setCourse(resultSet.getString(index++));
 		System.out.println("See below for course:");
-		System.out.println("Course for session that is being loaded: " + session.getCourseId());
+		System.out.println("Course for session that is being loaded: " + session.getCourse());
 	}
-	@Override
-	public List<Session> createSession(final String room, final LocalDate date, final int adminId, final LocalTime startTime, final LocalTime endTime, final int dayOfWeek, final int courseId, final int typeId){
+	
+	public List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
 				
@@ -558,30 +553,22 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				
 				System.out.println("Currently in createSession. Here are the following details of the session being created and inserted:");
-				System.out.println("Date: " + date);
 				System.out.println("Room: " + room);
-				System.out.println("Start Time: " + startTime);
-				System.out.println("End Time: " + endTime);
-				System.out.println("Day(s) of week: " + dayOfWeek);
-				System.out.println("Admin ID: " + adminId);
-				System.out.println("Course ID: " + courseId);
-				System.out.println("Type ID: " + typeId);
-				
+				System.out.println("Date: " + date);
+				System.out.println("Tutor ID: " + tutorId);
+				System.out.println("Time: " + time);
 				System.out.println("Creating new session...");
 				
 				try {
 					stmt = conn.prepareStatement(
-						"insert into Sessions (date, room, start_time, end_time, day_of_week, admin_id, course_id, type_id) " + //Inserting new session
-						"values(?, ?, ?, ?, ?, ?, ?, ?)" //Where the parameters will be 'inserted'
+						"insert into Sessions (date, room, time, tutor_id, course) " + //Inserting new session
+						"values(?, ?, ?, ?, ?)" //Where the parameters will be 'inserted'
 							);
 					stmt.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
 					stmt.setString(2, room); 				//Sets the second value to the parameter room
-					stmt.setString(3, startTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
-					stmt.setString(4, endTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
-					stmt.setInt(5, dayOfWeek);				// Sets 5th value to day of week
-					stmt.setInt(6, adminId); 				//Sets the 6th value to the parameter adminId
-					stmt.setInt(7, courseId); 				//Sets the 7th value to the parameter courseId
-					stmt.setInt(8, typeId);					//Sets the 8th value to the parameter typeId
+					stmt.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
+					stmt.setString(5, course); 				//Sets the fifth value to the parameter course
 					
 					List<Session> result = new ArrayList<Session>(); //This will be used later to add the new session to. Utilized after stmt1 is executed.
 					
@@ -591,17 +578,14 @@ public class DerbyDatabase implements IDatabase{
 					
 					stmt1 = conn.prepareStatement(
 						"select sessions from Sessions " +
-						"where date = ? and room = ? and start_time = ? and end_time = ? and day_of_week = ? and admin_id = ? and course_id = ? and type_id = ?"
+						"where date = ? and room = ? and time = ? and tutor_id = ? and course = ?"
 							);
 							
 					stmt1.setString(1, date.toString()); 	//Sends localDate to string and sets the first value as the parameter date
 					stmt1.setString(2, room); 				//Sets the second value to the parameter room
-					stmt1.setString(3, startTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
-					stmt1.setString(4, endTime.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
-					stmt1.setInt(5, dayOfWeek);				// Sets 5th value to day of week
-					stmt1.setInt(6, adminId); 				//Sets the 6th value to the parameter adminId
-					stmt1.setInt(7, courseId); 				//Sets the 7th value to the parameter courseId
-					stmt1.setInt(8, typeId);					//Sets the 8th value to the parameter typeId
+					stmt1.setString(3, time.toString()); 	// Send LocalTime to string and sets the third value to the parameter time
+					stmt1.setInt(4, tutorId); 				//Sets the fourth value to the parameter tutorId
+					stmt1.setString(5, course); 			//Sets the fifth value to the parameter course
 					
 					resultSet = stmt1.executeQuery();		//Executes the SQL statement and inserts new session
 					
@@ -613,7 +597,7 @@ public class DerbyDatabase implements IDatabase{
 						result.add(session);
 					}
 					else {
-						System.out.println("Session for course<" + courseId + ">, room<" + room + "> has not been found...");
+						System.out.println("Session for course<" + course + ">, room<" + room + "> has not been found...");
 					}
 					
 					System.out.println("Returning session information...");
@@ -631,7 +615,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	@Override
+	
 	public List<Session> deleteSession(int sessionId) {
 		//Deletes and returns session and takes sessionId as a parameter
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -680,7 +664,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	@Override
+	
 	public List<Integer> getUserId(User user) {
 		//Returns an empty list if user is not found
 		return executeTransaction(new Transaction <List<Integer>>() {
@@ -714,7 +698,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	@Override
+	
 	public List<User> getTutors(){ 
 		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
 		return executeTransaction(new Transaction<List<User>>() {
@@ -760,8 +744,8 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-
 	
+
 	public List<Session> getSession(int sessionId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
@@ -1069,205 +1053,167 @@ public class DerbyDatabase implements IDatabase{
 			});
 		}
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
-	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
-		try {
-			return doExecuteTransaction(txn);
-		} catch (SQLException e) {
-			throw new PersistenceException("Transaction failed", e);
+		public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
+			try {
+				return doExecuteTransaction(txn);
+			} catch (SQLException e) {
+				throw new PersistenceException("Transaction failed", e);
+			}
 		}
-	}
 		
-	// SQL transaction function which retries the transaction MAX_ATTEMPTS times before failing
-	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
-		Connection conn = connect();
-		
-		try {
-			int numAttempts = 0;
-			boolean success = false;
-			ResultType result = null;
+		// SQL transaction function which retries the transaction MAX_ATTEMPTS times before failing
+		public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
+			Connection conn = connect();
 			
-			while (!success && numAttempts < MAX_ATTEMPTS) {
-				try {
-					result = txn.execute(conn);
-					conn.commit();
-					success = true;
-				} catch (SQLException e) {
-					if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
-						// Deadlock: retry (unless max retry count has been reached)
-						numAttempts++;
-					} else {
-						// Some other kind of SQLException
-						throw e;
+			try {
+				int numAttempts = 0;
+				boolean success = false;
+				ResultType result = null;
+				
+				while (!success && numAttempts < MAX_ATTEMPTS) {
+					try {
+						result = txn.execute(conn);
+						conn.commit();
+						success = true;
+					} catch (SQLException e) {
+						if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
+							// Deadlock: retry (unless max retry count has been reached)
+							numAttempts++;
+						} else {
+							// Some other kind of SQLException
+							throw e;
+						}
 					}
 				}
-			}
-			
-			if (!success) {
-				throw new SQLException("Transaction failed (too many retries)");
-			}
-			
-			// Success!
-			return result;
-		} finally {
-			DBUtil.closeQuietly(conn);
-		}
-
-	}
-	//EDIT THIS
-	private Connection connect() throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:C/test/library.db;create=true");		
-		// jdbc:mysql://localhost:8081/
-		//jdbc:derby:DerbyDB;create=true
-		//"jdbc:derby:C:/Users/isabe/Documents/Cs320/library.db;create=true"
-		//jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true
-		//both broken 
-		// Set autocommit() to false to allow the execution of
-		// multiple queries/statements as part of the same transaction.
-		conn.setAutoCommit(false);
-		
-		return conn;
-	}
-	// The main method creates the database tables and loads the initial data.
-	public static void main(String[] args) throws IOException {
-		System.out.println("Creating tables...");
-		DerbyDatabase db = new DerbyDatabase();
-		db.createTables();
-		
-		System.out.println("Loading initial data...");
-		db.loadInitialData();
-		
-		System.out.println("Library DB successfully initialized!");
-	}
-	public void createTables() {
-		executeTransaction(new Transaction<Boolean>() {
-			@Override
-			public Boolean execute(Connection conn) throws SQLException {
-				PreparedStatement stmt1 = null;
-				PreparedStatement stmt2 = null;
-				//PreparedStatement stmt3 = null;				
-				PreparedStatement stmt4 = null;
-				PreparedStatement stmt5 = null;
-				PreparedStatement stmt8= null;
-
-
-				System.out.println("Making Announcement table...");
-
-				try {
-					//create announcement table
-					stmt1 = conn.prepareStatement(
-						"create table Announcements (" +
-						"	announcement_id integer primary key " +
-						"		generated always as identity (start with 1, increment by 1), " +									
-						"	message varchar(40)," +
-						"	date varchar(40)," +
-						"	time varchar(40),"+
-						" announcementType integer,"+
-						"typeId integer"+
-						")"
-					);	
-
-					stmt1.executeUpdate();
-
-					System.out.println("Announcements table created");
-
-					
-					//create user table
-					stmt2 = conn.prepareStatement(
-							"create table Users (" +
-							"	user_id integer primary key " +
-							"		generated always as identity (start with 1, increment by 1), " +
-							"	email varchar(70)," +
-							"	password varchar(70)," +
-							"   name varchar(40)," +
-							"	userType integer"+
-							")"
-					);
-
-					stmt2.executeUpdate();
-
-					System.out.println("Users table created");					
-
-
-					//create session table
-					stmt4 = conn.prepareStatement(
-							"create table Sessions (" +
-							"	session_id integer primary key " +
-							"		generated always as identity (start with 1, increment by 1), " +
-							"	date varchar(40)," +
-							"	room varchar(40)," +
-							"   start_time varchar(40)," +
-							"	end_time varchar(40)," +
-							"	day_of_week integer," +	
-							"	admin_id integer," +
-							"   course_id integer," +
-							"	type_id integer" +
-							")"
-					);
-					stmt4.executeUpdate();
-
-					System.out.println("Sessions table created");	
-					
-					//create course table
-					stmt5 = conn.prepareStatement(
-						"create table Course (" +
-						"	course_id integer primary key " +
-						"		generated always as identity (start with 1, increment by 1), " +									
-						"	title varchar(40)," +
-						"	session_id integer" +
-						")"
-					);	
-
-					stmt5.executeUpdate();
-
-					System.out.println("Announcements table created");
-					
-					//student table
-					stmt8 = conn.prepareStatement(
-							"create table Students (" +
-							"	student_id integer primary key " +
-							"		generated always as identity (start with 1, increment by 1), " +
-							"	major varchar(70), " +
-							"	gradYear varchar(40), " +
-							"   user_id integer" +
-							")"
-					);
-					stmt8.executeUpdate();
-					
-					System.out.println("Students table created");	
-					
-					return true;
-				} finally {
-					DBUtil.closeQuietly(stmt1);
-					DBUtil.closeQuietly(stmt2);
-					//DBUtil.closeQuietly(stmt3);
-					DBUtil.closeQuietly(stmt4);
-					DBUtil.closeQuietly(stmt8);
-				}
-			}
-		});
-	} 
-	// loads data retrieved from CSV files into DB tables in batch mode
-	public void loadInitialData() {
-		executeTransaction(new Transaction<Boolean>() {
-			@Override
-			public Boolean execute(Connection conn) throws SQLException {
-				List<Announcement> announcementList;
-				List<User> userList;
-				List<Session> sessionList;
-				//List<StudyGroup> studyGroupList;
-				List<Student> studentList;
 				
-				try {
-					announcementList	= InitialData.getAnnouncement();
-					userList       		= InitialData.getUser();
-					sessionList			= InitialData.getSession();
+				if (!success) {
+					throw new SQLException("Transaction failed (too many retries)");
+				}
+				
+				// Success!
+				return result;
+			} finally {
+				DBUtil.closeQuietly(conn);
+			}
+		}
+		//EDIT THIS
+		private Connection connect() throws SQLException {
+			Connection conn = DriverManager.getConnection("jdbc:derby:C/test/library.db;create=true");		
+			// jdbc:mysql://localhost:8081/
+			//jdbc:derby:DerbyDB;create=true
+			//"jdbc:derby:C:/Users/isabe/Documents/Cs320/library.db;create=true"
+			//jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true
+			//both broken 
+			// Set autocommit() to false to allow the execution of
+			// multiple queries/statements as part of the same transaction.
+			conn.setAutoCommit(false);
+			
+			return conn;
+		}
+		// The main method creates the database tables and loads the initial data.
+		public static void main(String[] args) throws IOException {
+			System.out.println("Creating tables...");
+			DerbyDatabase db = new DerbyDatabase();
+			db.createTables();
+			
+			System.out.println("Loading initial data...");
+			db.loadInitialData();
+			
+			System.out.println("Library DB successfully initialized!");
+		}
+		public void createTables() {
+			executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt1 = null;
+					PreparedStatement stmt2 = null;
+					PreparedStatement stmt3 = null;				
+					PreparedStatement stmt4 = null;
+					PreparedStatement stmt5 = null;
+					PreparedStatement stmt6 = null;
+					PreparedStatement stmt8= null;
 
-					//studyGroupList 		= InitialData.getStudyGroup();		
-					studentList 		= InitialData.getStudent();
+					System.out.println("Making Announcement table...");
+
+					try {
+						//create announcement table
+						stmt1 = conn.prepareStatement(
+							"create table Announcements (" +
+							"	announcement_id integer primary key " +
+							"		generated always as identity (start with 1, increment by 1), " +									
+							"	message varchar(40)," +
+							"	date varchar(40)," +
+							"	time varchar(40),"+
+							" announcementType integer,"+
+							"typeId integer"+
+							")"
+						);	
+
+						stmt1.executeUpdate();
+
+						System.out.println("Announcements table created");
+
+						
+						//create user table
+
+						stmt2 = conn.prepareStatement(
+								"create table Users (" +
+								"	user_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	email varchar(70)," +
+								"	password varchar(70)," +
+								"   name varchar(40)," +
+								"	userType integer"+
+								")"
+						);
+
+						stmt2.executeUpdate();
+
+						System.out.println("Users table created");					
 
 
-				} catch (IOException e) {
-					throw new SQLException("Couldn't read initial data", e);
+						
+						//create study group table
+						stmt3 = conn.prepareStatement(
+								"create table Groups (" +
+								"	group_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	course_id integer, " +
+								"	session_id integer" +
+								")"
+						
+						);
+						stmt3.executeUpdate();
+						System.out.println("Study Group table created");
+
+
+						//create session table
+						stmt4 = conn.prepareStatement(
+								"create table Sessions (" +
+								"	session_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	date varchar(40)," +
+								"	room varchar(40)," +
+								"   time varchar(40)," +
+								"	tutor_id integer," +
+								"   course varchar(40)" +
+								")"
+						);
+						stmt4.executeUpdate();
+
+						System.out.println("Sessions table created");	
+						
+						//create course table
+						stmt5 = conn.prepareStatement(
+							"create table Course (" +
+							"	course_id integer primary key " +
+							"		generated always as identity (start with 1, increment by 1), " +									
+							"	title varchar(40)," +
+							"	session_id integer" +
+							")"
+						);	
+
+						stmt5.executeUpdate();
 
 						System.out.println("Course table created");
 						stmt6 = conn.prepareStatement(
@@ -1310,77 +1256,107 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt6);
 						DBUtil.closeQuietly(stmt8);
 					}
-
 				}
+			});
+		} 
+		// loads data retrieved from CSV files into DB tables in batch mode
+		public void loadInitialData() {
+			executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					List<Announcement> announcementList;
+					List<User> userList;
+					List<Session> sessionList;
+					//List<StudyGroup> studyGroupList;
+					List<Student> studentList;
+					
+					try {
+						announcementList	= InitialData.getAnnouncement();
+						userList       		= InitialData.getUser();
+						sessionList			= InitialData.getSession();
 
-				PreparedStatement insertAnnouncement     = null;
-				PreparedStatement insertUser       = null;
-				PreparedStatement insertSession    = null;
-				//PreparedStatement insertStudyGroup = null;
-				PreparedStatement insertStudent    = null;
-				try {
-					// populating announcement table
-					insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
-							+ "values (?, ?, ?, ?, ?)");
-					for (Announcement announcement : announcementList) {
-						insertAnnouncement.setString(1, announcement.getMessage());
-						insertAnnouncement.setString(2, announcement.getDate().toString());
-						insertAnnouncement.setString(3, announcement.getTime().toString());
-						insertAnnouncement.setInt(4, announcement.getAnnouncementType());
-						insertAnnouncement.setInt(5, announcement.getTypeId());
-						insertAnnouncement.addBatch();
+						//studyGroupList 		= InitialData.getStudyGroup();		
+						studentList 		= InitialData.getStudent();
+
+					} catch (IOException e) {
+						throw new SQLException("Couldn't read initial data", e);
 					}
-					insertAnnouncement.executeBatch();
-					
-					System.out.println("Announcement table populated");
-					
-					
-					insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
-					for (User user : userList) {
-						insertUser.setString(1, user.getEmail());
-						insertUser.setString(2, user.getPassword());
-						insertUser.setString(3, user.getName());
-						insertUser.setInt(4, user.getUserType());
-						insertUser.addBatch();
+
+					PreparedStatement insertAnnouncement     = null;
+					PreparedStatement insertUser       = null;
+					PreparedStatement insertSession    = null;
+					//PreparedStatement insertStudyGroup = null;
+					PreparedStatement insertStudent    = null;
+					try {
+						// populating announcement table
+						insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
+								+ "values (?, ?, ?, ?, ?)");
+						for (Announcement announcement : announcementList) {
+							insertAnnouncement.setString(1, announcement.getMessage());
+							insertAnnouncement.setString(2, announcement.getDate().toString());
+							insertAnnouncement.setString(3, announcement.getTime().toString());
+							insertAnnouncement.setInt(4, announcement.getAnnouncementType());
+							insertAnnouncement.setInt(5, announcement.getTypeId());
+							insertAnnouncement.addBatch();
+						}
+						insertAnnouncement.executeBatch();
+						
+						System.out.println("Announcement table populated");
+						
+						
+						insertUser = conn.prepareStatement("insert into Users (email, password, name, userType) values (?, ?, ?, ?)");
+						for (User user : userList) {
+							insertUser.setString(1, user.getEmail());
+							insertUser.setString(2, user.getPassword());
+							insertUser.setString(3, user.getName());
+							insertUser.setInt(4, user.getUserType());
+							insertUser.addBatch();
+						}
+						insertUser.executeBatch();
+						
+						System.out.println("User table populated");					
+						
+
+						//study group garbage
+
+						/*insertStudyGroup = conn.prepareStatement("");
+						for (StudyGroup sg: studyGroupList) {
+							
+						}	
+						*/
+						insertSession = conn.prepareStatement("insert into Sessions (date, room, time, tutor_id, course) values (?, ?, ?, ?, ?)");
+						for (Session session : sessionList) {
+							insertSession.setString(1, session.getDate().toString());
+							insertSession.setString(2, session.getRoom());
+							insertSession.setString(3, session.getTime().toString());
+							insertSession.setInt(4, session.getTutorId());
+
+							insertSession.setString(5, session.getCourse());
+							insertSession.addBatch();
+						}
+						insertSession.executeBatch();
+						System.out.println("Session table populated");	
+						
+						insertStudent = conn.prepareStatement("insert into Students (major, gradYear, user_id) values (?, ?, ?)");
+						for (Student stud : studentList) {
+							insertStudent.setString(1,stud.getMajor());
+							insertStudent.setString(2,stud.getYear());
+							insertStudent.setInt(3,stud.getUser_Id());
+							insertStudent.addBatch();
+						}
+						insertStudent.executeBatch();
+						System.out.println("Students table populated");					
+						
+						return true;
+					} finally {
+						DBUtil.closeQuietly(insertAnnouncement);
+						DBUtil.closeQuietly(insertUser);
+						DBUtil.closeQuietly(insertSession);
+						//DBUtil.closeQuietly(insertStudyGroup);		
+						DBUtil.closeQuietly(insertStudent);
 					}
-					insertUser.executeBatch();
-					
-					System.out.println("User table populated");					
-					
-					insertSession = conn.prepareStatement("insert into Sessions (date, room, start_time, end_time, day_of_week, admin_id, course_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?)");
-					for (Session session : sessionList) {
-						insertSession.setString(1, session.getDate().toString());
-						insertSession.setString(2, session.getRoom());
-						insertSession.setString(3, session.getStartTime().toString());
-						insertSession.setString(4, session.getEndTime().toString());
-						insertSession.setInt(5, session.getDayOfWeek());
-						insertSession.setInt(6, session.getAdminId());
-						insertSession.setInt(7, session.getCourseId());
-						insertSession.setInt(8,  session.getTypeId());
-						insertSession.addBatch();
-					}
-					insertSession.executeBatch();
-					System.out.println("Session table populated");	
-					
-					insertStudent = conn.prepareStatement("insert into Students (major, gradYear, user_id) values (?, ?, ?)");
-					for (Student stud : studentList) {
-						insertStudent.setString(1,stud.getMajor());
-						insertStudent.setString(2,stud.getYear());
-						insertStudent.setInt(3,stud.getUser_Id());
-						insertStudent.addBatch();
-					}
-					insertStudent.executeBatch();
-					System.out.println("Students table populated");					
-					
-					return true;
-				} finally {
-					DBUtil.closeQuietly(insertAnnouncement);
-					DBUtil.closeQuietly(insertUser);
-					DBUtil.closeQuietly(insertSession);
-					//DBUtil.closeQuietly(insertStudyGroup);		
-					DBUtil.closeQuietly(insertStudent);
 				}
-			}
-		});
-	}
+			});
+		}
+
 }
