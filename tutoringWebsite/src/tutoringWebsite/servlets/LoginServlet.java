@@ -7,13 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tutoringWebsite.controllers.StudentController;
 import tutoringWebsite.controllers.UserController;
+import tutoringWebsite.model.Student;
 import tutoringWebsite.model.User;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private User model;
 	private UserController controller;
+	private Student model1;
+	private StudentController controller1;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -35,9 +39,11 @@ public class LoginServlet extends HttpServlet {
 		String pw           = null;
 		User current 		= new User();
 		boolean validLogin  = false;
-	
-		
-
+		Student student		= new Student();
+		int userType		= 0;
+		String major = null;
+		String year = null;
+		boolean isStudent	= false;//will turn true i student
 		// Decode form parameters and dispatch to controller
 		email = req.getParameter("email");
 		pw   = req.getParameter("password");
@@ -49,6 +55,8 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			model      = new User(); 
 			controller = new UserController(model);
+			model1      = new Student();
+			controller1 = new StudentController(model1);
 			
 			validLogin = controller.validateCredentials(email, pw);
 			System.out.println("account accessed");	
@@ -56,6 +64,15 @@ public class LoginServlet extends HttpServlet {
 			if(validLogin) {
 				current    = controller.getAccount(email, pw);
 				System.out.println("got user");	
+				userType = current.getUserType();
+				if(userType == 1|| userType == 2) {
+					isStudent = true;
+					System.out.println(" user is student");
+					student = controller1.getStudent(email, pw);
+					major = req.getParameter(student.getMajor());
+					year = req.getParameter(student.getYear());
+					System.out.println("  Major: <" + major + "> Year: <" + year + ">");	
+				}
 				
 			}
 		
@@ -81,7 +98,9 @@ public class LoginServlet extends HttpServlet {
 			//currently stores onlt the name but but shuld we store the enitre class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
 			req.getSession().setAttribute("user", current);
-
+			if(isStudent) {
+			req.getSession().setAttribute("student",student);
+			}
 			// redirect to /index page
 			resp.sendRedirect(req.getContextPath() + "/index");
 

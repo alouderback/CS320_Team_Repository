@@ -18,13 +18,11 @@ import tutoringWebsite.persist.DatabaseProvider;
 import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.persist.IDatabase;
 
-public class derbyDatabaseAnnouncementTest {
+public class derbyDatabaseUserJUnit {
 
 	private IDatabase db = null;
-	ArrayList<Announcement> announcements = null;
-	ArrayList<Session> sessions = null;
-	ArrayList<StudyGroup> studyGroups = null;		
-	List<Announcement> announcementList = null;
+	ArrayList<User> users = null;
+	ArrayList<Student> studs = null;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -42,17 +40,18 @@ public class derbyDatabaseAnnouncementTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+	/*
 	@Test
-	public void testgetAnnouncementsforSession() {
-		System.out.println("\n*** Testing getAnnouncementsforSession ***");
+	public void testgetUser() {
+		System.out.println("\n*** Testing getUser ***");
 		
-		int sessionId = 1;
+		int userId= 1;
 
 		// get the list of (Author, Book) pairs from DB
-		announcementList = db.getAnnouncementsforSessionWithSessionId(sessionId);
+		userList = db.getAccount(email, password)
 		
 		// NOTE: this is a simple test to check if no results were found in the DB
-		if (announcementList.isEmpty()) {
+		if (userList.isEmpty()) {
 			System.out.println("No announcements for that session");
 			fail("No announcements retrieved from Announcements DB");
 		}
@@ -67,31 +66,7 @@ public class derbyDatabaseAnnouncementTest {
 			}			
 		}
 	}
-	@Test
-	public void testgetAnnouncementsforStudyGroup() {
-		System.out.println("\n*** Testing getAnnouncementsforStudyGroup ***");
-		
-		int studyGroupId = 1;
-
-		// get the list of (Author, Book) pairs from DB
-		announcementList = db.getAnnouncementsforStudyGroupWithStudyGroupId(studyGroupId);
-		
-		// NOTE: this is a simple test to check if no results were found in the DB
-		if (announcementList.isEmpty()) {
-			System.out.println("No announcements for that study group");
-			fail("No announcements retrieved from Announcements DB");
-		}
-		// NOTE: assembling the results into Author and Book lists so that they could be
-		//       inspected for correct content - well-formed objects with correct content
-		else {			
-			announcements = new ArrayList<Announcement>();
-			for (Announcement announcement : announcementList) {
-				announcements.add(announcement);
-				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
-				+ "," + announcement.getDate() + "," + announcement.getTime());
-			}			
-		}
-	}
+	
 	@Test
 	public void testgetAllAnnouncements() {
 		System.out.println("\n*** Testing getAllAnnouncements ***");
@@ -187,4 +162,5 @@ public class derbyDatabaseAnnouncementTest {
 			fail("Failed to insert new announcement <" + message + "> into Library DB");
 		}
 	}
+	*/
 }	
