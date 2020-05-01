@@ -19,6 +19,11 @@ public interface IDatabase {
 	List<Session> getScheduleByDate(String timeframe);
 	List<User> getAccount(String email, String password);
 	List<Session> deleteSession(int sessionId);
-	List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course);
+	List<Session> createSession(final String room, final LocalDate date, final int adminId, final LocalTime startTime, final LocalTime endTime, final int dayOfWeek, final int courseId, final int typeId);
 	List<User> getTutors();
+	List<Integer> getUserId(User user);
+	List<Student> getStudent(String email, String password);
+	List<Student> createStudent(String major, String year, int userid);
+	Student deleteStudent(String email, String password);
+
 }
