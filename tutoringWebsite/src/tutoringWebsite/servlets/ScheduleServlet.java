@@ -2,6 +2,7 @@ package tutoringWebsite.servlets;
 
 import java.io.IOException;
 
+
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import tutoringWebsite.model.*;
 import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.controllers.*;
-import tutoringWebsite.db.FakeScheduleDatabase;
 
 public class ScheduleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
