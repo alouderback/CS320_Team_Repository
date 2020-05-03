@@ -94,24 +94,26 @@ public class InitialData {
 				Session session = new Session();
 				session.setSessionId(sessionId++);
 				
-
 				LocalDate date = LocalDate.parse(i.next());
-				
-				
-				
 				session.setDate(date);
 				
+				session.setDayOfWeek(Integer.decode(i.next()));
+					
 				String room = i.next();
-				
 				session.setRoom(room);
 				
-				LocalTime time = LocalTime.parse(i.next());
+				LocalTime startTime = LocalTime.parse(i.next());
+				session.setStartTime(startTime);
 				
-				session.setTime(time);
-				session.setTutorId(Integer.decode(i.next()));
+				LocalTime endTime = LocalTime.parse(i.next());
+				session.setEndTime(endTime);
 				
-				session.setCourse(i.next());
+				session.setAdminId(Integer.decode(i.next()));
 				
+				session.setCourseId(Integer.decode(i.next()));
+				
+				session.setTypeId(Integer.decode(i.next()));
+			
 				sessionList.add(session);
 				
 			}
