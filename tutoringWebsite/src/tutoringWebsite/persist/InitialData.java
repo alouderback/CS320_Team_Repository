@@ -107,7 +107,7 @@ public class InitialData {
 				session.setEndTime(endTime);
 				
 				session.setDayOfWeek(Integer.decode(i.next()));
-				
+
 				session.setAdminId(Integer.decode(i.next()));
 				
 				session.setCourseId(Integer.decode(i.next()));
