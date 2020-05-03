@@ -96,8 +96,6 @@ public class InitialData {
 				
 				LocalDate date = LocalDate.parse(i.next());
 				session.setDate(date);
-				
-				session.setDayOfWeek(Integer.decode(i.next()));
 					
 				String room = i.next();
 				session.setRoom(room);
@@ -107,6 +105,8 @@ public class InitialData {
 				
 				LocalTime endTime = LocalTime.parse(i.next());
 				session.setEndTime(endTime);
+				
+				session.setDayOfWeek(Integer.decode(i.next()));
 				
 				session.setAdminId(Integer.decode(i.next()));
 				
