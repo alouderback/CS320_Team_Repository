@@ -149,5 +149,25 @@ public class InitialData {
 				readStudent.close();
 			}
 		}
+	public static List<String> getycpEmails() throws IOException {
+		List<String> emailList = new ArrayList<String>();
+		ReadCSV readUser = new ReadCSV("ycpEmails.csv");
+		try {
+			// auto-generated primary key for authors table
+			
+			while (true) {
+			List<String> tuple = readUser.next();
+			if (tuple == null) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			String email = i.next();
+			emailList.add(email);
+			}
+				return emailList;
+			} finally {
+					readUser.close();
+				}
+			}
 
 }
