@@ -45,7 +45,6 @@ public class CreateAccountServlet extends HttpServlet {
 		User current		= new User();
 		Student isStudent		= new Student();
 		boolean validLogin  = false;
-		boolean createStudent = false;
 		boolean vaildEmail	= false;
 
 		// Decode form parameters and dispatch to controller
@@ -58,19 +57,16 @@ public class CreateAccountServlet extends HttpServlet {
 	
 		System.out.println("   email: <" + email + "> PW: <" + pw + ">");		
 	
-		String student, tutor, faculty;
+		String student, tutor;
 		student= "student";
 		tutor = "tutor";
-		faculty = "faculty";
 		if(temp.contains(student)) {
 			userType=1;
-			createStudent = true;
+			
 			System.out.print("\ntrue");
 		}else if(temp.contentEquals(tutor)){
 			userType = 2;
-			createStudent = true;
-		}else if(temp.matches(faculty)) {
-			userType = 3;
+			
 		}else {
 			userType = 0;
 		}
@@ -85,19 +81,14 @@ public class CreateAccountServlet extends HttpServlet {
 			if(vaildEmail) {
 			validLogin = true;
 			current = controller.createAccount(email, pw, name ,userType);
-			if(createStudent) {
 				model1		= new Student();
 				controller1 = new StudentController(model1);
 				int id = current.getUser_Id();
 				System.out.println(id);
 				isStudent = controller1.createStudent(major, year, id);
-				}
-			}else {
-				errorMessage = "Not a vaild Email";
-			}
 		}
 		 
-
+		}
 		// Add parameters as request attributes
 		req.setAttribute("email", req.getParameter("email"));
 		req.setAttribute("password", req.getParameter("password"));
@@ -109,7 +100,7 @@ public class CreateAccountServlet extends HttpServlet {
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("createAccount",        validLogin);
-		req.setAttribute("createStudent",        createStudent);
+		
 		// if login is valid, start a session
 		if (validLogin) {
 			System.out.println("  Account created - starting session, redirecting to /index");
