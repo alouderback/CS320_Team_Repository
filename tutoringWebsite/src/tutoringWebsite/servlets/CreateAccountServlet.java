@@ -46,7 +46,7 @@ public class CreateAccountServlet extends HttpServlet {
 		Student isStudent		= new Student();
 		boolean validLogin  = false;
 		boolean createStudent = false;
-	
+		boolean vaildEmail	= false;
 
 		// Decode form parameters and dispatch to controller
 		email = req.getParameter("email");
@@ -65,7 +65,7 @@ public class CreateAccountServlet extends HttpServlet {
 		if(temp.contains(student)) {
 			userType=1;
 			createStudent = true;
-			System.out.print("/ntrue");
+			System.out.print("\ntrue");
 		}else if(temp.contentEquals(tutor)){
 			userType = 2;
 			createStudent = true;
@@ -78,20 +78,25 @@ public class CreateAccountServlet extends HttpServlet {
 		System.out.println("   temp: <" + temp + "> userType: <" + userType + ">");	
 		if ((email == null || pw == null || email.equals("") || pw.equals(""))) {
 			errorMessage = "Please specify both username and password";
-		} else {
-			validLogin = true;
+		} else {			
 			model      = new User();
 			controller = new UserController(model);
-			model1		= new Student();
-			controller1 = new StudentController(model1);
+			vaildEmail = controller.validateUsername(email);
+			if(vaildEmail) {
+			validLogin = true;
 			current = controller.createAccount(email, pw, name ,userType);
 			if(createStudent) {
+				model1		= new Student();
+				controller1 = new StudentController(model1);
 				int id = current.getUser_Id();
 				System.out.println(id);
 				isStudent = controller1.createStudent(major, year, id);
+				}
+			}else {
+				errorMessage = "Not a vaild Email";
 			}
-			
-		} 
+		}
+		 
 
 		// Add parameters as request attributes
 		req.setAttribute("email", req.getParameter("email"));

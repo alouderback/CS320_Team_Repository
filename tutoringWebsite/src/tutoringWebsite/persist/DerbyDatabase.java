@@ -547,7 +547,6 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("See below for course:");
 		System.out.println("Course for session that is being loaded: " + session.getCourseId());
 	}
-	@Override
 	public List<Session> createSession(final String room, final LocalDate date, final int adminId, final LocalTime startTime, final LocalTime endTime, final int dayOfWeek, final int courseId, final int typeId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
@@ -630,8 +629,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
-	
+
 	public List<Session> deleteSession(int sessionId) {
 		//Deletes and returns session and takes sessionId as a parameter
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -680,7 +678,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
 	public List<Integer> getUserId(User user) {
 		//Returns an empty list if user is not found
 		return executeTransaction(new Transaction <List<Integer>>() {
@@ -714,7 +711,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
 	public List<User> getTutors(){ 
 		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
 		return executeTransaction(new Transaction<List<User>>() {
@@ -760,8 +756,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
-
 	public List<Session> getSession(int sessionId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
@@ -796,8 +790,6 @@ public class DerbyDatabase implements IDatabase{
 			
 		});
 	}
-
-
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
@@ -1112,14 +1104,8 @@ public class DerbyDatabase implements IDatabase{
 				DBUtil.closeQuietly(conn);
 			}
 		}
-		//EDIT THIS
 		private Connection connect() throws SQLException {
 			Connection conn = DriverManager.getConnection("jdbc:derby:C/test/library.db;create=true");		
-			// jdbc:mysql://localhost:8081/
-			//jdbc:derby:DerbyDB;create=true
-			//"jdbc:derby:C:/Users/isabe/Documents/Cs320/library.db;create=true"
-			//jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true
-			//both broken 
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
 			conn.setAutoCommit(false);
