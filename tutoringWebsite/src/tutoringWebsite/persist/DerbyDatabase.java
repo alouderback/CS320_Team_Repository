@@ -810,7 +810,6 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
-
 	public List<Session> getSession(int sessionId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {

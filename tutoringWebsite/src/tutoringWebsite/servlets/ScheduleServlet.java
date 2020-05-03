@@ -38,7 +38,7 @@ public class ScheduleServlet extends HttpServlet {
 
 		Schedule model = null;
 
-		
+		String courseName = null;
 
 		
 		ScheduleController controller = new ScheduleController();
@@ -48,6 +48,8 @@ public class ScheduleServlet extends HttpServlet {
 		controller.setDB(db);
 		
 		ArrayList<Session> sessions = new ArrayList<Session>();
+		ArrayList<String> adminNameList = new ArrayList<String>();
+		ArrayList<String> courseNameList = new ArrayList<String>();
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
@@ -70,7 +72,6 @@ public class ScheduleServlet extends HttpServlet {
 		}
 		
 	
-		
 		
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response

@@ -37,6 +37,12 @@
                     <tr>
                         <td><input type="submit" name="SubmitM" value="Get Schedule for Month"></td>
                     </tr>
+                    <tr>
+                        <td><input type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
+                    </tr>
    
                         <tr>
                             <td>Tutor</td>

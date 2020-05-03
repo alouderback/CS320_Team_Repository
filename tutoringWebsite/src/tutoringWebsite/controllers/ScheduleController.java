@@ -22,7 +22,11 @@ public class ScheduleController{
 	public void setDB(DerbyDatabase db) {
 		this.db = db;
 	}
-	
+	/*
+	public String getNameFromAdminId (int adminId) {
+		
+	}
+	*/
 	public List<Session> getScheduleWithDate(String timeframe) {
 		//model.setSchedule(timeframe);
 		return db.getScheduleByDate(timeframe);
