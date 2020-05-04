@@ -10,7 +10,7 @@ import tutoringWebsite.model.StudyGroup;
 
 public class StudyGroupController {
 	private StudyGroup model;
-	private StudyGroupDB db;
+
 	
 	public void setStudyGroup(StudyGroup model) {
 		this.model = model;
