@@ -1,9 +1,9 @@
 package tutoringWebsite.controllers;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import tutoringWebsite.db.FakeScheduleDatabase;
 import tutoringWebsite.model.Announcement;
 import tutoringWebsite.model.Schedule;
 import tutoringWebsite.model.Session;
@@ -22,7 +22,11 @@ public class ScheduleController{
 	public void setDB(DerbyDatabase db) {
 		this.db = db;
 	}
-	
+	/*
+	public String getNameFromAdminId (int adminId) {
+		
+	}
+	*/
 	public List<Session> getScheduleWithDate(String timeframe) {
 		//model.setSchedule(timeframe);
 		return db.getScheduleByDate(timeframe);

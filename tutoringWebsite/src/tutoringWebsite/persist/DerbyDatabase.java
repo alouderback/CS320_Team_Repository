@@ -482,45 +482,80 @@ public class DerbyDatabase implements IDatabase{
 		announcement.setTypeId(resultSet.getInt(index++));
 	}
 	public List<Session> getScheduleByDate(String timeframe){
-		//Method currently doesn't use parameter timeframe; returns whole list of sessions
+		//Method currently uses parameter timeframe
+		//Thinking about passing a LocalDate as a parameter
 		return executeTransaction(new Transaction<List<Session>>() {
 			
 			public List<Session> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				List<Session> result = null;
+				List<Session> result = new ArrayList<Session>();
+				LocalDate presentDateTime = LocalDate.now();
+				LocalDate endDate = null;
+				int day = presentDateTime.getDayOfMonth();
+				int month = presentDateTime.getMonthValue();
+				int year = presentDateTime.getYear();
+				
+				LocalDate presentDate = LocalDate.of(year, month, day);
 				
 				System.out.println("IN DERBY DATABASE");
 				System.out.println("In getScheduleByDate");
-				try {
-					stmt = conn.prepareStatement(
-							"select sessions.* " +
-							" from Sessions "
-					//Trying to get all sessions
-							);
-					
-					resultSet = stmt.executeQuery();
-					
-					System.out.println("Query Executed");
-					
-					System.out.println("Got all sessions");
-					
-					result = new ArrayList<Session>();
-					while (resultSet.next()) {
-						System.out.println("Within while loop, see session id below:");
-						Session session = new Session();
-						loadSession(session, resultSet, 1);
-						System.out.println("Session ID: " + session.getSessionId());
-						result.add(session);
-					}
-
-			
-			}finally {
-						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(stmt);
-						System.out.println("Closed");
-					}
+				
+				if(timeframe == "Submit") {
+					endDate = presentDate.plusDays(1);
+					//The loop condition is that the incrementing value needs to be less than the comparative value
+					//So the endDate is the "first date" that isn't passed
+					System.out.println("*** MY MAN IS GRABBING SCHEDULE FOR TODAY ***");
+				}
+				else if (timeframe == "SubmitW") {
+					endDate = presentDate.plusDays(8);
+					System.out.println("*** MY MAN IS GRABBING SCHEDULE FOR THE WEEK ***");
+				}
+				else if (timeframe == "SubmitM") {
+					endDate = presentDate.plusMonths(1);
+					endDate = endDate.plusDays(1);
+					System.out.println("*** MY MAN IS GRABBING SCHEDULE FOR THE MONTH ***");
+				}
+				
+				while(presentDate.isBefore(endDate)) {
+					System.out.println("(TOL) PresentDate Value: " + presentDate);
+					try {
+						stmt = conn.prepareStatement(
+								"select sessions.* " +
+								" from Sessions "  +
+								"where date = ?"
+						//Trying to get all sessions
+								);
+						stmt.setString(1, presentDate.toString());
+						
+						resultSet = stmt.executeQuery();
+						
+						System.out.println("Query Executed");
+						
+						System.out.println("Got all sessions");
+						
+						System.out.println("ResultSet Size Thing: " + resultSet.getFetchSize());
+						while (resultSet.next()) {
+							System.out.println("Within while loop, see session id below:");
+							Session session = new Session();
+							loadSession(session, resultSet, 1);
+							System.out.println("Session ID: " + session.getSessionId());
+							result.add(session);
+						}
+	
+				
+				}finally {
+							DBUtil.closeQuietly(resultSet);
+							DBUtil.closeQuietly(stmt);
+							System.out.println("Closed");
+						}
+					System.out.println("(BOL) PresentDate Value: " + presentDate);
+					System.out.println("(BOL) EndDate Value: " + endDate);
+					presentDate = presentDate.plusDays(1);
+					System.out.println("(BOL) Incemented PresentDate Value: " + presentDate);
+				}
 			System.out.println("Result size:" + result.size());
+			System.out.println("***   ***");
 			return result;
 				}
 			
@@ -533,21 +568,34 @@ public class DerbyDatabase implements IDatabase{
 		LocalTime startTime = LocalTime.now();
 		LocalTime endTime = LocalTime.now();
 		
+		System.out.println("******* IN LOAD SESSION *******");
+		
 		session.setSessionId((resultSet.getInt(index++)));
+		
+		System.out.println("- Set the sessionId");
+		
 		date = LocalDate.parse(resultSet.getString(index++));
 		session.setDate(date);
-		session.setDayOfWeek(resultSet.getInt(index++));
+		System.out.println("- Set the date - " + session.getDate().toString());
 		session.setRoom(resultSet.getString(index++));
+		System.out.println("- Set the room - " + session.getRoom());
 		startTime = LocalTime.parse(resultSet.getString(index++));
 		session.setStartTime(startTime);
+		System.out.println("- Set the startTime - " + session.getStartTime().toString());
 		endTime = LocalTime.parse(resultSet.getString(index++));
 		session.setEndTime(endTime);
+		System.out.println("- Set the endTime - " + session.getEndTime().toString());
+		session.setDayOfWeek(resultSet.getInt(index++));
+		System.out.println("- Set the dayOfWeek - " + session.getDayOfWeek());
 		session.setAdminId(resultSet.getInt(index++));
+		System.out.println("- Set the adminId - " + session.getAdminId());
 		session.setCourseId(resultSet.getInt(index++));
+		System.out.println("- Set the courseId - " + session.getCourseId());
+		session.setTypeId(resultSet.getInt(index++));
+		System.out.println("- Set the typeId - " + session.getTypeId());
 		System.out.println("See below for course:");
 		System.out.println("Course for session that is being loaded: " + session.getCourseId());
 	}
-	@Override
 	public List<Session> createSession(final String room, final LocalDate date, final int adminId, final LocalTime startTime, final LocalTime endTime, final int dayOfWeek, final int courseId, final int typeId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
@@ -630,8 +678,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
-	
+
 	public List<Session> deleteSession(int sessionId) {
 		//Deletes and returns session and takes sessionId as a parameter
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -680,7 +727,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
 	public List<Integer> getUserId(User user) {
 		//Returns an empty list if user is not found
 		return executeTransaction(new Transaction <List<Integer>>() {
@@ -714,7 +760,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
 	public List<User> getTutors(){ 
 		//This method only returns a list of users (with type User) and not tutors; will probably change when the tutor database is implemented 
 		return executeTransaction(new Transaction<List<User>>() {
@@ -760,7 +805,6 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-	
 
 	public List<Session> getSession(int sessionId){
 		return executeTransaction(new Transaction<List<Session>>() {
@@ -796,8 +840,6 @@ public class DerbyDatabase implements IDatabase{
 			
 		});
 	}
-
-
 	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
@@ -1112,14 +1154,8 @@ public class DerbyDatabase implements IDatabase{
 				DBUtil.closeQuietly(conn);
 			}
 		}
-		//EDIT THIS
 		private Connection connect() throws SQLException {
 			Connection conn = DriverManager.getConnection("jdbc:derby:C/test/library.db;create=true");		
-			// jdbc:mysql://localhost:8081/
-			//jdbc:derby:DerbyDB;create=true
-			//"jdbc:derby:C:/Users/isabe/Documents/Cs320/library.db;create=true"
-			//jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true
-			//both broken 
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
 			conn.setAutoCommit(false);

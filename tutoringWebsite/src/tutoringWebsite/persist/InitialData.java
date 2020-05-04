@@ -96,8 +96,6 @@ public class InitialData {
 				
 				LocalDate date = LocalDate.parse(i.next());
 				session.setDate(date);
-				
-				session.setDayOfWeek(Integer.decode(i.next()));
 					
 				String room = i.next();
 				session.setRoom(room);
@@ -108,6 +106,8 @@ public class InitialData {
 				LocalTime endTime = LocalTime.parse(i.next());
 				session.setEndTime(endTime);
 				
+				session.setDayOfWeek(Integer.decode(i.next()));
+
 				session.setAdminId(Integer.decode(i.next()));
 				
 				session.setCourseId(Integer.decode(i.next()));
@@ -151,5 +151,25 @@ public class InitialData {
 				readStudent.close();
 			}
 		}
+	public static List<String> getycpEmails() throws IOException {
+		List<String> emailList = new ArrayList<String>();
+		ReadCSV readUser = new ReadCSV("ycpEmails.csv");
+		try {
+			// auto-generated primary key for authors table
+			
+			while (true) {
+			List<String> tuple = readUser.next();
+			if (tuple == null) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			String email = i.next();
+			emailList.add(email);
+			}
+				return emailList;
+			} finally {
+					readUser.close();
+				}
+			}
 
 }
