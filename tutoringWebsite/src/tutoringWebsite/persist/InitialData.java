@@ -83,13 +83,16 @@ public class InitialData {
 		try {
 			
 			Integer sessionId = 1;
+			
 			while(true) {
 
 				List<String> tuple = readSession.next();
 				if(tuple==null || tuple.size() == 0) {
 					break;
 				}
-			
+				
+				
+				
 				Iterator<String> i = tuple.iterator();
 				Session session = new Session();
 				session.setSessionId(sessionId++);
@@ -106,13 +109,13 @@ public class InitialData {
 				LocalTime endTime = LocalTime.parse(i.next());
 				session.setEndTime(endTime);
 				
-				session.setDayOfWeek(Integer.decode(i.next()));
+				session.setDayOfWeek(Integer.parseInt(i.next()));
 
-				session.setAdminId(Integer.decode(i.next()));
+				session.setAdminId(Integer.parseInt(i.next()));
 				
-				session.setCourseId(Integer.decode(i.next()));
+				session.setCourseId(Integer.parseInt(i.next()));
 				
-				session.setTypeId(Integer.decode(i.next()));
+				session.setTypeId(Integer.parseInt(i.next()));
 			
 				sessionList.add(session);
 				
