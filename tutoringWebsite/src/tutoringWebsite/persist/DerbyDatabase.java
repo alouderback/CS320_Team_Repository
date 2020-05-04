@@ -841,6 +841,61 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	@Override
+	public List<String> getDayOfWeek(int sessionId){
+		return executeTransaction(new Transaction<List<String>>() {
+			public List<String> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<String> result = new ArrayList<String>();
+					
+					stmt = conn.prepareStatement(
+							"select day_of_week from Sessions " +
+							" where session_id = ?"
+							);
+					
+					stmt.setInt(1, sessionId);
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						int dayOfWeek = resultSet.getInt(1);
+						
+						if((dayOfWeek & 1) > 0) {
+							result.add("Sunday");
+						}
+						if((dayOfWeek & 2) > 0) {
+							result.add("Monday");
+						}
+						if((dayOfWeek & 4) > 0) {
+							result.add("Tuesday");
+						}
+						if((dayOfWeek & 8) > 0) {
+							result.add("Wednesday");
+						}
+						if((dayOfWeek & 16) > 0) {
+							result.add("Thursday");
+						}
+						if((dayOfWeek & 32) > 0) {
+							result.add("Friday");
+						}
+						if((dayOfWeek & 64) > 0) {
+							result.add("Saturday");
+						}
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
 	public List<User> createAccount(final String email, final String password, final String name, final int userType){
 		return executeTransaction(new Transaction<List<User>>() {
 			@Override
