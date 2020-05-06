@@ -1,11 +1,17 @@
 package tutoringWebsite.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import tutoringWebsite.controllers.AnnouncementController;
+import tutoringWebsite.model.Announcement;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.persist.DerbyDatabase;
 
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,8 +28,7 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		System.out.println("Index Servlet: doPost");
+		String errorMessage = null;
 		
 		// check which button the user pressed
 		if (req.getParameter("index") != null) {
@@ -65,5 +70,6 @@ public class IndexServlet extends HttpServlet {
 		else {
 			throw new ServletException("Unknown command");
 		}
+		
 	}
 }

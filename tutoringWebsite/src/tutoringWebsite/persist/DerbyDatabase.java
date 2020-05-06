@@ -454,6 +454,77 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	//get all Announcements for the study group page
+	@Override
+	public List<Announcement> getAllStudyGroupAnnouncements(){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int type = 2;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+						"from Announcements "+
+						"where announcementType = ?" +
+						"order by Announcements.date desc "
+					);
+					stmt.setInt(1, type);
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+						
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
+	//get all Announcements for the session page
+	@Override
+	public List<Announcement> getAllSessionAnnouncements(){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int type = 1;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+						"from Announcements "+
+						"where announcementType = ?" +
+						"order by Announcements.date desc "
+					);
+					stmt.setInt(1, type);
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+							
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}				
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
 		user.setUser_Id((resultSet.getInt(index++)));
 //		book.setAuthorId(resultSet.getInt(index++));  // no longer used

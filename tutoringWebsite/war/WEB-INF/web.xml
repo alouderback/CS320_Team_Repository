@@ -12,6 +12,11 @@
   </servlet>
   
   <servlet>
+    <servlet-name>AnnouncementServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.AnnouncementServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>CoursesServlet</servlet-name>
     <servlet-class>tutoringWebsite.servlets.CoursesServlet</servlet-class>
   </servlet>
@@ -47,6 +52,11 @@
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>AnnouncementServlet</servlet-name>
+    <url-pattern>/announcement.jsp</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

@@ -24,4 +24,6 @@ public interface IDatabase {
 	List<Student> getStudent(String email, String password);
 	List<Student> createStudent(String major, String year, int userid);
 	Student deleteStudent(String email, String password);
+	List<Announcement> getAllStudyGroupAnnouncements();
+	List<Announcement> getAllSessionAnnouncements();
 }

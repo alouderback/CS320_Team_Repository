@@ -21,7 +21,7 @@ public class SessionController{
 		 model.setDate(date);
 		 model.setTime(time);
 		 model.setCourse(course);
-		 model.setTutorId(tutor.getUser_Id());
+		 //model.setTutorId(tutor.getUser_Id());
 	}
 	
 	public Session getSession() {

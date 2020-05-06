@@ -2,7 +2,6 @@ package tutoringWebsite.model;
 
 import java.util.ArrayList;
 
-import tutoringWebsite.db.FakeScheduleDatabase;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -38,9 +37,8 @@ public class Schedule {
 		return scheduleList;
 	}
 	
-	public void setSchedule(String timeframe) {
-		FakeScheduleDatabase fakeSchedule = new FakeScheduleDatabase();	
-		scheduleList = fakeSchedule.findScheduleByDate(timeframe);
+	public void setSchedule(String timeframe) {	
+		//scheduleList = fakeSchedule.findScheduleByDate(timeframe);
 		//This needs to be updated
 		
 	}
