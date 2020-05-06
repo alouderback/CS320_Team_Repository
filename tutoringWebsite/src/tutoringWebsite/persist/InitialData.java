@@ -187,16 +187,16 @@ public class InitialData {
 			
 			while (true) {
 			List<String> tuple = readTf.next();
-			if (tuple == null) {
+			if (tuple == null || tuple.size() == 0) {
 				break;
 			}
 			Iterator<String> i = tuple.iterator();
 			TutorFaculty tf = new TutorFaculty();
 			tf.setAdmin_id(adminId++);
 			userId = Integer.decode(i.next());
-			tf.setUserType(userId);
+			tf.setUser_Id(userId);
 			courseId = Integer.decode(i.next());
-			tf.setUserType(courseId);
+			tf.setCourse_id(courseId);
 			userType = Integer.decode(i.next());
 			tf.setUserType(userType);
 			tfList.add(tf);
