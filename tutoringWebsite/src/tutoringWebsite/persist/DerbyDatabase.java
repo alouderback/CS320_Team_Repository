@@ -779,7 +779,7 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
-						"select users from Users " + //Selects all users who are marked as tutors
+						"select * from Users " + //Selects all users who are marked as tutors
 						"where userType = ?"
 							);
 					
@@ -789,15 +789,13 @@ public class DerbyDatabase implements IDatabase{
 					
 					resultSet = stmt.executeQuery();
 					
-					if(resultSet.next()) {
+					while(resultSet.next()) {
 						User user = new User();
 						loadUser(user, resultSet, 1);
 						result.add(user);
 					}
 					
-					else {
-						System.out.println("That's all the tutors...");
-					}
+				
 					
 					System.out.println("Returning list of tutors...");
 					
