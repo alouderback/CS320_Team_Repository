@@ -18,6 +18,9 @@ h1{
     margin: 1%;
     text-align: center;
 }
+.scheduleListings {
+    background-color: white;
+}
 
 .navBar {
     display: inline-block;

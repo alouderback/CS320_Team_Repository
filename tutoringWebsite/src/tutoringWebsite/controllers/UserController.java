@@ -5,6 +5,8 @@ import java.util.List;
 import tutoringWebsite.model.User;
 import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.persist.IDatabase;
+import tutoringWebsite.persist.RDatabase;
+import tutoringWebsite.persist.readOnlyDatabase;
 
 public class UserController {
 	private User model = null;
@@ -15,6 +17,7 @@ public class UserController {
 	//IDatabase db = DatabaseProvider.getInstance();
 	
 	IDatabase db = new DerbyDatabase();
+	RDatabase read = new readOnlyDatabase();
 	//List<User> authorBookList = db.createAccount(email, password, major, year);
 	
 	public UserController(User model) {
@@ -33,15 +36,9 @@ public class UserController {
 		
 	}
 	public User createAccount(String email, String pw, String name, int userType) {
-		if(model.isStudent(email)) {
 
 			List<User> userList = db.createAccount(email, pw, name, userType);
 			return userList.get(0);
-		}
-		else {
-			System.out.println("email invalid");
-			return model.createAccount(name, pw, name, userType);
-		}
 		
 		
 	}
@@ -58,7 +55,11 @@ public class UserController {
 		
 	}
 	public boolean validateUsername(String name) {
-		return model.isStudent(name);
+		List<String> emailList = read.getEmails();
+		boolean test = emailList.contains(name);
+		System.out.println(test);
+		return test;
+		//return model.isStudent(name);
 	}
 	public boolean removeAccount(User user) {
 		User delete = db.deleteAccount(user.getEmail(), user.getPassword());

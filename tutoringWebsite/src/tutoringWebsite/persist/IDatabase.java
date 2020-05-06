@@ -19,11 +19,14 @@ public interface IDatabase {
 	List<Session> getScheduleByDate(String timeframe);
 	List<User> getAccount(String email, String password);
 	List<Session> deleteSession(int sessionId);
-	List<Session> createSession(final String room, final LocalDate date, final int tutorId, final LocalTime time, final String course);
+
 	List<User> getTutors();
 	List<Student> getStudent(String email, String password);
 	List<Student> createStudent(String major, String year, int userid);
 	Student deleteStudent(String email, String password);
 	List<Announcement> getAllStudyGroupAnnouncements();
 	List<Announcement> getAllSessionAnnouncements();
+	List<Session> createSession(String room, LocalDate date, int adminId, LocalTime startTime, LocalTime endTime,
+		int dayOfWeek, int courseId, int typeId);
+	List<String> getDayOfWeek(int sessionId);
 }

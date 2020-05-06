@@ -1,6 +1,7 @@
 package tutoringWebsite.model;
 
 import java.util.ArrayList;
+
 import tutoringWebsite.model.Session;
 import tutoringWebsite.model.Tutor;
 

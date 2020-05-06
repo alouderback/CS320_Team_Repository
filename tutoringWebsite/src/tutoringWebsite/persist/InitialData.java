@@ -83,35 +83,40 @@ public class InitialData {
 		try {
 			
 			Integer sessionId = 1;
+			
 			while(true) {
 
 				List<String> tuple = readSession.next();
 				if(tuple==null || tuple.size() == 0) {
 					break;
 				}
-			
+				
+				
+				
 				Iterator<String> i = tuple.iterator();
 				Session session = new Session();
 				session.setSessionId(sessionId++);
 				
-
 				LocalDate date = LocalDate.parse(i.next());
-				
-				
-				
 				session.setDate(date);
-				
+					
 				String room = i.next();
-				
 				session.setRoom(room);
 				
-				LocalTime time = LocalTime.parse(i.next());
+				LocalTime startTime = LocalTime.parse(i.next());
+				session.setStartTime(startTime);
 				
-				session.setTime(time);
-				session.setTutorId(Integer.decode(i.next()));
+				LocalTime endTime = LocalTime.parse(i.next());
+				session.setEndTime(endTime);
 				
-				session.setCourse(i.next());
+				session.setDayOfWeek(Integer.parseInt(i.next()));
+
+				session.setAdminId(Integer.parseInt(i.next()));
 				
+				session.setCourseId(Integer.parseInt(i.next()));
+				
+				session.setTypeId(Integer.parseInt(i.next()));
+			
 				sessionList.add(session);
 				
 			}
@@ -149,5 +154,57 @@ public class InitialData {
 				readStudent.close();
 			}
 		}
-
+	public static List<String> getycpEmails() throws IOException {
+		List<String> emailList = new ArrayList<String>();
+		ReadCSV readUser = new ReadCSV("ycpEmails.csv");
+		try {
+			// auto-generated primary key for authors table
+			
+			while (true) {
+			List<String> tuple = readUser.next();
+			if (tuple == null) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			String email = i.next();
+			emailList.add(email);
+			}
+				return emailList;
+			} finally {
+					readUser.close();
+				}
+			}
+	public static List<TutorFaculty> getTutorFaculty() throws IOException {
+		List<TutorFaculty> tfList = new ArrayList<TutorFaculty>();
+		ReadCSV readTf = new ReadCSV("TutorFaculty.csv");
+		try {
+			// auto-generated primary key for authors table
+			Integer adminId = 1;
+			Integer userType = 1;
+			Integer userId = 1;
+			Integer courseId = 1;
+			
+			
+			while (true) {
+			List<String> tuple = readTf.next();
+			if (tuple == null) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			TutorFaculty tf = new TutorFaculty();
+			tf.setAdmin_id(adminId++);
+			userId = Integer.decode(i.next());
+			tf.setUserType(userId);
+			courseId = Integer.decode(i.next());
+			tf.setUserType(courseId);
+			userType = Integer.decode(i.next());
+			tf.setUserType(userType);
+			tfList.add(tf);
+			
+		}
+			return tfList;
+		} finally {
+				readTf.close();
+			}
+		}
 }

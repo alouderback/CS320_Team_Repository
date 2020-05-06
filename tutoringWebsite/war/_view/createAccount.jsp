@@ -53,12 +53,10 @@
   					
 					<input type="radio" id="tutor" name="userType" value="tutor">
 					<label for="tutor">Tutor</label><br>
-					
-					<input type="radio" id="faculty" name="userType" value="faculty">
-					<label for="faculty">Faculty</label><br>
+			
   				</tr>
   						
-		<c:if test="${ createStudent}">
+		
             	<tr>
 					<td class="label">Major:</td>
 					<td><input type="text" name="major" size="12" value="${major}" /></td>
@@ -68,8 +66,7 @@
 					<td><input type="text" name="year" size="12" value="${year}" /></td>
 				</tr>
 				<tr>
-		</c:if>
-			</table>
+				</table>
 			<input type="Submit" name="submit" value="Create Account">
 		</form>
 	</body>
