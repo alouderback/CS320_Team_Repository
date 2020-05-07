@@ -44,7 +44,10 @@
   	<servlet-name>ProfileServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.ProfileServlet</servlet-class>
   </servlet>
-
+<servlet>
+  	<servlet-name>TutorServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.TutorServlet</servlet-class>
+  </servlet>
  
 
 
@@ -87,7 +90,10 @@
     <servlet-name>ProfileServlet</servlet-name>
     <url-pattern>/profile</url-pattern>
   </servlet-mapping>
-
+<servlet-mapping>
+    <servlet-name>TutorServlet</servlet-name>
+    <url-pattern>/tutors</url-pattern>
+  </servlet-mapping>
   
 
   <welcome-file-list>

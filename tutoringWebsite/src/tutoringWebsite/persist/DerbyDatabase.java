@@ -534,6 +534,13 @@ public class DerbyDatabase implements IDatabase{
 		user.setUserType((resultSet.getInt(index++)));
 		
 	}
+	private void loadTutorFaculty(TutorFaculty tf, ResultSet resultSet, int index) throws SQLException {
+		tf.setAdmin_id((resultSet.getInt(index++)));
+		tf.setUser_Id((resultSet.getInt(index++)));
+		tf.setCourse_id((resultSet.getInt(index++)));
+		tf.setUserType((resultSet.getInt(index++)));
+		
+	}
 	private void loadStudent(Student stud, ResultSet resultSet, int index) throws SQLException {
 		stud.setStudent_id(resultSet.getInt(index++));
 		stud.setMajor(resultSet.getString(index++));
@@ -843,8 +850,9 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
-						"select users from Users " + //Selects all users who are marked as tutors
-						"where userType = ?"
+						"select * from Users " + //Selects all users who are marked as tutors
+						"where userType = ? " +
+						 "order by Users.name asc"
 							);
 					
 					stmt.setInt(1, 2); //For pulling users who are tutors from the Users database, their userType will always be 2
@@ -853,15 +861,13 @@ public class DerbyDatabase implements IDatabase{
 					
 					resultSet = stmt.executeQuery();
 					
-					if(resultSet.next()) {
+					while(resultSet.next()) {
 						User user = new User();
 						loadUser(user, resultSet, 1);
 						result.add(user);
 					}
 					
-					else {
-						System.out.println("That's all the tutors...");
-					}
+				
 					
 					System.out.println("Returning list of tutors...");
 					
@@ -1236,6 +1242,100 @@ public class DerbyDatabase implements IDatabase{
 			}
 			});
 		}
+	@Override
+	public List<Integer> getUserIdbyCourseId(final int courseid){
+		return executeTransaction(new Transaction<List<Integer>>() {
+			@Override
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int userid = 0;
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("courseid: "+ courseid);
+				try {
+					stmt = conn.prepareStatement(
+							"select TutorFaculty.user_id "+
+							" from TutorFaculty" +
+							" where TutorFaculty.course_id = ?"
+							);
+					
+					List<Integer> result = new ArrayList<Integer>();
+					stmt.setInt(1, courseid);
+					
+					resultSet = stmt.executeQuery();
+					System.out.println("got id");
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;	
+						found = true;	
+						userid = resultSet.getInt(1);
+						System.out.println("userid "  + userid);
+						result.add(userid);
+					
+					}
+					for (Integer temp : result) {
+						System.out.println( temp);
+					}
+
+					if(found = false) {
+						System.out.println("<" + courseid + "> Course was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
+	public List<Integer> getCourseidbyUserId(final int userid){
+		return executeTransaction(new Transaction<List<Integer>>() {
+			@Override
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("userid: "+ userid);
+				try {
+					stmt = conn.prepareStatement(
+							"select TutorFaculty.course_id "+
+							" from TutorFaculty"+
+							" where  TutorFaculty.user_id  = ?"
+							);
+					
+					List<Integer> result = new ArrayList<Integer>();
+					stmt.setInt(1, userid);
+					resultSet = stmt.executeQuery();
+					System.out.println("got id");
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;	
+						int courseid = resultSet.getInt(1);
+						System.out.println("courseid "  + courseid);
+						result.add(courseid);
+					
+					}
+					for (Integer temp : result) {
+						System.out.println( temp);
+					}
+
+					if(found = false) {
+						System.out.println("<" + userid + "> user was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 		public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 			try {
@@ -1298,6 +1398,7 @@ public class DerbyDatabase implements IDatabase{
 			db.loadInitialData();
 			
 			System.out.println("Library DB successfully initialized!");
+		
 		}
 		public void createTables() {
 			executeTransaction(new Transaction<Boolean>() {
