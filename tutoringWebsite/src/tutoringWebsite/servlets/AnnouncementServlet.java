@@ -25,17 +25,14 @@ public class AnnouncementServlet extends HttpServlet {
 		String errorMessage = null;
 		Announcement model = new Announcement();
 		
-		
 		AnnouncementController controller = new AnnouncementController();
-		
 		controller.setModel(model);
-		
 		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
 		
 		try {
 			announcements = (ArrayList<Announcement>) controller.getAnnouncements();
-			model = announcements.get(0);
-			System.out.println(model.getAnnouncementId() + model.getMessage());
+			//model = announcements.get(0);
+			//System.out.println(model.getAnnouncementId() + model.getMessage());
 		}
 		catch (NumberFormatException e) {
 			errorMessage = "Try failed";

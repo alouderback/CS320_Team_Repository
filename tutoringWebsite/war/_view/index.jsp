@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
@@ -26,7 +27,8 @@
 	        <div class = "pageDesc">
 	            <p>Welcome to the Kinsley Tutoring Service website! This site is used to display information and announcements for Engineering and Computer Science tutoring.</p>
 	        </div>
-	        <jsp:include page = "/announcement.jsp"/>
+	       </form>
+	        <form action="${pageContext.servletContext.contextPath}/announcement" method="get">
 	        <div class = "AnnouncementWindow">
 	            <p id = "announcementTitle">Announcements</p>
 	            	<table>
@@ -48,6 +50,6 @@
 			    	</c:forEach>
 	            	</table>
 	        </div>
-	      </form>
+	    </form>
     </body>
 </html>

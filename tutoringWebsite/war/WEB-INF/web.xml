@@ -56,7 +56,7 @@
   
   <servlet-mapping>
     <servlet-name>AnnouncementServlet</servlet-name>
-    <url-pattern>/announcement.jsp</url-pattern>
+    <url-pattern>/announcement</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
