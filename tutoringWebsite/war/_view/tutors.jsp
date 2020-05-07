@@ -25,14 +25,11 @@
              
             <div class = "pageDesc">
 	           <p>Tutors</p>
-	             </div>
+	           
 	           <table>
                     <tr>
                      	<td>Tutor</td>
-                        <td>Email:</td>      
-                        <td>Time</td>
-                        <td>Name:</td>
-                        <td>Course</td>   				
+                        <td>Email:</td>      	
                    </tr>
                    
                     <c:forEach items="${tutorList}" var="tutor">
@@ -43,7 +40,7 @@
 			    	</c:forEach>
 			    </table>
           
-       
+         </div>s
     </body>
 
 </html>|

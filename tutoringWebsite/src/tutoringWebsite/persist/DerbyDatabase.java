@@ -780,7 +780,8 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					stmt = conn.prepareStatement(
 						"select * from Users " + //Selects all users who are marked as tutors
-						"where userType = ?"
+						"where userType = ? " +
+						 "order by Users.name asc"
 							);
 					
 					stmt.setInt(1, 2); //For pulling users who are tutors from the Users database, their userType will always be 2

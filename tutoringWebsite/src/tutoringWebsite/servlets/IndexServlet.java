@@ -53,8 +53,8 @@ public class IndexServlet extends HttpServlet {
 		}
 		else if (req.getParameter("resources") != null) {
 			// call groups JSP
-			resp.sendRedirect(req.getContextPath() + "/resources");
-			//req.getRequestDispatcher("/_view/resources.jsp").forward(req, resp);
+			//resp.sendRedirect(req.getContextPath() + "/resources");
+			req.getRequestDispatcher("/_view/resources.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("profile") != null) {
 			// call groups JSP
@@ -68,7 +68,7 @@ public class IndexServlet extends HttpServlet {
 		}
 		else if (req.getParameter("createAccount") != null) {
 			// call login JSP
-			resp.sendRedirect(req.getContextPath() + "/createAccounts");
+			resp.sendRedirect(req.getContextPath() + "/createAccount");
 			//req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
 		}
 		else {
