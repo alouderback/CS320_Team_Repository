@@ -71,7 +71,9 @@ public class UserController {
 			return false;
 			//user.removeAccount(user);
 		}
-	
-	
+	}
+	public List<User> getTutors(){
+		List<User> tutorList = db.getTutors();
+		return tutorList;
 	}
 }
