@@ -22,7 +22,7 @@
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
              </form>
-             
+               <form action="${pageContext.servletContext.contextPath}/tutors" method="get">
             <div class = "pageDesc">
 	           <p>Tutors</p>
 	           
@@ -39,7 +39,7 @@
 			        	</tr>
 			    	</c:forEach>
 			    </table>
-          
+          </form>
          </div>s
     </body>
 
