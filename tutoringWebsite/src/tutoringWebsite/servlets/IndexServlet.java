@@ -1,11 +1,17 @@
 package tutoringWebsite.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import tutoringWebsite.controllers.AnnouncementController;
+import tutoringWebsite.model.Announcement;
+import tutoringWebsite.model.Session;
+import tutoringWebsite.persist.DerbyDatabase;
 
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -16,19 +22,22 @@ public class IndexServlet extends HttpServlet {
 		
 		System.out.println("Index Servlet: doGet");
 		
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/announcement.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		String errorMessage = null;
 		
 		System.out.println("Index Servlet: doPost");
-		
+
 		// check which button the user pressed
 		if (req.getParameter("index") != null) {
 			// call index JSP
-			resp.sendRedirect(req.getContextPath() + "/index");
+
+			resp.sendRedirect(req.getContextPath() + "/announcement");
+
 			//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("courses") != null) {
