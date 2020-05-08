@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+ 
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
@@ -37,13 +39,18 @@
                     <tr>
                         <td><input type="submit" name="SubmitM" value="Get Schedule for Month"></td>
                     </tr>
-                    <tr>
-                        <td><input type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
-                    </tr>
-   
+                    
+                    <c:if test = "${isFaculty}">
+	                    <tr>
+	                        <td><input type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
+	                    </tr>
+	                    <tr>
+	                        <td><input type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
+	                    </tr>
+	                    <tr>
+	                    	<td><input type="submit" name="DeleteAllSessions" value="Delete All Tutoring Sessions"></td>
+	                    </tr>
+   					</c:if>
                         <tr>
                             <td>Tutor</td>
                             <td>Date</td>      
@@ -54,7 +61,7 @@
                         
                         <c:forEach items="${sessions}" var="session">
 			        	<tr class="scheduleListings">
-				            	<td>${session.adminId}</td>
+				            	<td>${session.adminName}</td>
 				            	<td>${session.date}</td>
 				            	<td>${session.startTime}</td>
 				            	<td>${session.room}</td>		

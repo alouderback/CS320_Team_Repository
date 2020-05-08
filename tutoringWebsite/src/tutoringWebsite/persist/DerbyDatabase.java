@@ -481,6 +481,86 @@ public class DerbyDatabase implements IDatabase{
 		announcement.setAnnouncementType(resultSet.getInt(index++));
 		announcement.setTypeId(resultSet.getInt(index++));
 	}
+	public List<Session> getAllSessions(){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Session> result = new ArrayList<Session>();
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select sessions.* " +
+							" from Sessions "
+					//Trying to get all sessions
+							);
+					
+					resultSet = stmt.executeQuery();
+					
+					System.out.println("Query Executed");
+					
+					System.out.println("Got all sessions");
+					
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+					
+					return result;
+			
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						System.out.println("Closed");
+					}
+			}
+		});
+	}
+	
+	//NEEDS JUNIT
+	//Returns list of ONE user; has userId as a paramter and returns a list of users
+	public List<User> getUserFromUserId (int userId) {
+		return executeTransaction(new Transaction<List<User>>() {
+			public List<User> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<User> result = new ArrayList<User>();
+				
+				try {
+					stmt = conn.prepareStatement(
+						" select users.* " +
+						" from Users " +
+						" where user_id = ?"
+					);		
+					//Gets the user
+					stmt.setInt(1, userId);
+					
+					resultSet = stmt.executeQuery();
+					
+					//while loop; should only load one user
+					while (resultSet.next() ) {
+						User user = new User();
+						loadUser(user, resultSet, 1);
+						result.add(user);
+					}
+					
+					return result;
+					//If functional, should return a list of ONE user
+					//Created in order to get the tutor name in scheduleServlet
+					
+				}finally {
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				
+			}
+		});
+	}
+	
 	public List<Session> getScheduleByDate(String timeframe){
 		//Method currently uses parameter timeframe
 		//Thinking about passing a LocalDate as a parameter
@@ -1047,6 +1127,39 @@ public class DerbyDatabase implements IDatabase{
 		});
 		
 		
+	}
+	public List<Course> getCourseFromCourseId(int courseId){
+		return executeTransaction(new Transaction<List<Course>>() {
+			public List<Course> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				List<Course> result = new ArrayList<Course>();
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select courses.* " +
+							" from Courses " +
+							" where course_id = ?"
+					);
+					
+					stmt.setInt(1, courseId);
+					
+					stmt.executeQuery();
+					
+					while(resultSet.next()) {
+						Course course = new Course();
+						loadCourse(course, resultSet, 1); //Alex...? Did you never make a loadCourse method?
+						result.add(course);
+					}
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				
+			}
+		});
 	}
 	@Override
 	public List<User> getAccount(final String email, final String password){
