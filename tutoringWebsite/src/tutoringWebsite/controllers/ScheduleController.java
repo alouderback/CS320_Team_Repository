@@ -52,8 +52,16 @@ public class ScheduleController{
 	
 	public String getCourseName(int courseId) {
 		List<Course> course = new ArrayList<Course>();
-		user = 
+		course = db.getCourseFromCourseId(courseId);
+		if (course.size() == 0) {
+			return "Course not found";
+		}
+		return course.get(0).getTitle();
 	}
+	
+	//public String getDayOfWeek(LocalDate date) {
+		
+	//}
 	
 	//Given a timeframe (value of buttons on the jsp), the method will return a list of sessions
 	public List<Session> getScheduleWithDate(String timeframe) {

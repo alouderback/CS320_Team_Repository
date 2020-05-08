@@ -107,6 +107,12 @@ public class ScheduleServlet extends HttpServlet {
 			else {
 				sessions.get(i).setAdminName(controller.getTutorName(sessions.get(i).getAdminId()));
 			}
+			if(controller.getCourseName(sessions.get(i).getCourseId()) == null ) {
+				sessions.get(i).setCourseName("Course not found");
+			}
+			else {
+				sessions.get(i).setCourseName(controller.getCourseName(sessions.get(i).getCourseId()));
+			}
 		}
 		
 		// add result objects as attributes

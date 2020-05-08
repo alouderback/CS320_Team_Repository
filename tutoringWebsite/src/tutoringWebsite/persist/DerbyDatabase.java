@@ -1214,26 +1214,33 @@ public class DerbyDatabase implements IDatabase{
 	public List<Course> getCourseFromCourseId(int courseId){
 		return executeTransaction(new Transaction<List<Course>>() {
 			public List<Course> execute(Connection conn) throws SQLException {
+				System.out.println("*************************************");
+				System.out.println("In DerbyDatabase, in getCourseFromCourseId");
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				List<Course> result = new ArrayList<Course>();
 				
 				try {
 					stmt = conn.prepareStatement(
-							"select courses.* " +
-							" from Courses " +
+							"select course.* " +
+							" from Course " +
 							" where course_id = ?"
 					);
 					
 					stmt.setInt(1, courseId);
 					
-					stmt.executeQuery();
+					resultSet = stmt.executeQuery();
 					
 					while(resultSet.next()) {
 						Course course = new Course();
 						loadCourse(course, resultSet, 1); //Alex...? Did you never make a loadCourse method?
 						result.add(course);
+						System.out.println("Course ID: " + course.getCourseId());
+						System.out.println("Course Name: " + course.getTitle());
 					}
+					System.out.println("*************************************");
+					
+					return result;
 					
 				}finally{
 					DBUtil.closeQuietly(conn);

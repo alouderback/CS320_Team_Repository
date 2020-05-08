@@ -52,7 +52,7 @@
 	                    </tr>
    					</c:if>
                         <tr>
-                            <td>Type</td>
+                            <td>Tutor</td>
                             <td>Date</td>      
                             <td>Time</td>
                             <td>Room</td>
@@ -63,9 +63,9 @@
 			        	<tr class="scheduleListings">
 				            	<td>${session.adminName}</td>
 				            	<td>${session.date}</td>
-				            	<td>${session.startTime}</td>
+				            	<td>${session.startTime} - ${session.endTime}</td>
 				            	<td>${session.room}</td>		
-				            	<td>${session.courseId}</td>	          
+				            	<td>${session.courseName}</td>	          
 			        	</tr>
 			    	</c:forEach>
 			    </table>

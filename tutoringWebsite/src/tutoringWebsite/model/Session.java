@@ -19,6 +19,7 @@ public class Session {
 	private int typeId;
 	private String adminName;
 	private String courseName;
+	private String typeName;
 	
 	
 	public Session() {
