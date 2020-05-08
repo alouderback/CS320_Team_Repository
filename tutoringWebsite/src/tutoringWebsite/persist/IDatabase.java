@@ -28,6 +28,8 @@ public interface IDatabase {
 	List<Session> createSession(String room, LocalDate date, int adminId, LocalTime startTime, LocalTime endTime,
 		int dayOfWeek, int courseId, int typeId);
 	List<String> getDayOfWeek(int sessionId);
+	Session getSingelSession(int sessionId);
 	List<Integer> getUserIdbyCourseId(int courseid);
 	List<Integer> getCourseidbyUserId(int userid);
+
 }
