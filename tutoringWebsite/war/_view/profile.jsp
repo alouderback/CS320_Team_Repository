@@ -29,21 +29,22 @@
 	        </div>
 	       <body>
 	          
-							<p.profile> Email: 	<td>${user.email}</td></p>	           
+							<p class = "profile"> Email: 	<td>${user.email}</td></p>	           
 			            	<p.profile> Password: <td>${user.password}</td></p>
 			            	<p.profile> Name: <td>${user.name}</td></p>
 			            	<p.profile> Type: <td>${user.userType}</td></p>	            
 			    
 	          
           
-            	<c:if test="${ isStudent}">
+            	<c:if test="${isAStudent}">
         					<p.profile> Major:  <td>${student.major}</td></p>
 			            	<p.profile> Year:  <td>${student.year}</td></p>
 				</c:if>
 			</body>
         </form>
         <form action="${pageContext.servletContext.contextPath}/profile" method="post">
-			<input type="Submit" name="submit" value="Delete Account">
+			<input type="Submit" name="deleteAccount" value="Delete Account">
+			<input type="Submit" name="logOut" value="Log Out">
 		</form>
     </body>
 </html>|
