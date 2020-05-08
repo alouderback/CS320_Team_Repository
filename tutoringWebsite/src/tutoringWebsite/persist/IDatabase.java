@@ -24,7 +24,12 @@ public interface IDatabase {
 	List<Student> getStudent(String email, String password);
 	List<Student> createStudent(String major, String year, int userid);
 	Student deleteStudent(String email, String password);
+	List<Announcement> getAllStudyGroupAnnouncements();
+	List<Announcement> getAllSessionAnnouncements();
 	List<Session> createSession(String room, LocalDate date, int adminId, LocalTime startTime, LocalTime endTime,
-			int dayOfWeek, int courseId, int typeId);
+		int dayOfWeek, int courseId, int typeId);
 	List<String> getDayOfWeek(int sessionId);
+	List<Integer> getUserIdbyCourseId(int courseid);
+	List<Integer> getCourseidbyUserId(int userid);
+	Course getCourse(int courseid);
 }

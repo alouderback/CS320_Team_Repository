@@ -36,7 +36,6 @@ public class Schedule {
 	public ArrayList<Session> getSchedule() {
 		return scheduleList;
 	}
-	
 	public void setSchedule(String timeframe) {
 		//FakeScheduleDatabase fakeSchedule = new FakeScheduleDatabase();	
 		//scheduleList = fakeSchedule.findScheduleByDate(timeframe);

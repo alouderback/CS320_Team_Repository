@@ -29,7 +29,7 @@ h1{
     text-align: center;
 }
 
-.announcements {
+.AnnouncementWindow {
     color: black;
     background-color: white;
     margin: 1%;
@@ -49,6 +49,19 @@ h1{
     text-align: center;
     padding-bottom: 1%;
     
+}
+#announcementTitle {
+    text-align: center;
+    padding-bottom: 1%;
+    color: green;
+    font-size: 125%;
+    font-family: "Times New Roman", Times, serif;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    background: none;
+    border: none;
 }
 
 #navBarItem {

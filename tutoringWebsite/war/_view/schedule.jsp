@@ -52,7 +52,7 @@
 	                    </tr>
    					</c:if>
                         <tr>
-                            <td>Tutor</td>
+                            <td>Type</td>
                             <td>Date</td>      
                             <td>Time</td>
                             <td>Room</td>
