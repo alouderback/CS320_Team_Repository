@@ -17,6 +17,9 @@ public class Session {
 	private int adminId;
 	private int courseId;
 	private int typeId;
+	private String adminName;
+	private String courseName;
+	private String typeName;
 	
 	
 	public Session() {
@@ -110,6 +113,26 @@ public class Session {
 
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
+	}
+
+
+	public String getAdminName() {
+		return adminName;
+	}
+
+
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
+	}
+
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 
 	
