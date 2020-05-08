@@ -95,4 +95,7 @@ public class Announcement {
 	public void setSession(Session session) {
 		this.session = session;
 	}
+	/*public String getSessionName() {
+		int id = session.getCourseId();
+	}*/
 }

@@ -29,10 +29,9 @@ public class AnnouncementServlet extends HttpServlet {
 		controller.setModel(model);
 		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
 		String typeName = null;
-		
 		try {
 			announcements = (ArrayList<Announcement>) controller.getAnnouncements();
-			typeName = model.getAnnouncementTypeName();
+			typeName = model.getTypeName();
 		}
 		catch (NumberFormatException e) {
 			errorMessage = "Try failed";
