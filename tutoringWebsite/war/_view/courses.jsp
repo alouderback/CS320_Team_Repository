@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 	<head>
@@ -27,34 +28,20 @@
 	           <p>Courses</p>
             </div>
         </form>
-        <form action="${pageContext.servletContext.contextPath}/courses" method="post">
-	            <table>
-	                <tr>
-	                    <td class="label">Title:</td>
-	                    <td><input type="text" name="date" size="12" value="${course.title}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Date:</td>
-	                    <td><input type="text" name="date" size="12" value="${session.date}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Time:</td>
-	                    <td><input type="text" name="time" size="12" value="${session.time}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Room:</td>
-	                    <td><input type="text" name="room" size="12" value="${session.room}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Tutor:</td>
-	                    <td><input type="text" name="tutor" size="12" value="${session.tutor}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Course:</td>
-	                    <td>${course}</td>
-	                </tr>
-	            </table>
-            <input type="Submit" name="submit" value="Create Course">
-        	</form>
+        <form action="${pageContext.servletContext.contextPath}/courses" method="get">
+            <div class = "coursesPane">
+                <p id = "title">Course List</p>
+                <table>
+                    <tr>
+                        <td>Course</td>
+                    </tr>
+                    <c:forEach items="${courses}" var="course">
+                    <tr>    
+                        <td>${course.title}</td>
+                    </tr>
+                    </c:forEach>
+                </table>
+            </div>
+        </form>
         </body>
 </html>|

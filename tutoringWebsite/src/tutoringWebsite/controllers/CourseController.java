@@ -3,6 +3,7 @@ package tutoringWebsite.controllers;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import tutoringWebsite.model.Course;
 import tutoringWebsite.model.Session;
@@ -28,5 +29,8 @@ public class CourseController{
 		Course course = new Course();
 		course =db.getCourse(courseid);
 		return course;
+	}
+	public List<Course> getAllCourses(){
+		return db.getAllCourses();
 	}
 }

@@ -34,5 +34,6 @@ public interface IDatabase {
 	List<Integer> getCourseidbyUserId(int userid);
 
 	Course getCourse(int courseid);
+	List<Course> getAllCourses();
 
 }

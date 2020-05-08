@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tutoringWebsite.model.Announcement;
 import tutoringWebsite.model.Course;
 import tutoringWebsite.model.Session;
 import tutoringWebsite.model.Tutor;
@@ -24,6 +25,10 @@ public class CoursesServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("courses Servlet: doGet");	 
+		Course model = new Course();
+		CourseController controller = new CourseController(model);
+		
+		req.setAttribute("courses", (ArrayList<Course>)controller.getAllCourses());
 		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/courses.jsp").forward(req, resp); 
@@ -43,9 +48,9 @@ public class CoursesServlet extends HttpServlet {
 		
 		//numbers controller and model
 		Course model = new Course();
-		CourseController controller = new CourseController();
+		CourseController controller = new CourseController(model);
 		SessionController controller1 = new SessionController();
-		controller.setModel(model);
+		
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
@@ -73,7 +78,7 @@ public class CoursesServlet extends HttpServlet {
 				LocalTime time = LocalTime.of(03, 49);
 				
 				model.setTitle(title);
-				controller1.createSession(room, date, tutor, time);
+				//controller1.createSession(room, date, tutor, time);
 				courseSession = controller1.getSession();
 				model.setCourseSession(courseSession);
 				controller.createCourse();
