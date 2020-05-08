@@ -54,15 +54,16 @@ h1{
     text-align: center;
     padding-bottom: 1%;
     color: green;
-    font-size: 125%;
+    font-size: 135%;
+    font-weight: bold;
     font-family: "Times New Roman", Times, serif;
     padding-top: 1%;
-    padding-bottom: 1%;
     padding-left: 2%;
     padding-right: 2%;
     background: none;
-    border: none;
+    text-decoration: underline;
 }
+#message{float: left;}
 
 #navBarItem {
     background: none;
@@ -97,3 +98,15 @@ h1{
     margin-bottom: 1%;
     
 }
+#pa1{
+   color: black;
+   font-size: 100%;
+   font-family: "Times New Roman", Times, serif;
+   font-weight: bold;
+}
+#pa2{
+   color: black;
+   font-size: 100%;
+   font-family: "Times New Roman", Times, serif;
+}
+

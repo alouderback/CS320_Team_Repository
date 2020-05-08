@@ -35,7 +35,7 @@ public class InitialData {
 				announcement.setDate(date);
 				time = LocalTime.parse(i.next());
 				announcement.setTime(time);
-				announcementType = Integer.decode(i.next());
+				announcementType = Integer.parseInt(i.next());
 				announcement.setAnnouncementType(announcementType);
 				typeId = Integer.decode(i.next());
 				announcement.setTypeId(typeId);

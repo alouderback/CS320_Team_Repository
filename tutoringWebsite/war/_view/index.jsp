@@ -32,21 +32,9 @@
 	        <div class = "AnnouncementWindow">
 	            <p id = "announcementTitle">Announcements</p>
 	            	<table>
-	            		<tr>
-                            <td>ID</td>
-                            <td>Type</td>      
-                            <td>Date</td>
-                            <td>Time</td>
-                            <td>Message</td>   				
-                        </tr>
                         <c:forEach items="${announcements}" var="announcement">
-			        	<tr>
-			            	<td>${announcement.typeId}</td>
-			            	<td>${announcement.announcementType}</td>
-			            	<td>${announcement.date}</td>
-			            	<td>${announcement.time}</td>		
-			            	<td>${announcement.message}</td>	            
-			        	</tr>
+			        		<p id = "pa1">${announcement.typeName} ${announcement.typeId} ${announcement.date} ${announcement.time}</p>
+			        		<p id = "pa2">${announcement.message}</p>
 			    	</c:forEach>
 	            	</table>
 	        </div>

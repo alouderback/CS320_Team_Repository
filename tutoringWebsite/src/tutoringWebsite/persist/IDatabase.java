@@ -19,7 +19,6 @@ public interface IDatabase {
 	List<Session> getScheduleByDate(String timeframe);
 	List<User> getAccount(String email, String password);
 	List<Session> deleteSession(int sessionId);
-
 	List<User> getTutors();
 	List<Student> getStudent(String email, String password);
 	List<Student> createStudent(String major, String year, int userid);
