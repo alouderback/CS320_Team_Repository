@@ -14,6 +14,7 @@ public class Announcement {
 	//announcementType = 1 for session
 	//announcementType = 2 for study group
 	private String typeName;
+	private Session session;
 	
 	// Constructor for class
 	public Announcement() {
@@ -85,5 +86,13 @@ public class Announcement {
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
 	}
 }

@@ -207,4 +207,32 @@ public class InitialData {
 				readTf.close();
 			}
 		}
+	public static List<Course> getCourse() throws IOException {
+		List<Course> courseList = new ArrayList<Course>();
+		ReadCSV readCourse = new ReadCSV("Courses.csv");
+		try {
+			// auto-generated primary key for authors table
+			Integer courseId = 1;
+			Integer sessionId = 1;
+			
+			
+			while (true) {
+			List<String> tuple = readCourse.next();
+			if (tuple == null || tuple.size() == 0) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			Course course = new Course();
+			course.setCourseId(courseId++);;
+			course.setTitle(i.next());
+			sessionId = Integer.decode(i.next());
+			course.setSessionId(sessionId);
+			courseList.add(course);
+			
+		}
+			return courseList;
+		} finally {
+				readCourse.close();
+			}
+		}
 }

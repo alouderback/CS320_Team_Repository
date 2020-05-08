@@ -547,6 +547,12 @@ public class DerbyDatabase implements IDatabase{
 		stud.setYear(resultSet.getString(index++));
 		stud.setUser_Id(resultSet.getInt(index++));
 	}
+	private void loadCourse(Course course, ResultSet resultSet, int index) throws SQLException {
+		course.setCourseId(resultSet.getInt(index++));
+		course.setTitle(resultSet.getString(index++));
+		course.setSessionId(resultSet.getInt(index++));
+		
+	}
 	private void loadAnnouncement(Announcement announcement, ResultSet resultSet, int index) throws SQLException {
 		announcement.setAnnouncementId(resultSet.getInt(index++));
 		announcement.setMessage(resultSet.getString(index++));
@@ -1177,6 +1183,50 @@ public List<String> getDayOfWeek(int sessionId){
 			});
 		}
 	@Override
+	public Course getCourse(final int courseid){
+		return executeTransaction(new Transaction<Course>() {
+			@Override
+			public Course execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * "+
+							" from Course"+
+							" where Course.course_Id = ? "
+							);
+					
+					Course result = new Course();
+					stmt.setInt(1, courseid);
+					
+					resultSet = stmt.executeQuery();
+					Boolean found = false;
+					
+					if (resultSet.next()) {
+						found = true;			
+						Course course = new Course();
+						loadCourse(course,resultSet,1);
+						result = course;
+					
+					}
+						System.out.println( result.getCourseId()+", "+result.getTitle()+ ", " + result.getSessionId());
+					
+
+					if(found = false) {
+						System.out.println("<" + courseid + "> was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
+	@Override
 	public List<Student> getStudent(final String email, final String password){
 		return executeTransaction(new Transaction<List<Student>>() {
 			@Override
@@ -1480,7 +1530,7 @@ public List<String> getDayOfWeek(int sessionId){
 							"create table Course (" +
 							"	course_id integer primary key " +
 							"		generated always as identity (start with 1, increment by 1), " +									
-							"	title varchar(40)," +
+							"	title varchar(70)," +
 							"	session_id integer" +
 							")"
 						);	
@@ -1538,6 +1588,7 @@ public List<String> getDayOfWeek(int sessionId){
 					List<User> userList;
 					List<Session> sessionList;
 					List<TutorFaculty> tutorFacultyList;
+					List<Course> courseList;
 					//List<StudyGroup> studyGroupList;
 					List<Student> studentList;
 					
@@ -1546,6 +1597,7 @@ public List<String> getDayOfWeek(int sessionId){
 						userList       		= InitialData.getUser();
 						sessionList			= InitialData.getSession();
 						tutorFacultyList	= InitialData.getTutorFaculty();
+						courseList			= InitialData.getCourse();
 						//studyGroupList 		= InitialData.getStudyGroup();		
 						studentList 		= InitialData.getStudent();
 
@@ -1557,6 +1609,7 @@ public List<String> getDayOfWeek(int sessionId){
 					PreparedStatement insertUser      		 = null;
 					PreparedStatement insertSession    		= null;
 					PreparedStatement insertTf		   		= null;
+					PreparedStatement insertCourse	   		= null;
 					//PreparedStatement insertStudyGroup = null;
 					PreparedStatement insertStudent    = null;
 					try {
@@ -1614,6 +1667,15 @@ public List<String> getDayOfWeek(int sessionId){
 						insertTf.executeBatch();
 						
 						System.out.println("TutorFaculty table populated");
+						insertCourse = conn.prepareStatement("insert into Course (title, session_id) values (?, ?)");
+						for (Course course : courseList) {
+							insertCourse.setString(1, course.getTitle());
+							insertCourse.setInt(2,course.getSessionId());
+							insertCourse.addBatch();
+						}
+						insertCourse.executeBatch();
+						
+						System.out.println("Course table populated");
 						
 						
 						insertStudent = conn.prepareStatement("insert into Students (major, gradYear, user_id) values (?, ?, ?)");
@@ -1632,6 +1694,7 @@ public List<String> getDayOfWeek(int sessionId){
 						DBUtil.closeQuietly(insertUser);
 						DBUtil.closeQuietly(insertSession);
 						DBUtil.closeQuietly(insertTf);
+						DBUtil.closeQuietly(insertCourse);
 						//DBUtil.closeQuietly(insertStudyGroup);		
 						DBUtil.closeQuietly(insertStudent);
 					}

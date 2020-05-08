@@ -32,4 +32,6 @@ public interface IDatabase {
 	List<Integer> getUserIdbyCourseId(int courseid);
 	List<Integer> getCourseidbyUserId(int userid);
 
+	Course getCourse(int courseid);
+
 }

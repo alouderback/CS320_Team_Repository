@@ -37,6 +37,7 @@ public class AnnouncementController{
 				name = "Study Group";
 			}
 			announcement.setTypeName(name);
+			announcement.setSession(db.getSingelSession(announcement.getTypeId()));
 		}
 		return announcements;
 	}

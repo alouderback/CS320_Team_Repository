@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import tutoringWebsite.model.Course;
 import tutoringWebsite.model.Session;
 import tutoringWebsite.model.Tutor;
+import tutoringWebsite.persist.DerbyDatabase;
+import tutoringWebsite.persist.IDatabase;
 
 public class CourseController{
 	
 	private Course model;
-	
-	public void setModel(Course model) {
+	IDatabase db = new DerbyDatabase();
+	public CourseController(Course model) {
 		this.model = model; 
 	}
 	
@@ -22,5 +24,9 @@ public class CourseController{
 		model.setCourseSession(model.getCourseSession());
 	}
 	
-	
+	public Course getCurseByCourseId(int courseid) {
+		Course course = new Course();
+		course =db.getCourse(courseid);
+		return course;
+	}
 }
