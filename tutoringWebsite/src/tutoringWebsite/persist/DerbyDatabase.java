@@ -454,6 +454,77 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	//get all Announcements for the study group page
+	@Override
+	public List<Announcement> getAllStudyGroupAnnouncements(){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int type = 2;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+						"from Announcements "+
+						"where announcementType = ?" +
+						"order by Announcements.date desc "
+					);
+					stmt.setInt(1, type);
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+				
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}
+						
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
+	//get all Announcements for the session page
+	@Override
+	public List<Announcement> getAllSessionAnnouncements(){
+		return executeTransaction(new Transaction<List<Announcement>>() {
+			@Override
+			public List<Announcement> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int type = 1;
+				List<Announcement> result;
+				try {
+					stmt = conn.prepareStatement(
+						"select announcements.* "+
+						"from Announcements "+
+						"where announcementType = ?" +
+						"order by Announcements.date desc "
+					);
+					stmt.setInt(1, type);
+					resultSet = stmt.executeQuery();
+					result = new ArrayList<Announcement>();
+							
+					while(resultSet.next()) {
+						Announcement announcement = new Announcement();
+						loadAnnouncement(announcement, resultSet, 1);
+						result.add(announcement);
+					}				
+				}
+				finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+				}
+				return result;
+			}
+		});
+	}
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
 		user.setUser_Id((resultSet.getInt(index++)));
 //		book.setAuthorId(resultSet.getInt(index++));  // no longer used
@@ -463,11 +534,24 @@ public class DerbyDatabase implements IDatabase{
 		user.setUserType((resultSet.getInt(index++)));
 		
 	}
+	private void loadTutorFaculty(TutorFaculty tf, ResultSet resultSet, int index) throws SQLException {
+		tf.setAdmin_id((resultSet.getInt(index++)));
+		tf.setUser_Id((resultSet.getInt(index++)));
+		tf.setCourse_id((resultSet.getInt(index++)));
+		tf.setUserType((resultSet.getInt(index++)));
+		
+	}
 	private void loadStudent(Student stud, ResultSet resultSet, int index) throws SQLException {
 		stud.setStudent_id(resultSet.getInt(index++));
 		stud.setMajor(resultSet.getString(index++));
 		stud.setYear(resultSet.getString(index++));
 		stud.setUser_Id(resultSet.getInt(index++));
+	}
+	private void loadCourse(Course course, ResultSet resultSet, int index) throws SQLException {
+		course.setCourseId(resultSet.getInt(index++));
+		course.setTitle(resultSet.getString(index++));
+		course.setSessionId(resultSet.getInt(index++));
+		
 	}
 	private void loadAnnouncement(Announcement announcement, ResultSet resultSet, int index) throws SQLException {
 		announcement.setAnnouncementId(resultSet.getInt(index++));
@@ -772,8 +856,9 @@ public class DerbyDatabase implements IDatabase{
 				
 				try {
 					stmt = conn.prepareStatement(
-						"select users from Users " + //Selects all users who are marked as tutors
-						"where userType = ?"
+						"select * from Users " + //Selects all users who are marked as tutors
+						"where userType = ? " +
+						 "order by Users.name asc"
 							);
 					
 					stmt.setInt(1, 2); //For pulling users who are tutors from the Users database, their userType will always be 2
@@ -782,15 +867,13 @@ public class DerbyDatabase implements IDatabase{
 					
 					resultSet = stmt.executeQuery();
 					
-					if(resultSet.next()) {
+					while(resultSet.next()) {
 						User user = new User();
 						loadUser(user, resultSet, 1);
 						result.add(user);
 					}
 					
-					else {
-						System.out.println("That's all the tutors...");
-					}
+				
 					
 					System.out.println("Returning list of tutors...");
 					
@@ -827,6 +910,61 @@ public class DerbyDatabase implements IDatabase{
 						Session session = new Session();
 						loadSession(session, resultSet, 1);
 						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
+	public List<String> getDayOfWeek(int sessionId){
+		return executeTransaction(new Transaction<List<String>>() {
+			public List<String> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<String> result = new ArrayList<String>();
+					
+					stmt = conn.prepareStatement(
+							"select day_of_week from Sessions " +
+							" where session_id = ?"
+							);
+					
+					stmt.setInt(1, sessionId);
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						int dayOfWeek = resultSet.getInt(1);
+						
+						if((dayOfWeek & 1) > 0) {
+							result.add("Sunday");
+						}
+						if((dayOfWeek & 2) > 0) {
+							result.add("Monday");
+						}
+						if((dayOfWeek & 4) > 0) {
+							result.add("Tuesday");
+						}
+						if((dayOfWeek & 8) > 0) {
+							result.add("Wednesday");
+						}
+						if((dayOfWeek & 16) > 0) {
+							result.add("Thursday");
+						}
+						if((dayOfWeek & 32) > 0) {
+							result.add("Friday");
+						}
+						if((dayOfWeek & 64) > 0) {
+							result.add("Saturday");
+						}
 					}
 					
 					return result;
@@ -1039,6 +1177,50 @@ public class DerbyDatabase implements IDatabase{
 			});
 		}
 	@Override
+	public Course getCourse(final int courseid){
+		return executeTransaction(new Transaction<Course>() {
+			@Override
+			public Course execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * "+
+							" from Course"+
+							" where Course.course_Id = ? "
+							);
+					
+					Course result = new Course();
+					stmt.setInt(1, courseid);
+					
+					resultSet = stmt.executeQuery();
+					Boolean found = false;
+					
+					if (resultSet.next()) {
+						found = true;			
+						Course course = new Course();
+						loadCourse(course,resultSet,1);
+						result = course;
+					
+					}
+						System.out.println( result.getCourseId()+", "+result.getTitle()+ ", " + result.getSessionId());
+					
+
+					if(found = false) {
+						System.out.println("<" + courseid + "> was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
+	@Override
 	public List<Student> getStudent(final String email, final String password){
 		return executeTransaction(new Transaction<List<Student>>() {
 			@Override
@@ -1110,6 +1292,100 @@ public class DerbyDatabase implements IDatabase{
 			}
 			});
 		}
+	@Override
+	public List<Integer> getUserIdbyCourseId(final int courseid){
+		return executeTransaction(new Transaction<List<Integer>>() {
+			@Override
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int userid = 0;
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("courseid: "+ courseid);
+				try {
+					stmt = conn.prepareStatement(
+							"select TutorFaculty.user_id "+
+							" from TutorFaculty" +
+							" where TutorFaculty.course_id = ?"
+							);
+					
+					List<Integer> result = new ArrayList<Integer>();
+					stmt.setInt(1, courseid);
+					
+					resultSet = stmt.executeQuery();
+					System.out.println("got id");
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;	
+						found = true;	
+						userid = resultSet.getInt(1);
+						System.out.println("userid "  + userid);
+						result.add(userid);
+					
+					}
+					for (Integer temp : result) {
+						System.out.println( temp);
+					}
+
+					if(found = false) {
+						System.out.println("<" + courseid + "> Course was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
+	public List<Integer> getCourseidbyUserId(final int userid){
+		return executeTransaction(new Transaction<List<Integer>>() {
+			@Override
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("userid: "+ userid);
+				try {
+					stmt = conn.prepareStatement(
+							"select TutorFaculty.course_id "+
+							" from TutorFaculty"+
+							" where  TutorFaculty.user_id  = ?"
+							);
+					
+					List<Integer> result = new ArrayList<Integer>();
+					stmt.setInt(1, userid);
+					resultSet = stmt.executeQuery();
+					System.out.println("got id");
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;	
+						int courseid = resultSet.getInt(1);
+						System.out.println("courseid "  + courseid);
+						result.add(courseid);
+					
+					}
+					for (Integer temp : result) {
+						System.out.println( temp);
+					}
+
+					if(found = false) {
+						System.out.println("<" + userid + "> user was not found in the user database");
+					}
+					return result;
+				}finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				
+				}
+
+			}
+			});
+		}
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 		public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 			try {
@@ -1172,6 +1448,7 @@ public class DerbyDatabase implements IDatabase{
 			db.loadInitialData();
 			
 			System.out.println("Library DB successfully initialized!");
+		
 		}
 		public void createTables() {
 			executeTransaction(new Transaction<Boolean>() {
@@ -1182,6 +1459,7 @@ public class DerbyDatabase implements IDatabase{
 					//PreparedStatement stmt3 = null;				
 					PreparedStatement stmt4 = null;
 					PreparedStatement stmt5 = null;
+					PreparedStatement stmt6 = null;
 					PreparedStatement stmt8= null;
 
 					System.out.println("Making Announcement table...");
@@ -1246,7 +1524,7 @@ public class DerbyDatabase implements IDatabase{
 							"create table Course (" +
 							"	course_id integer primary key " +
 							"		generated always as identity (start with 1, increment by 1), " +									
-							"	title varchar(40)," +
+							"	title varchar(70)," +
 							"	session_id integer" +
 							")"
 						);	
@@ -1255,6 +1533,19 @@ public class DerbyDatabase implements IDatabase{
 
 						System.out.println("Announcements table created");
 						
+						//student table
+						stmt6 = conn.prepareStatement(
+								"create table TutorFaculty (" +
+								"	admin_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"   user_id integer, " +
+								"	course_id integer, " +
+								"   userType integer" +
+								")"
+						);
+						stmt6.executeUpdate();
+						
+						System.out.println("TutorFaculty table created");
 						//student table
 						stmt8 = conn.prepareStatement(
 								"create table Students (" +
@@ -1275,6 +1566,8 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt2);
 						//DBUtil.closeQuietly(stmt3);
 						DBUtil.closeQuietly(stmt4);
+						DBUtil.closeQuietly(stmt5);
+						DBUtil.closeQuietly(stmt6);
 						DBUtil.closeQuietly(stmt8);
 					}
 				}
@@ -1288,6 +1581,8 @@ public class DerbyDatabase implements IDatabase{
 					List<Announcement> announcementList;
 					List<User> userList;
 					List<Session> sessionList;
+					List<TutorFaculty> tutorFacultyList;
+					List<Course> courseList;
 					//List<StudyGroup> studyGroupList;
 					List<Student> studentList;
 					
@@ -1295,7 +1590,8 @@ public class DerbyDatabase implements IDatabase{
 						announcementList	= InitialData.getAnnouncement();
 						userList       		= InitialData.getUser();
 						sessionList			= InitialData.getSession();
-
+						tutorFacultyList	= InitialData.getTutorFaculty();
+						courseList			= InitialData.getCourse();
 						//studyGroupList 		= InitialData.getStudyGroup();		
 						studentList 		= InitialData.getStudent();
 
@@ -1304,8 +1600,10 @@ public class DerbyDatabase implements IDatabase{
 					}
 
 					PreparedStatement insertAnnouncement     = null;
-					PreparedStatement insertUser       = null;
-					PreparedStatement insertSession    = null;
+					PreparedStatement insertUser      		 = null;
+					PreparedStatement insertSession    		= null;
+					PreparedStatement insertTf		   		= null;
+					PreparedStatement insertCourse	   		= null;
 					//PreparedStatement insertStudyGroup = null;
 					PreparedStatement insertStudent    = null;
 					try {
@@ -1350,7 +1648,29 @@ public class DerbyDatabase implements IDatabase{
 							insertSession.addBatch();
 						}
 						insertSession.executeBatch();
-						System.out.println("Session table populated");	
+						System.out.println("Session table populated");
+						
+						insertTf = conn.prepareStatement("insert into TutorFaculty (user_id, course_id, userType) values (?, ?, ?)");
+						for (TutorFaculty tf : tutorFacultyList) {
+							insertTf.setInt(1,tf.getUser_Id());
+							insertTf.setInt(2,tf.getCourse_id());
+							insertTf.setInt(3,tf.getUserType());
+			
+							insertTf.addBatch();
+						}
+						insertTf.executeBatch();
+						
+						System.out.println("TutorFaculty table populated");
+						insertCourse = conn.prepareStatement("insert into Course (title, session_id) values (?, ?)");
+						for (Course course : courseList) {
+							insertCourse.setString(1, course.getTitle());
+							insertCourse.setInt(2,course.getSessionId());
+							insertCourse.addBatch();
+						}
+						insertCourse.executeBatch();
+						
+						System.out.println("Course table populated");
+						
 						
 						insertStudent = conn.prepareStatement("insert into Students (major, gradYear, user_id) values (?, ?, ?)");
 						for (Student stud : studentList) {
@@ -1367,10 +1687,14 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(insertAnnouncement);
 						DBUtil.closeQuietly(insertUser);
 						DBUtil.closeQuietly(insertSession);
+						DBUtil.closeQuietly(insertTf);
+						DBUtil.closeQuietly(insertCourse);
 						//DBUtil.closeQuietly(insertStudyGroup);		
 						DBUtil.closeQuietly(insertStudent);
 					}
 				}
-			});
-		}
+			
+		});
+		
 	}
+}

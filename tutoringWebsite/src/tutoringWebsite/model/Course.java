@@ -11,6 +11,8 @@ public class Course {
 	private ArrayList<Tutor> tutorList;
 	private Session courseSession;
 	private String title;
+	private int courseId;
+	private int sessionId;
 	
 	
 	public Course() {
@@ -39,6 +41,22 @@ public class Course {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public int getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
+	}
+
+	public int getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(int sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 }
