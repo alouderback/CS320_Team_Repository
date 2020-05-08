@@ -9,21 +9,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
+import tutoringWebsite.controllers.CourseController;
 import tutoringWebsite.controllers.StudentController;
+import tutoringWebsite.controllers.TutorFacultyController;
 import tutoringWebsite.controllers.UserController;
+import tutoringWebsite.model.Course;
 import tutoringWebsite.model.Session;
 import tutoringWebsite.model.Student;
+import tutoringWebsite.model.TutorFaculty;
 import tutoringWebsite.model.User;
 
 public class TutorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private User model;
 	private UserController controller;
-	private Student model1;
-	private StudentController controller1;
-
+	private TutorFaculty model1;
+	private TutorFacultyController controller1;
+	private Course model2;
+	private CourseController controller2;
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -34,25 +38,43 @@ public class TutorServlet extends HttpServlet {
 
 		String errorMessage = null;
 		User current 		= new User();
-		User tutor 		= new User();
+	
 		Student student		= new Student();
-		ArrayList<User> tutorList = new ArrayList<User>();
+		List<User> tutorList = new ArrayList<User>();
+		List<Integer> courseIdList = new ArrayList<Integer>();
+		List<Course> courseList = new ArrayList<Course>();
+		List<Course> courseList2 = new ArrayList<Course>();
+		List<Course> courseList3 = new ArrayList<Course>();
+		
 		boolean isStudent	= false;//will turn true i student
 
 			model      = new User(); 
 			controller = new UserController(model);
-			model1      = new Student();
-			controller1 = new StudentController(model1);
+			model1      = new TutorFaculty();
+			controller1 = new TutorFacultyController(model1);
+			model2      = new Course();
+			controller2 = new CourseController(model2);
+			
+			
 		
 			tutorList = (ArrayList<User>) controller.getTutors();
-			tutor = tutorList.get(0);
-		
+			for(User tutor : tutorList ) {
+				
+				courseIdList = controller1.getCourseidbyUserId(tutor.getUser_Id());
+				for(int courseid : courseIdList ) {
+					model2 = controller2.getCurseByCourseId(courseid);
+					courseList.add(model2);
+					System.out.println(model2.getTitle());
+				}
+			}
+			
 		
 		System.out.println("setting attributes");	
 		// Add parameters as request attributes
 		
 		//req.getSession().setAttribute("tutorList", tutorList);
 		req.setAttribute("tutorList", tutorList);
+		req.setAttribute("courseList", courseList);
 	//req.setAttribute("tutor", tutor);
 
 		req.getRequestDispatcher("/_view/tutors.jsp").forward(req, resp);
