@@ -98,11 +98,12 @@ public class LoginServlet extends HttpServlet {
 			//currently stores onlt the name but but shuld we store the enitre class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
 			req.getSession().setAttribute("user", current);
+			req.getSession().setAttribute("isAStudent", isStudent);
 			if(isStudent) {
 			req.getSession().setAttribute("student",student);
 			}
 			// redirect to /index page
-			resp.sendRedirect(req.getContextPath() + "/index");
+			resp.sendRedirect(req.getContextPath() + "/announcement");
 
 			return;
 		}
