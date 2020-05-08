@@ -31,4 +31,5 @@ public interface IDatabase {
 	List<String> getDayOfWeek(int sessionId);
 	List<Integer> getUserIdbyCourseId(int courseid);
 	List<Integer> getCourseidbyUserId(int userid);
+	Course getCourse(int courseid);
 }

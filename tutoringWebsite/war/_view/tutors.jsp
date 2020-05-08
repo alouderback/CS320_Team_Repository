@@ -38,6 +38,11 @@
 				            	<td>${tutor.email}</td>          
 			        	</tr>
 			    	</c:forEach>
+			    	 <c:forEach items="${courseList}" var="course">
+			        	<tr class="scheduleListings">
+				           	 <td>${course.title}</td>	        
+			        	</tr>
+			    	</c:forEach>
 			    </table>
           </form>
          </div>s
