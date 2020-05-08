@@ -174,5 +174,37 @@ public class InitialData {
 					readUser.close();
 				}
 			}
-
+	public static List<TutorFaculty> getTutorFaculty() throws IOException {
+		List<TutorFaculty> tfList = new ArrayList<TutorFaculty>();
+		ReadCSV readTf = new ReadCSV("TutorFaculty.csv");
+		try {
+			// auto-generated primary key for authors table
+			Integer adminId = 1;
+			Integer userType = 1;
+			Integer userId = 1;
+			Integer courseId = 1;
+			
+			
+			while (true) {
+			List<String> tuple = readTf.next();
+			if (tuple == null || tuple.size() == 0) {
+				break;
+			}
+			Iterator<String> i = tuple.iterator();
+			TutorFaculty tf = new TutorFaculty();
+			tf.setAdmin_id(adminId++);
+			userId = Integer.decode(i.next());
+			tf.setUser_Id(userId);
+			courseId = Integer.decode(i.next());
+			tf.setCourse_id(courseId);
+			userType = Integer.decode(i.next());
+			tf.setUserType(userType);
+			tfList.add(tf);
+			
+		}
+			return tfList;
+		} finally {
+				readTf.close();
+			}
+		}
 }

@@ -3,6 +3,7 @@ package tutoringWebsite.servlets;
 import java.io.IOException;
 
 
+
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,10 @@ import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.controllers.*;
 
 public class ScheduleServlet extends HttpServlet {
+	private User model2;
+	private UserController controller2;
+	private Student model1;
+	private StudentController controller1;
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -48,9 +53,30 @@ public class ScheduleServlet extends HttpServlet {
 		controller.setDB(db);
 		
 		ArrayList<Session> sessions = new ArrayList<Session>();
-		ArrayList<String> adminNameList = new ArrayList<String>();
-		ArrayList<String> courseNameList = new ArrayList<String>();
 		
+		////////////////////////////////////////////////
+		int userType		= 0;
+		User current 		= new User();
+		boolean isFaculty	= false; //will turn true if student
+		
+		current = (User) req.getSession().getAttribute("user");	
+		//gets current user
+		
+		model2      = new User();
+		controller2 = new UserController(model2);
+		
+		if(current != null) { //checks if a user is logged in
+			System.out.println(" user is logged in");
+			userType = current.getUserType();
+			if(userType == 3) { //type three is faulty; checking to see if logged in user is faculty
+				System.out.println("User is faculty");
+				isFaculty = true;
+			}
+			
+		}
+		
+		
+		////////////////////////////////////////////////
 		// decode POSTed form parameters and dispatch to controller
 		try {
 			//String date = getInitParameter(req.getParameter("date"));
