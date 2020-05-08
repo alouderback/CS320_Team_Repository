@@ -918,7 +918,13 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	@Override
-	public List<String> getDayOfWeek(int sessionId){
+	public Session getSingelSession(int sessionId) {
+		Session session = getSession(sessionId).get(0);
+		return session;
+	}
+	@Override
+	
+public List<String> getDayOfWeek(int sessionId){
 		return executeTransaction(new Transaction<List<String>>() {
 			public List<String> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
