@@ -47,9 +47,6 @@
 	                    <tr>
 	                        <td><input type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
 	                    </tr>
-	                    <tr>
-	                    	<td><input type="submit" name="DeleteAllSessions" value="Delete All Tutoring Sessions"></td>
-	                    </tr>
    					</c:if>
                         <tr>
                             <td>Tutor</td>
