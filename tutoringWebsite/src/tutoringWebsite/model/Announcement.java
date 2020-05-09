@@ -8,7 +8,8 @@ public class Announcement {
 	private int announcementId;
 	private String message;
 	private LocalDate date;
-	private LocalTime time;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	private int announcementType;// the id for session of study group
 	private int typeId;
 	//announcementType = 1 for session
@@ -24,7 +25,7 @@ public class Announcement {
 	public void delete() {
 		message = null;
 		date= null;
-		time = null;
+		startTime = null;
 		announcementType = -1;
 		typeId = -1;
 	}
@@ -48,12 +49,12 @@ public class Announcement {
 		this.date = date;
 	}
 	
-	public LocalTime getTime() {
-		return time;
+	public LocalTime getStartTime() {
+		return startTime;
 	}
 	
-	public void setTime(LocalTime time) {
-		this.time = time;
+	public void setStartTime(LocalTime time) {
+		this.startTime = time;
 	}
 
 	public int getAnnouncementId() {
@@ -95,7 +96,12 @@ public class Announcement {
 	public void setSession(Session session) {
 		this.session = session;
 	}
-	/*public String getSessionName() {
-		int id = session.getCourseId();
-	}*/
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
+	}
 }

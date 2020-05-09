@@ -232,7 +232,7 @@ public class DerbyDatabase implements IDatabase{
 	//can create any announcement for study group or a session
 	//all printed on main page
 	@Override
-	public Integer createAnnouncement(final String message, final LocalDate date, final LocalTime time, final int announcementType, final int typeId){
+	public Integer createAnnouncement(final String message, final LocalDate date, final LocalTime startTime, final LocalTime endTime, final int announcementType, final int typeId){
 		return executeTransaction(new Transaction <Integer>() {
 			@Override
 			public Integer execute(Connection conn) throws SQLException {
@@ -244,14 +244,15 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					System.out.println("Adding Announcement...");
 					stmt = conn.prepareStatement(
-						"insert into Announcements(message, date, time, announcementType, typeId) "
-							+"values(?, ?, ?, ?, ?)"
+						"insert into Announcements(message, date, startTime, endTime, announcementType, typeId) "
+							+"values(?, ?, ?, ?, ?, ?)"
 							);
 					stmt.setString(1, message);
 					stmt.setString(2,  date.toString());
-					stmt.setString(3, time.toString());
-					stmt.setInt(4, announcementType);
-					stmt.setInt(5, typeId);
+					stmt.setString(3, startTime.toString());
+					stmt.setString(4, endTime.toString());
+					stmt.setInt(5, announcementType);
+					stmt.setInt(6, typeId);
 					
 					stmt.executeUpdate();
 					
@@ -260,11 +261,11 @@ public class DerbyDatabase implements IDatabase{
 					
 					stmt2 = conn.prepareStatement(
 						"select announcement_id from Announcements "+
-						"where message = ? and date = ? and time = ?"
+						"where message = ? and date = ? and startTime = ?"
 					);
 					stmt2.setString(1, message);
 					stmt2.setString(2, date.toString());
-					stmt2.setString(3, time.toString());
+					stmt2.setString(3, startTime.toString());
 					
 					resultSet = stmt2.executeQuery();
 					
@@ -559,9 +560,12 @@ public class DerbyDatabase implements IDatabase{
 		LocalDate date = LocalDate.now();
 		date = LocalDate.parse(resultSet.getString(index++));
 		announcement.setDate(date);
-		LocalTime time = LocalTime.now();
-		time = LocalTime.parse(resultSet.getString(index++));
-		announcement.setTime(time);
+		LocalTime startTime = LocalTime.now();
+		startTime = LocalTime.parse(resultSet.getString(index++));
+		announcement.setStartTime(startTime);
+		LocalTime endTime = LocalTime.now();
+		endTime = LocalTime.parse(resultSet.getString(index++));
+		announcement.setEndTime(endTime);
 		announcement.setAnnouncementType(resultSet.getInt(index++));
 		announcement.setTypeId(resultSet.getInt(index++));
 	}
@@ -1678,7 +1682,8 @@ public class DerbyDatabase implements IDatabase{
 							"		generated always as identity (start with 1, increment by 1), " +									
 							"	message varchar(500)," +
 							"	date varchar(40)," +
-							"	time varchar(40),"+
+							"	startTime varchar(40),"+
+							"	endTime varchar(40)," +
 							" announcementType integer,"+
 							"typeId integer"+
 							")"
@@ -1814,14 +1819,15 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement insertStudent    = null;
 				try {
 					// populating announcement table
-					insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, time, announcementType, typeId) "
-							+ "values (?, ?, ?, ?, ?)");
+					insertAnnouncement = conn.prepareStatement("insert into Announcements (message, date, startTime, endTime, announcementType, typeId) "
+							+ "values (?, ?, ?, ?, ?, ?)");
 					for (Announcement announcement : announcementList) {
 						insertAnnouncement.setString(1, announcement.getMessage());
 						insertAnnouncement.setString(2, announcement.getDate().toString());
-						insertAnnouncement.setString(3, announcement.getTime().toString());
-						insertAnnouncement.setInt(4, announcement.getAnnouncementType());
-						insertAnnouncement.setInt(5, announcement.getTypeId());
+						insertAnnouncement.setString(3, announcement.getStartTime().toString());
+						insertAnnouncement.setString(4, announcement.getEndTime().toString());
+						insertAnnouncement.setInt(5, announcement.getAnnouncementType());
+						insertAnnouncement.setInt(6, announcement.getTypeId());
 						insertAnnouncement.addBatch();
 					}
 					insertAnnouncement.executeBatch();

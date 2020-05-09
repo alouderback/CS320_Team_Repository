@@ -42,6 +42,9 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		int typeId = -1;
 		String temp = null;
 		
+		LocalDate aDate = LocalDate.now();
+		LocalTime aTime = LocalTime.now();
+		
 		date = req.getParameter("date");
 		time = req.getParameter("time");
 		message = req.getParameter("message");
