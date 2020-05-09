@@ -24,6 +24,42 @@ public class DeleteSessionServlet extends HttpServlet {
 
 		System.out.println("DeleteScheduleServlet: doGet");	 
 		
+		ScheduleController controller = new ScheduleController();
+		
+		ArrayList<Session> preSessions = new ArrayList<Session>();
+		ArrayList<Session> sessions = new ArrayList<Session>();
+		
+		preSessions = (ArrayList<Session>) controller.getAllSessions();
+		
+		for (int j = 0; j < preSessions.size(); j++) {
+			if(preSessions.get(j).getTypeId() == 1) {
+				sessions.add(preSessions.get(j));
+			}
+		}
+		
+		for(int i = 0; i < sessions.size(); i++) {
+			if (controller.getTutorName(sessions.get(i).getAdminId()) == null){
+				sessions.get(i).setAdminName("User not found");
+			}
+			else {
+				sessions.get(i).setAdminName(controller.getTutorName(sessions.get(i).getAdminId()));
+			}
+			if(controller.getCourseName(sessions.get(i).getCourseId()) == null ) {
+				sessions.get(i).setCourseName("Course not found");
+			}
+			else {
+				sessions.get(i).setCourseName(controller.getCourseName(sessions.get(i).getCourseId()));
+			}
+			if(sessions.get(i).getDayOfWeek() == 0) {
+				sessions.get(i).setDayOfWeek(0);
+			}
+			else {
+				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getSessionId()));
+			}
+		}
+		
+		req.setAttribute("sessions", sessions);
+		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/deleteSession.jsp").forward(req, resp); 
 	}
@@ -32,7 +68,6 @@ public class DeleteSessionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("DeleteSessionServlet: doPost");
-		
 
 		String errorMessage = null;
 
@@ -44,6 +79,8 @@ public class DeleteSessionServlet extends HttpServlet {
 		int sessionId = 0;
 		int counter = 0;
 		String sessionIdString = null;
+		String submit = null;
+		
 		
 		ScheduleController controller = new ScheduleController();
 		DerbyDatabase db = new DerbyDatabase();
@@ -60,6 +97,8 @@ public class DeleteSessionServlet extends HttpServlet {
 		else {
 			sessionId = Integer.parseInt(sessionIdString);
 		}
+		
+		submit = req.getParameter("submit");
 		
 		ArrayList<Session> preSessions = new ArrayList<Session>();
 		ArrayList<Session> sessions = new ArrayList<Session>();
@@ -125,11 +164,10 @@ public class DeleteSessionServlet extends HttpServlet {
 		// Forward to view to render the result HTML document
 		if(errorMessage == null) {
 			controller.deleteSession(sessionId);
-			req.getRequestDispatcher("/_view/deleteSession.jsp").forward(req, resp);
 		}
-		else {
-			req.getRequestDispatcher("/_view/deleteSession.jsp").forward(req, resp);
-		}
+		
+			doGet(req, resp);
+		
 	}
 
 	// gets double from the request with attribute named s
