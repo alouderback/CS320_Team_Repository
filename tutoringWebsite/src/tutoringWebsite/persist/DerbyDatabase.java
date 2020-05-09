@@ -891,8 +891,8 @@ public class DerbyDatabase implements IDatabase{
 				ResultSet resultSet = null;
 				try {
 					stmt = conn.prepareStatement(
-						"select sessions from Sessions " + 		//Inserting new session
-						"where session_id = ?"					//Where the parameters will be 'inserted'
+						"select sessions.* from Sessions " + 		//Inserting new session
+						" where session_id = ?"					//Where the parameters will be 'inserted'
 							);
 					stmt.setInt(1, sessionId);					//Sets the value to the parameter, sessionId
 					
@@ -916,7 +916,7 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt1.setInt(1, sessionId);
 					
-					stmt1.executeQuery();						//Executes the delete
+					stmt1.executeUpdate();					//Executes the delete
 					
 					System.out.println("Deleted session...");
 					
@@ -1096,7 +1096,7 @@ public class DerbyDatabase implements IDatabase{
 			public List<String> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+				System.out.println("In getDayOfWeek, ");
 				try {
 					List<String> result = new ArrayList<String>();
 					

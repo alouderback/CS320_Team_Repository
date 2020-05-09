@@ -28,6 +28,7 @@ public class TutorServlet extends HttpServlet {
 	private Course model2;
 	private CourseController controller2;
 	
+	@SuppressWarnings("null")
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -43,9 +44,7 @@ public class TutorServlet extends HttpServlet {
 		List<User> tutorList = new ArrayList<User>();
 		List<Integer> courseIdList = new ArrayList<Integer>();
 		List<Course> courseList = new ArrayList<Course>();
-		List<Course> courseList2 = new ArrayList<Course>();
-		List<Course> courseList3 = new ArrayList<Course>();
-		
+		String[][] courses = new String[13][5];
 		boolean isStudent	= false;//will turn true i student
 
 			model      = new User(); 
@@ -54,19 +53,31 @@ public class TutorServlet extends HttpServlet {
 			controller1 = new TutorFacultyController(model1);
 			model2      = new Course();
 			controller2 = new CourseController(model2);
+			int i = 0;
 			
-			
-		
+			/*
+			for(int i = 0; i < 5; i++){
+				for(int j = 0; j < 5; j++){
+					array[i][j] = ughhh;
+				}
+			}
+			*/
 			tutorList = (ArrayList<User>) controller.getTutors();//list of users
 			for(User tutor : tutorList ) {//goes through each user
+				int j = 1;
 				
 				courseIdList = controller1.getCourseidbyUserId(tutor.getUser_Id());	//for every user gets its corresponding curse ids
 				for(int courseid : courseIdList ) {									//goes through course ids
-					model2 = controller2.getCurseByCourseId(courseid);				//gets course from course id
-					courseList.add(model2);											//add course to course list
-					System.out.println(model2.getTitle());							//prints out title 
 					
+					model2 = controller2.getCurseByCourseId(courseid);				//gets course from course id
+					courses[i][j] = model2.getTitle();
+					
+					
+					courseList.add(model2);											//add course to course list
+					System.out.println("courses array "+courses[i][j]+ i+j);							//prints out title 
+					j++;
 				}
+				i++;
 			}
 			
 		
@@ -75,7 +86,7 @@ public class TutorServlet extends HttpServlet {
 		
 		//req.getSession().setAttribute("tutorList", tutorList);
 		req.setAttribute("tutorList", tutorList);
-		req.setAttribute("courseList", courseList);
+		req.setAttribute("courseList", courses);
 	//req.setAttribute("tutor", tutor);
 
 		req.getRequestDispatcher("/_view/tutors.jsp").forward(req, resp);
