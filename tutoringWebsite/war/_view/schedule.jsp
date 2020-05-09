@@ -50,7 +50,7 @@
    					</c:if>
                         <tr>
                             <td>Tutor</td>
-                            <td>Date</td>      
+                            <td>Days of Week</td>      
                             <td>Time</td>
                             <td>Room</td>
                             <td>Course</td>   				
@@ -59,7 +59,7 @@
                         <c:forEach items="${sessions}" var="session">
 			        	<tr class="scheduleListings">
 				            	<td>${session.adminName}</td>
-				            	<td>${session.date}</td>
+				            	<td>${session.daysOfWeekString}</td>
 				            	<td>${session.startTime} - ${session.endTime}</td>
 				            	<td>${session.room}</td>		
 				            	<td>${session.courseName}</td>	          

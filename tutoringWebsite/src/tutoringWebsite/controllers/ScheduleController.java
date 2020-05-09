@@ -28,6 +28,7 @@ public class ScheduleController{
 	
 	//Returns a list of all sessions
 	public List<Session> getAllSessions() {
+		System.out.println("In Schedule Controller");
 		return db.getAllSessions();
 	}
 	
@@ -59,9 +60,96 @@ public class ScheduleController{
 		return course.get(0).getTitle();
 	}
 	
-	//public String getDayOfWeek(LocalDate date) {
+	public String getDayOfWeek(int dateNum) {
+		ArrayList weekString = new ArrayList();
+		weekString = (ArrayList<String>)db.getDayOfWeek(dateNum);
+		String temp = null;
+		String monday = null;
+		String tuesday = null;
+		String wednesday = null;
+		String thursday = null;
+		String friday = null;
+		String saturday = null;
+		String sunday = null;
 		
-	//}
+		if(dateNum == 0) {
+			return "Days of week not found";
+		}
+		
+		for (int i = 0; i < weekString.size(); i++) {
+			if(weekString.get(i) == "Sunday") {
+				if(temp != null) {
+					sunday = ", Sunday";
+					temp.concat(sunday);
+				}
+				else {
+					sunday = "Sunday";
+					temp = sunday;
+				}
+			}
+			if(weekString.get(i) == "Monday") {
+				if(temp != null) {
+					monday = ", Monday";
+					temp.concat(monday);
+				}
+				else {
+					monday = "Monday";
+					temp = monday;
+				}
+			}
+			if(weekString.get(i) == "Tuesday") {
+				if(temp != null) {
+					tuesday = ", Tuesday";
+					temp.concat(tuesday);
+				}
+				else {
+					tuesday = "Tuesday";
+					temp = tuesday;
+				}	
+			}
+			if(weekString.get(i) == "Wednesday") {
+				if(temp != null) {
+					wednesday = ", Wednesday";
+					temp.concat(wednesday);
+				}
+				else {
+					wednesday = "Wednesday";
+					temp = wednesday;
+				}
+			}
+			if(weekString.get(i) == "Thursday") {
+				if(temp != null) {
+					thursday = ", Thursday";
+					temp.concat(thursday);
+				}
+				else {
+					thursday = "Thursday";
+					temp = thursday;
+				}
+			}
+			if(weekString.get(i) == "Friday") {
+				if(temp != null) {
+					friday = ", Friday";
+					temp.concat(friday);
+				}
+				else {
+					friday = "Friday";
+					temp = friday;
+				}
+			}
+			if(weekString.get(i) == "Saturday") {
+				if(temp != null) {
+					saturday = ", Saturday";
+					temp.concat(saturday);
+				}
+				else {
+					saturday = "Saturday";
+					temp = saturday;
+				}
+			}
+		}
+		return temp;
+	}
 	
 	//Given a timeframe (value of buttons on the jsp), the method will return a list of sessions
 	public List<Session> getScheduleWithDate(String timeframe) {

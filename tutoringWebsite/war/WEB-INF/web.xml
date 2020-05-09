@@ -52,6 +52,10 @@
   	<servlet-name>CreateSessionServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.CreateSessionServlet</servlet-class>
   </servlet>
+ <servlet>
+  	<servlet-name>DeleteSessionServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.DeleteSessionServlet</servlet-class>
+ </servlet>
  
 
 
@@ -70,6 +74,11 @@
     <servlet-name>CreateSessionServlet</servlet-name>
     <url-pattern>/createSession</url-pattern>
   </servlet-mapping>
+  
+ <servlet-mapping>
+    <servlet-name>DeleteSessionServlet</servlet-name>
+    <url-pattern>/deleteSession</url-pattern>
+</servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>CoursesServlet</servlet-name>
