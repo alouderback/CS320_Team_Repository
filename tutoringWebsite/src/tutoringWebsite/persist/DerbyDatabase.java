@@ -698,7 +698,6 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Got all sessions");
 						
-						System.out.println("ResultSet Size Thing: " + resultSet.getFetchSize());
 						while (resultSet.next()) {
 							System.out.println("Within while loop, see session id below:");
 							Session session = new Session();
@@ -801,7 +800,7 @@ public class DerbyDatabase implements IDatabase{
 					System.out.println("Session created and inserted into table...");
 					
 					stmt1 = conn.prepareStatement(
-						"select sessions from Sessions " +
+						"select sessions.* from Sessions " +
 						"where date = ? and room = ? and start_time = ? and end_time = ? and day_of_week = ? and admin_id = ? and course_id = ? and type_id = ?"
 							);
 							

@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 		String major = null;
 		String year = null;
 		boolean isStudent	= false;//will turn true i student
-		boolean isFaculty  = false;
+		boolean isTutorFaculty  = false;
 		// Decode form parameters and dispatch to controller
 		email = req.getParameter("email");
 		pw   = req.getParameter("password");
@@ -75,9 +75,9 @@ public class LoginServlet extends HttpServlet {
 					System.out.println("  Major: <" + major + "> Year: <" + year + ">");	
 				}
 			
-				if(userType == 3) { //type three is faulty; checking to see if logged in user is faculty
+				if((userType == 3) || (userType == 2)) { //type three is faulty; checking to see if logged in user is faculty
 					System.out.println("User is faculty");
-					isFaculty = true;
+					isTutorFaculty = true;
 				}
 				
 			}
@@ -104,7 +104,7 @@ public class LoginServlet extends HttpServlet {
 			//currently stores only the name but but should we store the entire class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
 			req.getSession().setAttribute("user", current);
-			req.getSession().setAttribute("isFaculty", isFaculty);
+			req.getSession().setAttribute("isFaculty", isTutorFaculty);
 			if(isStudent) {
 			req.getSession().setAttribute("student",student);
 			}

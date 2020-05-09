@@ -48,6 +48,10 @@
   	<servlet-name>TutorServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.TutorServlet</servlet-class>
   </servlet>
+ <servlet>
+  	<servlet-name>CreateSessionServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.CreateSessionServlet</servlet-class>
+  </servlet>
  
 
 
@@ -61,7 +65,12 @@
     <servlet-name>AnnouncementServlet</servlet-name>
     <url-pattern>/announcement</url-pattern>
   </servlet-mapping>
-
+  
+  <servlet-mapping>
+    <servlet-name>CreateSessionServlet</servlet-name>
+    <url-pattern>/createSession</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>CoursesServlet</servlet-name>
     <url-pattern>/courses</url-pattern>
