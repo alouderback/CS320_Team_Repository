@@ -57,7 +57,7 @@ public class ScheduleServlet extends HttpServlet {
 		////////////////////////////////////////////////
 		int userType		= 0;
 		User current 		= new User();
-		boolean isFaculty	= false; //will turn true if student
+		//boolean isFaculty	= false; //will turn true if student
 		
 		current = (User) req.getSession().getAttribute("user");	
 		//gets current user
@@ -67,11 +67,7 @@ public class ScheduleServlet extends HttpServlet {
 		
 		if(current != null) { //checks if a user is logged in
 			System.out.println(" user is logged in");
-			userType = current.getUserType();
-			if(userType == 3) { //type three is faulty; checking to see if logged in user is faculty
-				System.out.println("User is faculty");
-				isFaculty = true;
-			}
+			
 			
 		}
 		
@@ -79,8 +75,6 @@ public class ScheduleServlet extends HttpServlet {
 		////////////////////////////////////////////////
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			//String date = getInitParameter(req.getParameter("date"));
-			
 			
 			// check for errors in the form data before using is in a calculation
 			if (req.getParameter("Submit") != null) {
@@ -92,12 +86,32 @@ public class ScheduleServlet extends HttpServlet {
 			else if(req.getParameter("SubmitM") != null) {
 				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
 			}
+			else if(req.getParameter("CreateSession") != null) {
+				resp.sendRedirect(req.getContextPath() + "/createSession");
+			}
+			else if (req.getParameter("DeleteSession") != null) {
+				
+			}
 		
 		} catch (NumberFormatException e) {
 			errorMessage = "Try failed";
 		}
 		
-	
+		
+		for(int i = 0; i < sessions.size(); i++) {
+			if (controller.getTutorName(sessions.get(i).getAdminId()) == null){
+				sessions.get(i).setAdminName("User not found");
+			}
+			else {
+				sessions.get(i).setAdminName(controller.getTutorName(sessions.get(i).getAdminId()));
+			}
+			if(controller.getCourseName(sessions.get(i).getCourseId()) == null ) {
+				sessions.get(i).setCourseName("Course not found");
+			}
+			else {
+				sessions.get(i).setCourseName(controller.getCourseName(sessions.get(i).getCourseId()));
+			}
+		}
 		
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response

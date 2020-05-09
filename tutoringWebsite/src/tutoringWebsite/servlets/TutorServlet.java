@@ -57,14 +57,15 @@ public class TutorServlet extends HttpServlet {
 			
 			
 		
-			tutorList = (ArrayList<User>) controller.getTutors();
-			for(User tutor : tutorList ) {
+			tutorList = (ArrayList<User>) controller.getTutors();//list of users
+			for(User tutor : tutorList ) {//goes through each user
 				
-				courseIdList = controller1.getCourseidbyUserId(tutor.getUser_Id());
-				for(int courseid : courseIdList ) {
-					model2 = controller2.getCurseByCourseId(courseid);
-					courseList.add(model2);
-					System.out.println(model2.getTitle());
+				courseIdList = controller1.getCourseidbyUserId(tutor.getUser_Id());	//for every user gets its corresponding curse ids
+				for(int courseid : courseIdList ) {									//goes through course ids
+					model2 = controller2.getCurseByCourseId(courseid);				//gets course from course id
+					courseList.add(model2);											//add course to course list
+					System.out.println(model2.getTitle());							//prints out title 
+					
 				}
 			}
 			

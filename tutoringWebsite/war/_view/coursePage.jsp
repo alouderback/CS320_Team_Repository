@@ -1,14 +1,15 @@
+
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Profile</Title>
+        <Title>Courses</Title>
     </head>
+    
     <body>
-    <c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
             <div id = "titleDiv">
                 <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
@@ -23,28 +24,21 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-            
-	           <h1>Profile</h1>
-	        </div>
-	       <body>
-	          
-							<p class = "profile"> Email: 	<td>${user.email}</td></p>	           
-			            	<p.profile> Password: <td>${user.password}</td></p>
-			            	<p.profile> Name: <td>${user.name}</td></p>
-			            	<p.profile> Type: <td>${user.userType}</td></p>	            
-			    
-	          
-          
-            	<c:if test="${isAStudent}">
-        					<p.profile> Major:  <td>${student.major}</td></p>
-			            	<p.profile> Year:  <td>${student.year}</td></p>
-				</c:if>
-			</body>
         </form>
-        <form action="${pageContext.servletContext.contextPath}/profile" method="post">
-			<input type="Submit" name="deleteAccount" value="Delete Account">
-			<input type="Submit" name="logOut" value="Log Out">
-		</form>
+        <form action="${pageContext.servletContext.contextPath}/coursePage" method="get"> 
+            <h1>${title}</h1>
+            <h3>Days of Week:</h3>
+            <c:forEach items="${daysOfWeek}" var = "dayOfWeek">
+                <h3>${dayOfWeek} </h3>            
+            </c:forEach>
+            <!--<h3>Start Time: ${startTime}</h3>
+            <h3>End Time: ${endTime}</h3>//-->
+            <h3>List of Tutors:</h3>
+            <c:forEach items="${tutorList}" var = "tutor">
+                <tr>
+                    <td>${tutor.name}<br></td>            
+                </tr>
+            </c:forEach>
+        </form>
     </body>
 </html>|

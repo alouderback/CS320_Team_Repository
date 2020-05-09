@@ -41,7 +41,16 @@ h1{
     color: black;
     background-color: white;
     margin: 1%;
+    width: 45%;
     text-align: left;
+	padding-left: 3%;
+}
+.profileDis2 {
+    color: black;
+    background-color: white;
+    margin: 1%;
+    width: 45%;
+    text-align: right;
 	padding-left: 3%;
 }
 
@@ -70,6 +79,10 @@ h1{
     border: none;
     color: white;
     width: 12%;
+}
+
+#error{
+	color: red;
 }
 
 #annMessage {

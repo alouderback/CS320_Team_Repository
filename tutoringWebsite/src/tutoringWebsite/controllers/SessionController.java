@@ -19,7 +19,8 @@ public class SessionController{
 		this.model = model; 
 	}
 	public void createSession(LocalDate date, String room, LocalTime startTime, LocalTime endTime, int dayOfWeek, int adminId, int courseId, int typeId) {
-		 db.createSession(room, date, adminId, startTime, endTime, dayOfWeek, courseId, typeId);
+		System.out.println("Currently in SessionController");
+		db.createSession(room, date, adminId, startTime, endTime, dayOfWeek, courseId, typeId);
 	}
 	
 	public Session getSession() {
