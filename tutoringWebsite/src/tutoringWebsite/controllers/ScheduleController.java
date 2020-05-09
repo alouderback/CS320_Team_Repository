@@ -60,9 +60,9 @@ public class ScheduleController{
 		return course.get(0).getTitle();
 	}
 	
-	public String getDayOfWeek(int dateNum) {
+	public String getDayOfWeek(int sessionId) {
 		ArrayList weekString = new ArrayList();
-		weekString = (ArrayList<String>)db.getDayOfWeek(dateNum);
+		weekString = (ArrayList<String>)db.getDayOfWeek(sessionId);
 		System.out.println("WeekList Size:" + weekString.size());
 		String temp = null;
 		String monday = null;
@@ -73,11 +73,12 @@ public class ScheduleController{
 		String saturday = null;
 		String sunday = null;
 		
-		if(dateNum == 0) {
+		if(sessionId == 0) {
 			return "Days of week not found";
 		}
 		
 		for (int i = 0; i < weekString.size(); i++) {
+			System.out.println("In weekString: " + weekString.get(i));
 			if(weekString.get(i) == "Sunday") {
 				if(temp != null) {
 					sunday = ", Sunday";

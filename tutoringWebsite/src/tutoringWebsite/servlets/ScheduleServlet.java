@@ -115,7 +115,7 @@ public class ScheduleServlet extends HttpServlet {
 				sessions.get(i).setDayOfWeek(0);
 			}
 			else {
-				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getDayOfWeek()));
+				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getSessionId()));
 			}
 		}
 		
