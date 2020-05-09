@@ -23,6 +23,7 @@
             </div>
              </form>
                <form action="${pageContext.servletContext.contextPath}/tutors" method="get">
+                <div class = "pageDesc">
             <div class = "profileDis">
 	           <p>Tutors</p>
 	           
@@ -40,7 +41,7 @@
 			    	</c:forEach>
 			    	 </table>
 			    	 </div>
-			    	  <div class = "profileDis2">
+			    	  <div class = "profileDis">
 			    	 <table>
 			    	 <c:forEach items="${courseList}" var="course">
 			        	<tr class="scheduleListings">
@@ -50,6 +51,7 @@
 			    </table>
           </form>
          </div>
+           </div>
     </body>
 
 </html>|

@@ -39,18 +39,11 @@ h1{
 }
 .profileDis {
     color: black;
-    background-color: white;
+   float: left;
     margin: 1%;
-    width: 45%;
+      width:fit-content%;
+    
     text-align: left;
-	padding-left: 3%;
-}
-.profileDis2 {
-    color: black;
-    background-color: white;
-    margin: 1%;
-    width: 45%;
-    text-align: right;
 	padding-left: 3%;
 }
 
