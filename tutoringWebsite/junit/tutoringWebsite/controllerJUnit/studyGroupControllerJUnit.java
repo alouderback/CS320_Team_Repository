@@ -24,11 +24,13 @@ public class studyGroupControllerJUnit {
 		course.setTutorList(null);
 		
 		session = new Session();
+		Tutor tutor = new Tutor();
+		tutor.setName("Caryn Sims");
 		session.setDate(null);
-		session.setTime(null);
+		session.setStartTime(null);
 		session.setRoom("KEC136");
-		session.setSessionID(123);
-		session.setTutorId(2442);
+		session.setSessionId(123);
+		session.setTutor(tutor);
 		
 		model.setCourse(course);
 		model.setSession(session);
@@ -51,11 +53,13 @@ public class studyGroupControllerJUnit {
 	@Test
 	public void testGetSession() {
 		Session session2 = new Session();
+		Tutor tutor = new Tutor();
+		tutor.setName("Caryn Sims");
 		session2.setDate(null);
-		session2.setTime(null);
+		session2.setStartTime(null);
 		session2.setRoom("KEC130");
-		session2.setSessionID(123);
-		session2.setTutorId(2442);
+		session2.setSessionId(123);
+		session2.setTutor(tutor);
 		
 		assertTrue(controller.getSession() == session);
 		assertFalse(controller.getSession() == session2);

@@ -19,7 +19,6 @@ public interface IDatabase {
 	List<Session> getScheduleByDate(String timeframe);
 	List<User> getAccount(String email, String password);
 	List<Session> deleteSession(int sessionId);
-
 	List<User> getTutors();
 	List<Student> getStudent(String email, String password);
 	List<Student> createStudent(String major, String year, int userid);
@@ -29,7 +28,7 @@ public interface IDatabase {
 	List<Session> createSession(String room, LocalDate date, int adminId, LocalTime startTime, LocalTime endTime,
 		int dayOfWeek, int courseId, int typeId);
 	List<String> getDayOfWeek(int sessionId);
-	Session getSingelSession(int sessionId);
+	Session getSingleSession(int sessionId);
 	List<Integer> getUserIdbyCourseId(int courseid);
 	List<Integer> getCourseidbyUserId(int userid);
 
