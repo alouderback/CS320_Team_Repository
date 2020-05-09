@@ -73,6 +73,10 @@ h1{
     width: 12%;
 }
 
+#error{
+	color: red;
+}
+
 #annMessage {
     Padding-top: 1%;
     padding-bottom: 1%;

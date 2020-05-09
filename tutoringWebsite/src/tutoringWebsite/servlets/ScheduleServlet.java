@@ -75,8 +75,6 @@ public class ScheduleServlet extends HttpServlet {
 		////////////////////////////////////////////////
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			//String date = getInitParameter(req.getParameter("date"));
-			
 			
 			// check for errors in the form data before using is in a calculation
 			if (req.getParameter("Submit") != null) {
@@ -89,7 +87,7 @@ public class ScheduleServlet extends HttpServlet {
 				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
 			}
 			else if(req.getParameter("CreateSession") != null) {
-				
+				resp.sendRedirect(req.getContextPath() + "/createSession");
 			}
 			else if (req.getParameter("DeleteSession") != null) {
 				
@@ -119,7 +117,6 @@ public class ScheduleServlet extends HttpServlet {
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("sessions", sessions);
-		//req.setAttribute("isFaculty", isFaculty);
 		
 		//System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(1).getTutorId());
 		// Forward to view to render the result HTML document
