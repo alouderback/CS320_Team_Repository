@@ -20,6 +20,7 @@ public class Session {
 	private String adminName;
 	private String courseName;
 	private String typeName;
+	private String daysOfWeekString;
 	
 	
 	public Session() {
@@ -133,6 +134,26 @@ public class Session {
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+
+	public String getDaysOfWeekString() {
+		return daysOfWeekString;
+	}
+
+
+	public void setDaysOfWeekString(String daysOfWeekString) {
+		this.daysOfWeekString = daysOfWeekString;
 	}
 
 	

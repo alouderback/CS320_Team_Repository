@@ -41,7 +41,7 @@
 					<td><input type="text" name="password" size="12" value="${password}" /></td>
 				</tr>
 			</table>
-     			<input type="Submit" name="submit" value="Login">
+     			<input type="Submit" name="submit" value="Login" class ="myButton">
      			<input type="hidden" onclick="window.location.href='http://localhost:8081/tutoringWebsite/createAccount'"value =  "Create Account">
      			
      		

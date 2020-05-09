@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+ 
 <html>
-	<head>
+    <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Tutors</Title>
+        <Title>Delete Session</Title>
     </head>
-    <body>
+    <body>    
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
             <div id = "titleDiv">
                 <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
@@ -21,44 +23,29 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-             </form>
-               <form action="${pageContext.servletContext.contextPath}/tutors" method="get">
-                
             <div class = "pageDesc">
-	           <p>Tutors</p>
-	           </div>
-	              <div class = "profileDis">
-	           <table>
-                    <tr>
-                     	<td>Tutor</td>
-                        <td>Email:</td>      	
-                   </tr>
-                   
-                    <c:forEach items="${tutorList}" var="tutor">
+	           <p>Delete a tutoring session</p>
+            </div>
+        </form>
+        <form action="${pageContext.servletContext.contextPath}/deleteSession" method="post">
+       		<p>Please enter the information requested below in order to delete a session.</p>
+       		<table>
+       			<tr>
+					<td class="label">Please enter session ID of the session you would like to delete:</td>
+					<td><input type="text" name="sessionId" size="12" value="${sessionId}" /></td>
+				</tr>
+				
+				<c:forEach items="${sessions}" var="session">
 			        	<tr class="scheduleListings">
-				           	 <td>${tutor.name}</td>		
-				            	<td>${tutor.email}</td>          
+				            	<td>${session.sessionId}</td>
+				            	<td>${session.adminName}</td>
+				            	<td>${session.courseName}</td>
+				            	<td>${session.daysOfWeekString}</td>	          
 			        	</tr>
 			    	</c:forEach>
-			    	 </table>
-			    	 </div>
-			    	  <div class = "tutorDis">
-			    	 <table>
-			    	  <tr>
-                     	<td>Courses</td>  	
-                   </tr>
-                   
-			    	 <c:forEach items="${courseList}" var="course">
-			        	<tr>
-				           	 <td>${course[1]}</td>	   
-				           	 <td>${course[2]}</td>
-				           	 <td>${course[4]}</td>
-			        	</tr>
-			    	</c:forEach>
-			    </table>
-          </form>
-         </div>
-        
-    </body>
 
-</html>|
+  			</table>
+  			<p id="error">${errorMessage}</p>
+  			<input type="Submit" name="submit" value="Delete Tutoring Session">
+    </form>
+</html>

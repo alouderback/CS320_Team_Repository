@@ -6,7 +6,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Schedule</Title>
+        <Title>Create Session</Title>
     </head>
     <body>    
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
@@ -31,7 +31,7 @@
        		<p>Please enter the information requested below in order to create a session.</p>
        		<table>
        		<tr>
-					<td class="label">Please enter the month, day, and year session will start (XX-XX-XXXX):</td>
+					<td class="label">Please enter the month, day, and year session will start (MM-DD-YYYY):</td>
 					<td><input type="text" name="date" size="12" value="${date}" /></td>
 				</tr>
 				<tr>
