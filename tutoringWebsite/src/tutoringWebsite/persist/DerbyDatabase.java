@@ -358,10 +358,11 @@ public class DerbyDatabase implements IDatabase{
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 					"from Announcements "+
-					"where typeId = ? and announcementType = 1 "+
-					"order by Announcements.date desc "
+					"where typeId = ? and announcementType = ? "+
+					"order by Announcements.date asc "
 					);
 					stmt.setInt(1, sessionId);
+					stmt.setInt(2, 1);
 					
 					resultSet = stmt.executeQuery();
 					System.out.println("Retrieved announcements");
@@ -398,10 +399,11 @@ public class DerbyDatabase implements IDatabase{
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 					"from Announcements "+
-					"where typeId = ? and announcementType = 2 "+
-					"order by Announcements.date desc"
+					"where typeId = ? and announcementType = ?"+
+					"order by Announcements.date asc"
 					);
 					stmt.setInt(1, studyGroupId);
+					stmt.setInt(2, 2);
 					resultSet = stmt.executeQuery();
 					result = new ArrayList<Announcement>();
 				
@@ -433,7 +435,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 					"from Announcements "+
-					"order by Announcements.date desc "
+					"order by Announcements.date asc "
 					);
 					
 					resultSet = stmt.executeQuery();
@@ -462,16 +464,15 @@ public class DerbyDatabase implements IDatabase{
 			public List<Announcement> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				int type = 2;
 				List<Announcement> result;
 				try {
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 						"from Announcements "+
 						"where announcementType = ?" +
-						"order by Announcements.date desc "
+						"order by Announcements.date asc "
 					);
-					stmt.setInt(1, type);
+					stmt.setInt(1, 2);
 					resultSet = stmt.executeQuery();
 					result = new ArrayList<Announcement>();
 				
@@ -498,16 +499,15 @@ public class DerbyDatabase implements IDatabase{
 			public List<Announcement> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				int type = 1;
 				List<Announcement> result;
 				try {
 					stmt = conn.prepareStatement(
 						"select announcements.* "+
 						"from Announcements "+
 						"where announcementType = ?" +
-						"order by Announcements.date desc "
+						"order by Announcements.date asc "
 					);
-					stmt.setInt(1, type);
+					stmt.setInt(1, 1);
 					resultSet = stmt.executeQuery();
 					result = new ArrayList<Announcement>();
 							
@@ -1061,7 +1061,7 @@ public class DerbyDatabase implements IDatabase{
 					List<Session> result = new ArrayList<Session>();
 					
 					stmt = conn.prepareStatement(
-							"select sessions from Sessions " +
+							"select * from Sessions " +
 							" where session_id = ?"
 							);
 					
@@ -1086,12 +1086,11 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	@Override
-	public Session getSingelSession(int sessionId) {
+	public Session getSingleSession(int sessionId) {
 		Session session = getSession(sessionId).get(0);
 		return session;
 	}
 	@Override
-	
 	public List<String> getDayOfWeek(int sessionId){
 		return executeTransaction(new Transaction<List<String>>() {
 			public List<String> execute(Connection conn) throws SQLException {
@@ -1671,19 +1670,19 @@ public class DerbyDatabase implements IDatabase{
 
 				System.out.println("Making Announcement table...");
 
-				try {
-					//create announcement table
-					stmt1 = conn.prepareStatement(
-						"create table Announcements (" +
-						"	announcement_id integer primary key " +
-						"		generated always as identity (start with 1, increment by 1), " +									
-						"	message varchar(40)," +
-						"	date varchar(40)," +
-						"	time varchar(40),"+
-						" announcementType integer,"+
-						"typeId integer"+
-						")"
-					);	
+					try {
+						//create announcement table
+						stmt1 = conn.prepareStatement(
+							"create table Announcements (" +
+							"	announcement_id integer primary key " +
+							"		generated always as identity (start with 1, increment by 1), " +									
+							"	message varchar(500)," +
+							"	date varchar(40)," +
+							"	time varchar(40),"+
+							" announcementType integer,"+
+							"typeId integer"+
+							")"
+						);	
 
 					stmt1.executeUpdate();
 

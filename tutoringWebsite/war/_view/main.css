@@ -71,15 +71,16 @@ h1{
     text-align: center;
     padding-bottom: 1%;
     color: green;
-    font-size: 125%;
+    font-size: 135%;
+    font-weight: bold;
     font-family: "Times New Roman", Times, serif;
     padding-top: 1%;
-    padding-bottom: 1%;
     padding-left: 2%;
     padding-right: 2%;
     background: none;
-    border: none;
+    text-decoration: underline;
 }
+#message{float: left;}
 
 #navBarItem {
     background: none;
@@ -118,6 +119,22 @@ h1{
     margin-bottom: 1%;
     
 }
+
+#pa1{
+   text-align: center
+   color: black;
+   font-size: 100%;
+   font-family: "Times New Roman", Times, serif;
+   font-weight: bold;
+}
+#pa2{
+   text-align: center
+   color: black;
+   font-size: 100%;
+   font-family: "Times New Roman", Times, serif;
+}
+
+
 .myButton {
 color: black; font-size: 13px; line-height: 13px; padding: 4px; border-radius: 4px; 
  font-family: "Times New Roman", Times, serif;
@@ -130,3 +147,4 @@ background-image:   box-shadow: rgba(0, 0, 0, 0) 39px 5px 0px 0px;
 background: rgb(17,164,61); }
 .myButton:active {
 background: rgb(81,211,45); }
+

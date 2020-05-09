@@ -9,10 +9,12 @@ public class Announcement {
 	private String message;
 	private LocalDate date;
 	private LocalTime time;
-	private int announcementType;
-	private int typeId; // the id for session of study group
-	//typeId = 1 for session
-	//typeId = 2 for study group
+	private int announcementType;// the id for session of study group
+	private int typeId;
+	//announcementType = 1 for session
+	//announcementType = 2 for study group
+	private String typeName;
+	private Session session;
 	
 	// Constructor for class
 	public Announcement() {
@@ -25,7 +27,6 @@ public class Announcement {
 		time = null;
 		announcementType = -1;
 		typeId = -1;
-		//announcementId = -1?;
 	}
 	
 	// Returns the current message in this announcement
@@ -78,5 +79,23 @@ public class Announcement {
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
 	}
-	
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+	/*public String getSessionName() {
+		int id = session.getCourseId();
+	}*/
 }

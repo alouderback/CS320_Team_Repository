@@ -28,11 +28,10 @@ public class AnnouncementServlet extends HttpServlet {
 		AnnouncementController controller = new AnnouncementController();
 		controller.setModel(model);
 		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
-		
+		String typeName = null;
 		try {
 			announcements = (ArrayList<Announcement>) controller.getAnnouncements();
-			//model = announcements.get(0);
-			//System.out.println(model.getAnnouncementId() + model.getMessage());
+			typeName = model.getTypeName();
 		}
 		catch (NumberFormatException e) {
 			errorMessage = "Try failed";
@@ -40,6 +39,7 @@ public class AnnouncementServlet extends HttpServlet {
 		
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("announcements", announcements);
+		req.setAttribute("typeName", typeName);
 		
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 	}

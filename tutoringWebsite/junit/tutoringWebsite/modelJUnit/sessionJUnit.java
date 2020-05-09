@@ -27,7 +27,7 @@ public class sessionJUnit {
 		testTutor.setName("Jimmy John");
 		
 		model.setDate(LocalDate.parse("2012-12-12"));
-		model.setTime(LocalTime.of(12, 0));
+		model.setStartTime(LocalTime.of(12, 0));
 		model.setRoom("123");
 		model.setTutor(testTutor);		
 		
@@ -46,7 +46,7 @@ public class sessionJUnit {
 	@Test
 	public void testTime() {
 		LocalTime testTime = LocalTime.of(12, 0);
-		assertTrue(model.getTime()==testTime);
+		assertTrue(model.getStartTime()==testTime);
 		
 		
 	}
