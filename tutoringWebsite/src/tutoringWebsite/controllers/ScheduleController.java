@@ -63,6 +63,7 @@ public class ScheduleController{
 	public String getDayOfWeek(int dateNum) {
 		ArrayList weekString = new ArrayList();
 		weekString = (ArrayList<String>)db.getDayOfWeek(dateNum);
+		System.out.println("WeekList Size:" + weekString.size());
 		String temp = null;
 		String monday = null;
 		String tuesday = null;
@@ -80,7 +81,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Sunday") {
 				if(temp != null) {
 					sunday = ", Sunday";
-					temp.concat(sunday);
+					temp = temp.concat(sunday);
 				}
 				else {
 					sunday = "Sunday";
@@ -90,7 +91,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Monday") {
 				if(temp != null) {
 					monday = ", Monday";
-					temp.concat(monday);
+					temp = temp.concat(monday);
 				}
 				else {
 					monday = "Monday";
@@ -100,7 +101,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Tuesday") {
 				if(temp != null) {
 					tuesday = ", Tuesday";
-					temp.concat(tuesday);
+					temp = temp.concat(tuesday);
 				}
 				else {
 					tuesday = "Tuesday";
@@ -110,7 +111,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Wednesday") {
 				if(temp != null) {
 					wednesday = ", Wednesday";
-					temp.concat(wednesday);
+					temp = temp.concat(wednesday);
 				}
 				else {
 					wednesday = "Wednesday";
@@ -120,7 +121,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Thursday") {
 				if(temp != null) {
 					thursday = ", Thursday";
-					temp.concat(thursday);
+					temp = temp.concat(thursday);
 				}
 				else {
 					thursday = "Thursday";
@@ -130,7 +131,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Friday") {
 				if(temp != null) {
 					friday = ", Friday";
-					temp.concat(friday);
+					temp = temp.concat(friday);
 				}
 				else {
 					friday = "Friday";
@@ -140,7 +141,7 @@ public class ScheduleController{
 			if(weekString.get(i) == "Saturday") {
 				if(temp != null) {
 					saturday = ", Saturday";
-					temp.concat(saturday);
+					temp = temp.concat(saturday);
 				}
 				else {
 					saturday = "Saturday";
