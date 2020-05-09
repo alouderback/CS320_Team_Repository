@@ -64,18 +64,18 @@ public class TutorServlet extends HttpServlet {
 			*/
 			tutorList = (ArrayList<User>) controller.getTutors();//list of users
 			for(User tutor : tutorList ) {//goes through each user
-				int j = 0;
+				int j = 1;
 				
 				courseIdList = controller1.getCourseidbyUserId(tutor.getUser_Id());	//for every user gets its corresponding curse ids
 				for(int courseid : courseIdList ) {									//goes through course ids
 					
 					model2 = controller2.getCurseByCourseId(courseid);				//gets course from course id
-					courses[i][courseid] = model2.getTitle();
+					courses[i][j] = model2.getTitle();
 					
 					
 					courseList.add(model2);											//add course to course list
 					System.out.println("courses array "+courses[i][j]+ i+j);							//prints out title 
-					
+					j++;
 				}
 				i++;
 			}
