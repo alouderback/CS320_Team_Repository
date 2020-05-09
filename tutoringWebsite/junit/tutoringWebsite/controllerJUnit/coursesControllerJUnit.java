@@ -46,7 +46,7 @@ public class coursesControllerJUnit {
 		tutorList.add(emily);
 		tutorList.add(john);
 		
-		model.setTutorList(tutorList);
+		
 		
 	}
 
