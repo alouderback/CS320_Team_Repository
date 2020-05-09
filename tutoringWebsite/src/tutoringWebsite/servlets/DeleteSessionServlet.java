@@ -15,36 +15,35 @@ import tutoringWebsite.model.*;
 import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.controllers.*;
 
-public class ScheduleServlet extends HttpServlet {
-	private User model2;
-	private UserController controller2;
-	private Student model1;
-	private StudentController controller1;
+public class DeleteSessionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("schedule Servlet: doGet");	 
+		System.out.println("DeleteScheduleServlet: doGet");	 
 		
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp); 
+		req.getRequestDispatcher("/_view/deleteSession.jsp").forward(req, resp); 
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("schedule Servlet: doPost");
+		System.out.println("DeleteSessionServlet: doPost");
 		
 
 		String errorMessage = null;
 
 
 		Schedule model = null;
-
 		String courseName = null;
-
+		
+		User current = new User();
+		int sessionId = 0;
+		int counter = 0;
+		String sessionIdString = null;
 		
 		ScheduleController controller = new ScheduleController();
 		DerbyDatabase db = new DerbyDatabase();
@@ -52,49 +51,25 @@ public class ScheduleServlet extends HttpServlet {
 		controller.setModel(model);
 		controller.setDB(db);
 		
-		ArrayList<Session> sessions = new ArrayList<Session>();
+		sessionIdString = req.getParameter("sessionId");
 		
-		////////////////////////////////////////////////
-		int userType		= 0;
-		User current 		= new User();
-		//boolean isFaculty	= false; //will turn true if student
-		
-		current = (User) req.getSession().getAttribute("user");	
-		//gets current user
-		
-		model2      = new User();
-		controller2 = new UserController(model2);
-		
-		if(current != null) { //checks if a user is logged in
-			System.out.println(" user is logged in");
-			
-			
+		if((sessionIdString == "") || (sessionIdString == null) || (sessionIdString.length() == 0)) {
+			errorMessage = "Please enter a session ID.";
+			System.out.println("Session ID box is blank ");
+		}
+		else {
+			sessionId = Integer.parseInt(sessionIdString);
 		}
 		
+		ArrayList<Session> preSessions = new ArrayList<Session>();
+		ArrayList<Session> sessions = new ArrayList<Session>();
 		
-		////////////////////////////////////////////////
-		// decode POSTed form parameters and dispatch to controller
-		try {
-			
-			// check for errors in the form data before using is in a calculation
-			if (req.getParameter("Submit") != null) {
-				sessions = (ArrayList<Session>) controller.getScheduleWithDate("Submit");
-			}
-			else if(req.getParameter("SubmitW") != null){
-				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
-			}
-			else if(req.getParameter("SubmitM") != null) {
-				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
-			}
-			else if(req.getParameter("CreateSession") != null) {
-				resp.sendRedirect(req.getContextPath() + "/createSession");
-			}
-			else if (req.getParameter("DeleteSession") != null) {
-				resp.sendRedirect(req.getContextPath() + "/deleteSession");
-			}
+		preSessions = (ArrayList<Session>) controller.getAllSessions();
 		
-		} catch (NumberFormatException e) {
-			errorMessage = "Try failed";
+		for (int j = 0; j < preSessions.size(); j++) {
+			if(preSessions.get(j).getTypeId() == 1) {
+				sessions.add(preSessions.get(j));
+			}
 		}
 		
 		
@@ -117,8 +92,30 @@ public class ScheduleServlet extends HttpServlet {
 			else {
 				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getSessionId()));
 			}
+			if(sessions.get(i).getSessionId() == sessionId) {
+				counter = counter + 1;
+			}
 		}
 		
+		if(counter == 1) {
+			System.out.println("Picked a viable session id... about to delete...");
+		}
+		else {
+			errorMessage = "Please enter viable session ID.";
+		}
+		
+		current = (User) req.getSession().getAttribute("user");
+		
+		if(current == null) {
+			errorMessage = "Not logged in";
+		}
+		else {
+			System.out.println("Current user name: " + current.getName());
+			if(current.getUserType() == 0 || current.getUserType() ==1) {
+				errorMessage = "User does not have permissions to make changes";
+			}
+			
+		}
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
@@ -126,7 +123,13 @@ public class ScheduleServlet extends HttpServlet {
 		
 		//System.out.println("Session Size: " + sessions.size() + ", Session Tutor for First Session: " + sessions.get(1).getTutorId());
 		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp);
+		if(errorMessage == null) {
+			controller.deleteSession(sessionId);
+			req.getRequestDispatcher("/_view/deleteSession.jsp").forward(req, resp);
+		}
+		else {
+			req.getRequestDispatcher("/_view/deleteSession.jsp").forward(req, resp);
+		}
 	}
 
 	// gets double from the request with attribute named s
