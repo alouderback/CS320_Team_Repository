@@ -40,24 +40,29 @@
   	<servlet-name>StudyGroupServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.StudyGroupServlet</servlet-class>
   </servlet>
- <servlet>
+  <servlet>
   	<servlet-name>ProfileServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.ProfileServlet</servlet-class>
   </servlet>
-<servlet>
+  <servlet>
   	<servlet-name>TutorServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.TutorServlet</servlet-class>
   </servlet>
+
  <servlet>
   	<servlet-name>CreateSessionServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.CreateSessionServlet</servlet-class>
   </servlet>
+
  <servlet>
   	<servlet-name>DeleteSessionServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.DeleteSessionServlet</servlet-class>
  </servlet>
- 
 
+  <servlet>
+  	<servlet-name>CoursePageServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.CoursePageServlet</servlet-class>
+  </servlet>
 
   <!-- Servlet mappings -->
   <servlet-mapping>
@@ -84,6 +89,11 @@
     <servlet-name>CoursesServlet</servlet-name>
     <url-pattern>/courses</url-pattern>
    </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>CoursePageServlet</servlet-name>
+  	<url-pattern>/coursePage</url-pattern>
+  </servlet-mapping>
   
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>

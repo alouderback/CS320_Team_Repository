@@ -103,7 +103,7 @@ public class LoginServlet extends HttpServlet {
 			// store user object in session
 			//currently stores only the name but but should we store the entire class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
-			req.getSession().setAttribute("user", current);
+      req.getSession().setAttribute("user", current);
 			req.getSession().setAttribute("isFaculty", isTutorFaculty);
 			if(isStudent) {
 			req.getSession().setAttribute("student",student);

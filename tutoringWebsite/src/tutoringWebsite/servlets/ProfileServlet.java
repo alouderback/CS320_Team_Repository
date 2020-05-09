@@ -41,6 +41,7 @@ public class ProfileServlet extends HttpServlet {
 		boolean validLogin  = true;//should be false to if deleted
 		boolean isLogin		= false;//will turn true if loggined in
 		boolean isStudent	= false;//will turn true i student
+		boolean logOut		= false;
 		String major = null;
 		String year = null;
 		Student student		= new Student();
@@ -48,9 +49,10 @@ public class ProfileServlet extends HttpServlet {
 
 		// Decode form parameters and dispatch to controller
 	
-		current = (User) req.getSession().getAttribute("user");	
-		student = (Student) req.getSession().getAttribute("student");
-		
+		current = (User) req.getSession().getAttribute("user");	//gets user
+		student = (Student) req.getSession().getAttribute("student"); // if student gets student
+		req.getParameter("deleteAccount");
+		req.getParameter("logOut");
 		model      = new User();
 		controller = new UserController(model);
 		model1      = new Student();
@@ -74,7 +76,7 @@ public class ProfileServlet extends HttpServlet {
 			System.out.println("   Email: <" + email + "> PW: <" +pw + ">");	
 			isLogin = controller.validateCredentials(email, pw);
 			System.out.println(isLogin);
-			if(isLogin) {
+			if(isLogin && req.getParameter("deleteAccount")!=null ) {
 				if(isStudent) {
 					controller1.removeStudentt(email, pw);
 				}
@@ -85,7 +87,8 @@ public class ProfileServlet extends HttpServlet {
 
 				System.out.println("setting attributes");	
 			}else {
-				errorMessage = "account curropted";
+				errorMessage = "user is logging out";
+				validLogin = false;
 			}
 			
 		}else {
@@ -97,6 +100,7 @@ public class ProfileServlet extends HttpServlet {
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("deleteAccount", validLogin);
+		req.setAttribute("logOut", logOut);
 		req.setAttribute("isStudent", isStudent);
 		//req.setAttribute("user",        current);
 
@@ -110,9 +114,10 @@ public class ProfileServlet extends HttpServlet {
 			req.getSession().setAttribute("user", null);
 			if(isStudent) {
 				req.getSession().setAttribute("student", null);
+				req.getSession().setAttribute("isAStudent", false);
 			}
 			// redirect to /index page
-			resp.sendRedirect(req.getContextPath() + "/index");
+			resp.sendRedirect(req.getContextPath() + "/announcement");
 
 			return;
 		}

@@ -8,7 +8,7 @@ import tutoringWebsite.model.Tutor;
 
 public class Course {
 	
-	private ArrayList<Tutor> tutorList;
+	private ArrayList<User> tutorList;
 	private Session courseSession;
 	private String title;
 	private int courseId;
@@ -19,11 +19,11 @@ public class Course {
 		
 	}
 
-	public ArrayList<Tutor> getTutorList() {
+	public ArrayList<User> getTutorList() {
 		return tutorList;
 	}
 
-	public void setTutorList(ArrayList<Tutor> tutorList) {
+	public void setTutorList(ArrayList<User> tutorList) {
 		this.tutorList = tutorList;
 	}
 
