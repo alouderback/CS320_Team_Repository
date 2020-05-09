@@ -2,7 +2,8 @@ package tutoringWebsite.modelJUnit;
 
 import static org.junit.Assert.assertTrue;
 
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -22,17 +23,18 @@ public class coursesJUnit {
 	@Before
 	public void setUp() { 
 		model = new Course();
-		controller = new CourseController();
+		controller = new CourseController(model);
 		courseSession = new Session();
 		tutorList = new ArrayList<Tutor>();
 		
 		model.setTitle("CS320");
 	
-		
-		courseSession.setDate("12/12/12");
-		courseSession.setTime("6-8");
+		Tutor tutor = new Tutor();
+		tutor.setName("Caryn Sims");
+		courseSession.setDate(LocalDate.of(2020, 05, 01));
+		courseSession.setStartTime(LocalTime.of(10, 30));
 		courseSession.setRoom("123");
-		courseSession.setTutor("john smith");
+		courseSession.setTutor(tutor);
 		
 		model.setCourseSession(courseSession);
 		
@@ -44,9 +46,6 @@ public class coursesJUnit {
 		tutorList.add(john);
 		
 		model.setTutorList(tutorList);
-		
-		
-		controller.setModel(model);
 	}
 	
 	@Test

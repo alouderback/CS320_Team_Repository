@@ -32,9 +32,11 @@ public class studyGroupJUnit {
 		
 		studySession.setDate(date);
 		studySession.setRoom("KEC132");
-		studySession.setSessionID(1011);
-		studySession.setTime(time);
-		studySession.setTutorId(0);
+		studySession.setSessionId(1011);
+		studySession.setStartTime(time);
+		Tutor tutor = new Tutor();
+		tutor.setName("Caryn Sims");
+		studySession.setTutor(tutor);
 		
 		testStudy.setCourse(studyGroupCourse);
 		testStudy.setSession(studySession);

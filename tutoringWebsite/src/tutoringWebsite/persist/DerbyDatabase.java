@@ -1061,7 +1061,7 @@ public class DerbyDatabase implements IDatabase{
 					List<Session> result = new ArrayList<Session>();
 					
 					stmt = conn.prepareStatement(
-							"select sessions from Sessions " +
+							"select * from Sessions " +
 							" where session_id = ?"
 							);
 					

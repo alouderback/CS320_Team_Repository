@@ -21,9 +21,16 @@ public class AnnouncementController{
 	public void setModel2(Session model2) {
 		this.model2 = model2;
 	}
-	public int create(LocalDate date, LocalTime time, String message, int announcementType, int typeId) {
+	public Announcement create(LocalDate date, LocalTime time, String message, int announcementType, int typeId) {
 		int id = db.createAnnouncement(message, date, time, announcementType, typeId);
-		return id;
+		Announcement announcement = new Announcement();
+		announcement.setAnnouncementId(id);
+		announcement.setDate(date);
+		announcement.setTime(time);
+		announcement.setMessage(message);
+		announcement.setAnnouncementType(announcementType);
+		announcement.setTypeId(typeId);
+		return announcement;
 	}
 	public List<Announcement> getAnnouncements() {
 		List<Announcement> announcements = new ArrayList<Announcement>();
