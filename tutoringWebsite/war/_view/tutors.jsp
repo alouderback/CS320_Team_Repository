@@ -24,9 +24,10 @@
              </form>
                <form action="${pageContext.servletContext.contextPath}/tutors" method="get">
                 
-            <div class = "profileDis">
+            <div class = "pageDesc">
 	           <p>Tutors</p>
-	           
+	           </div>
+	              <div class = "profileDis">
 	           <table>
                     <tr>
                      	<td>Tutor</td>
