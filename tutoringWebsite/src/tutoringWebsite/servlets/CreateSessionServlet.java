@@ -165,13 +165,12 @@ public class CreateSessionServlet extends HttpServlet {
 		else {
 			System.out.println("Current user name: " + current.getName());
 			userId = current.getUser_Id();
+			if((current.getUserType() == 1) || (current.getUserType() == 0)) {
+				errorMessage = "User does not have permissions to make changes.";
+			}
 			
 		}
-		
-		if((current.getUserType() == 1) || (current.getUserType() == 0)) {
-			errorMessage = "User does not have permissions to make changes.";
-		}
-		
+	
 		System.out.println("Start Date: " + startDateString);
 		System.out.println("Room: " + room);
 		System.out.println("Start Time: " + startTime.toString());

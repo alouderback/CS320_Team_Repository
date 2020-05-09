@@ -112,6 +112,7 @@ public class ProfileServlet extends HttpServlet {
 			//currently stores onlt the name but but shuld we store the enitre class or should we store the name 
 			//and a boolean true to say the user is validated as logged in???
 			req.getSession().setAttribute("user", null);
+			req.getSession().setAttribute("isFaculty", null);
 			if(isStudent) {
 				req.getSession().setAttribute("student", null);
 				req.getSession().setAttribute("isAStudent", false);
