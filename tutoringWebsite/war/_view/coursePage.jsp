@@ -24,24 +24,21 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Courses</p>
-            </div>
         </form>
-        <form action="${pageContext.servletContext.contextPath}/coursePage" method="get">
-            <div class = "coursesPane">
-                <p id = "title">Course List</p>
-                <table>
-                    <tr>
-                        <td>Course</td>
-                    </tr>
-                    <c:forEach items="${courses}" var="course">
-                    <tr>    
-                        <td><input id="courseTitle" name="${course.courseId}" type="submit" value="${course.title}" /></td>
-                    </tr>
-                    </c:forEach>
-                </table>
-            </div>
+        <form action="${pageContext.servletContext.contextPath}/coursePage" method="get"> 
+            <h1>${title}</h1>
+            <h3>Days of Week:</h3>
+            <c:forEach items="${daysOfWeek}" var = "dayOfWeek">
+                <h3>${dayOfWeek} </h3>            
+            </c:forEach>
+            <!--<h3>Start Time: ${startTime}</h3>
+            <h3>End Time: ${endTime}</h3>//-->
+            <h3>List of Tutors:</h3>
+            <c:forEach items="${tutorList}" var = "tutor">
+                <tr>
+                    <td>${tutor.name}<br></td>            
+                </tr>
+            </c:forEach>
         </form>
-        </body>
+    </body>
 </html>|
