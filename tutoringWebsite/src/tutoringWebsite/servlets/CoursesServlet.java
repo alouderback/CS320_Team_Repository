@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,82 +37,13 @@ public class CoursesServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		System.out.println("courses Servlet: doPost");
-		
-
-		// holds the error message text, if there is any
-		String errorMessage = null;
-
-		// result of calculation goes here
-		Session courseSession = null;
-		
-		//numbers controller and model
-		Course model = new Course();
-		CourseController controller = new CourseController(model);
-		SessionController controller1 = new SessionController();
+	
+		System.out.println("courses Servlet: doPost");	 
 		
 		
-		// decode POSTed form parameters and dispatch to controller
-		try {
-			String title = getInitParameter(req.getParameter("title"));
-			String dateString = getInitParameter(req.getParameter("date"));
-			String timeString = getInitParameter(req.getParameter("time"));
-			String room = getInitParameter(req.getParameter("room"));
-			String tutorString = getInitParameter(req.getParameter("tutor"));
-			
-			
-			// check for errors in the form data before using is in a calculation
-			if (title == null || dateString == null||timeString ==null||room == null) {
-				errorMessage = "Please specify three numbers";
-			}
-			// otherwise, data is good, do the calculation
-			// must create the controller each time, since it doesn't persist between POSTs
-			// the view does not alter data, only controller methods should be used for that
-			// thus, always call a controller method to operate on the data
-			else {
-				Tutor tutor = new Tutor();
-				tutor.setName(tutorString);
-				
-				LocalDate date = LocalDate.of(2020,04,01);
-				
-				LocalTime time = LocalTime.of(03, 49);
-				
-				model.setTitle(title);
-				//controller1.createSession(room, date, tutor, time);
-				courseSession = controller1.getSession();
-				model.setCourseSession(courseSession);
-				controller.createCourse();
-			}
-		} catch (NumberFormatException e) {
-			errorMessage = "Invalid double";
-		}
-		
-		// Add parameters as request attributes
-		// this creates attributes named "first" and "second for the response, and grabs the
-		// values that were originally assigned to the request attributes, also named "first" and "second"
-		// they don't have to be named the same, but in this case, since we are passing them back
-		// and forth, it's a good idea
-		req.setAttribute("title", req.getParameter("title"));
-		req.setAttribute("tutorList", req.getParameter("tutorList"));
-		req.setAttribute("courseSession", req.getParameter("courseSession"));
-		
-		// add result objects as attributes
-		// this adds the errorMessage text and the result to the response
-		req.setAttribute("errorMessage", errorMessage);
-		req.setAttribute("course", model);
-		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/courses.jsp").forward(req, resp);
-	}
-
-	// gets double from the request with attribute named s
-	private ArrayList getArrayListFromParameter(ArrayList s) {
-		if (s == null || s.equals("")) {
-			return null;
-		} else {
-			return s;
-					//Double.parseDouble(s);
-		}
+	
+		// call JSP to generate empty form
+		req.getRequestDispatcher("/_view/courses.jsp").forward(req, resp); 
 	}
 	
 	

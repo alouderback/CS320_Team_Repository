@@ -671,6 +671,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 	//NEEDS JUNIT
 	//Returns list of ONE user; has userId as a paramter and returns a list of users
+	@Override
 	public List<User> getUserFromUserId (int userId) {
 		return executeTransaction(new Transaction<List<User>>() {
 			public List<User> execute(Connection conn) throws SQLException {
@@ -709,6 +710,12 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	@Override
+	public User getSingleUser(int userId) {
+		User user = getUserFromUserId(userId).get(0);
+		return user;
+	}
+	
 	
 	public List<Session> getScheduleByDate(String timeframe){
 		//Method currently uses parameter timeframe
@@ -1001,7 +1008,50 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-
+	@Override
+	public List<Integer> getTutors(int courseId){
+		return executeTransaction(new Transaction<List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				System.out.println("Currently getting list of tutors for given course id...");
+				
+				try {
+					stmt = conn.prepareStatement(
+						"select user_id from TutorFaculty " + //Selects all users who are marked as tutors
+						"where userType = ? " +
+						"and course_id = ? "
+							);
+					
+					stmt.setInt(1, 2); //For pulling users who are tutors from the Users database, their userType will always be 2
+					stmt.setInt(2, courseId);
+					List<Integer> result = new ArrayList<Integer>();
+					
+					resultSet = stmt.executeQuery();
+					
+					while(resultSet.next()) {
+						
+						result.add(resultSet.getInt(1));
+					}
+					
+				
+					
+					System.out.println("Returning list of tutors given course id...");
+					
+					return result;
+					
+				}finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(conn);
+				}
+				
+			}
+		});
+	}
+	@Override
 	public List<Session> getSession(int sessionId){
 		return executeTransaction(new Transaction<List<Session>>() {
 			public List<Session> execute(Connection conn) throws SQLException {
