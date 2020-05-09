@@ -19,6 +19,15 @@ public class CreateAnnouncementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		System.out.println("\nCreateAnnouncementServlet: doGet");
+
+		req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
+	}
+	
+	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
@@ -33,9 +42,9 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		int typeId = -1;
 		String temp = null;
 		
-		date = req.getParameter("Date");
-		time = req.getParameter("Time");
-		message = req.getParameter("Message");
+		date = req.getParameter("date");
+		time = req.getParameter("time");
+		message = req.getParameter("message");
 		temp = req.getParameter("announcementType");
 		
 		String session, studyGroup;
