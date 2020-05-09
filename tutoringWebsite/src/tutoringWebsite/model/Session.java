@@ -21,6 +21,7 @@ public class Session {
 	private String courseName;
 	private String typeName;
 	private String daysOfWeekString;
+	private Tutor tutor;
 	
 	
 	public Session() {
@@ -154,6 +155,16 @@ public class Session {
 
 	public void setDaysOfWeekString(String daysOfWeekString) {
 		this.daysOfWeekString = daysOfWeekString;
+	}
+
+
+	public Tutor getTutor() {
+		return tutor;
+	}
+
+
+	public void setTutor(Tutor tutor) {
+		this.tutor = tutor;
 	}
 
 	

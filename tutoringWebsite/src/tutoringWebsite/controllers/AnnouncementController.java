@@ -55,8 +55,8 @@ public class AnnouncementController{
 	public List<Announcement> getSessionAnnouncements() {
 		return db.getAllSessionAnnouncements();
 	}
-	public void delete() {
-		model.delete();
+	public void delete(int announcementId) {
+		db.removeAnnouncement(announcementId);
 	}
 	
 }

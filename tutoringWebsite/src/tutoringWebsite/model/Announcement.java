@@ -26,10 +26,10 @@ public class Announcement {
 		message = null;
 		date= null;
 		startTime = null;
+		endTime = null;
 		announcementType = -1;
 		typeId = -1;
 	}
-	
 	// Returns the current message in this announcement
 	public String getMessage(){
 		return message;
