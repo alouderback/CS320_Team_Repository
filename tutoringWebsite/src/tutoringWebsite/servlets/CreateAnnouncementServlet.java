@@ -91,32 +91,32 @@ public class CreateAnnouncementServlet extends HttpServlet {
 			errorMessage = "Please enter a correctly formatted date";
 		}
 		
-		//if ((startTime.length() == 5) && (((Integer.parseInt(startTime.substring(0, 2)) >= 0) && (Integer.parseInt(startTime.substring(0, 2)) < 24))) && ((Integer.parseInt(startTime.substring(3)) >= 0) && (Integer.parseInt(startTime.substring(3)) < 60) )) {
+		if ((startTime.length() == 5) && (((Integer.parseInt(startTime.substring(0, 2)) >= 0) && (Integer.parseInt(startTime.substring(0, 2)) < 24))) && ((Integer.parseInt(startTime.substring(3)) >= 0) && (Integer.parseInt(startTime.substring(3)) < 60) )) {
 		//System.out.println("Announcement" + startTime);
 			aTime = LocalTime.parse(startTime);
 			System.out.println("StartTime formatter output : " + aTime.toString());
-		//}
-		//else if ((startTime.length() == 4) && (((Integer.parseInt(startTime.substring(0, 1)) >= 0) && (Integer.parseInt(startTime.substring(0, 1)) < 10))) && ((Integer.parseInt(startTime.substring(2)) >= 0) && (Integer.parseInt(startTime.substring(2)) < 60) ) && (startTime.charAt(1) == ':')) {
-			//String temp2 = String.join("", "0", startTime);
-			//aTime = LocalTime.parse(temp2);
+		}
+		else if ((startTime.length() == 4) && (((Integer.parseInt(startTime.substring(0, 1)) >= 0) && (Integer.parseInt(startTime.substring(0, 1)) < 10))) && ((Integer.parseInt(startTime.substring(2)) >= 0) && (Integer.parseInt(startTime.substring(2)) < 60) ) && (startTime.charAt(1) == ':')) {
+			String temp2 = String.join("", "0", startTime);
+			aTime = LocalTime.parse(temp2);
 			System.out.println("StartTime formatter output : " + aTime.toString());
-		//}
-		//else {
-			//errorMessage = "Please enter correct start time";
-		//}
+		}
+		else {
+			errorMessage = "Please enter correct start time";
+		}
 		
-		//if ((endTime.length() == 5) && (((Integer.parseInt(endTime.substring(0, 2)) >= 0) && (Integer.parseInt(endTime.substring(0, 2)) < 24))) && ((Integer.parseInt(endTime.substring(3)) >= 0) && (Integer.parseInt(endTime.substring(3)) < 60) )) {
+		if ((endTime.length() == 5) && (((Integer.parseInt(endTime.substring(0, 2)) >= 0) && (Integer.parseInt(endTime.substring(0, 2)) < 24))) && ((Integer.parseInt(endTime.substring(3)) >= 0) && (Integer.parseInt(endTime.substring(3)) < 60) )) {
 			bTime = LocalTime.parse(endTime);
 			System.out.println("EnndTime formatter output : " + bTime.toString());
-		//}
-		//else if ((endTime.length() == 4) && (((Integer.parseInt(endTime.substring(0, 1)) >= 0) && (Integer.parseInt(endTime.substring(0, 1)) < 10))) && ((Integer.parseInt(endTime.substring(2)) >= 0) && (Integer.parseInt(endTime.substring(2)) < 60) ) && (endTime.charAt(1) == ':')) {
-			//String temp2 = String.join("", "0", endTime);
-			//bTime = LocalTime.parse(temp);
+		}
+		else if ((endTime.length() == 4) && (((Integer.parseInt(endTime.substring(0, 1)) >= 0) && (Integer.parseInt(endTime.substring(0, 1)) < 10))) && ((Integer.parseInt(endTime.substring(2)) >= 0) && (Integer.parseInt(endTime.substring(2)) < 60) ) && (endTime.charAt(1) == ':')) {
+			String temp2 = String.join("", "0", endTime);
+			bTime = LocalTime.parse(temp);
 			System.out.println("StartTime formatter output : " + bTime.toString());
-		//}
-		//else {
-			//errorMessage = "Please enter correct end time";
-		//}
+		}
+		else {
+			errorMessage = "Please enter correct end time";
+		}
 		User current = new User();
 		current = (User) req.getSession().getAttribute("user");
 		
