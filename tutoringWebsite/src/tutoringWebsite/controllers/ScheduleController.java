@@ -51,6 +51,7 @@ public class ScheduleController{
 		
 	}
 	
+	//Gets a string for the course name given a course Id
 	public String getCourseName(int courseId) {
 		List<Course> course = new ArrayList<Course>();
 		course = db.getCourseFromCourseId(courseId);
@@ -60,6 +61,7 @@ public class ScheduleController{
 		return course.get(0).getTitle();
 	}
 	
+	//Returns a single string of weekdays given a sessionId ("Sunday, Monday, Thursday")
 	public String getDayOfWeek(int sessionId) {
 		ArrayList weekString = new ArrayList();
 		weekString = (ArrayList<String>)db.getDayOfWeek(sessionId);
@@ -89,6 +91,7 @@ public class ScheduleController{
 					temp = sunday;
 				}
 			}
+			//Goes through arrayList to check each day and concatinates them
 			if(weekString.get(i) == "Monday") {
 				if(temp != null) {
 					monday = ", Monday";
