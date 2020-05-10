@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 
 <html>
 	<head>
@@ -25,23 +28,24 @@
             </div>
         </form>
 
-        <form action="${pageContext.servletContext.contextPath}/groups" method = "get">
+        <form action="${pageContext.servletContext.contextPath}/groups" method = "post">
             <table>
                 <tr>
-                    <td>Tutor</td>
+                    <td>Course</td>
                     <td>Days of Week</td>      
                     <td>Time</td>
                     <td>Room</td>
-                    <td>Course</td>   				
+                    <td>Tutor</td>	
                 </tr>
 
                 <c:forEach items="${sessions}" var="session">
                     <tr class="scheduleListings">
-                            <td>${session.adminName}</td>
-                            <td>${session.daysOfWeekString}</td>
-                            <td>${session.startTime} - ${session.endTime}</td>
-                            <td>${session.room}</td>		
-                            <td>${session.courseName}</td>	          
+                        <td>${session.courseName}</td>
+                        <td>${session.daysOfWeekString}</td>
+                        <td>${session.startTime} - ${session.endTime}</td>
+                        <td>${session.room}</td>		
+                        <td>${session.adminName}</td>
+                        <td><input type="submit" name="${session.sessionId}" value="Join Study Group"></td>
                     </tr>
                 </c:forEach>
             </table>
