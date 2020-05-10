@@ -1092,6 +1092,9 @@ public class DerbyDatabase implements IDatabase{
 	@Override
 	public Session getSingleSession(int sessionId) {
 		Session session = getSession(sessionId).get(0);
+		if(session == null) {
+			System.out.println(session.toString());
+		}
 		return session;
 	}
 	@Override
