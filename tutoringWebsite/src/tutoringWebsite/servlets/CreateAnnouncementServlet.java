@@ -32,7 +32,7 @@ public class CreateAnnouncementServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Announcement Servlet: doPost");
+		System.out.println(" Create Announcement Servlet: doPost");
 		Announcement model = new Announcement();
 		AnnouncementController controller = new AnnouncementController();
 		String errorMessage = null;
@@ -134,7 +134,7 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("typeId", courseId);
-		req.setAttribute("message", message);
+		//req.setAttribute("message", message);
 		if (errorMessage == null) {
 			controller.create(aDate, aTime, bTime, message, announcementType, courseId);
 			System.out.println("Announcement Created");

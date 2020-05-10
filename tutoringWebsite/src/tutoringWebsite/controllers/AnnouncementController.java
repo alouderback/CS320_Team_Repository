@@ -58,5 +58,9 @@ public class AnnouncementController{
 	public void delete(int announcementId) {
 		db.removeAnnouncement(announcementId);
 	}
+	public void setDB(DerbyDatabase db2) {
+		this.db = db2;
+		
+	}
 	
 }
