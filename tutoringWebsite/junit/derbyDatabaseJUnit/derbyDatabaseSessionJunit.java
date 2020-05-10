@@ -62,6 +62,35 @@ public class derbyDatabaseSessionJunit {
 	}
 	
 	@Test
+	public void testGetSingleSession() {
+		System.out.println("***Testing getSingleSession***");
+		Session session = new Session();
+		session = db.getSingleSession(2);
+		
+		Session sessionTest = new Session();
+		sessionTest.setSessionId(2);
+		sessionTest.setDate(LocalDate.parse("2020-04-26"));
+		sessionTest.setRoom("KEC118");
+		sessionTest.setStartTime(LocalTime.parse("08:55:00.000"));
+		sessionTest.setEndTime(LocalTime.parse("09:55:00.000"));
+		sessionTest.setDayOfWeek(42);
+		sessionTest.setAdminId(13);
+		sessionTest.setCourseId(4);
+		sessionTest.setTypeId(1);
+		
+		assertTrue(sessionTest.getSessionId() == session.getSessionId());
+		assertTrue(sessionTest.getDate().equals(session.getDate()));
+		assertTrue(sessionTest.getRoom().contentEquals(session.getRoom()));
+		assertTrue(sessionTest.getStartTime().equals(session.getStartTime()));
+		assertTrue(sessionTest.getEndTime().equals(session.getEndTime()));
+		assertTrue(sessionTest.getDayOfWeek() == session.getDayOfWeek());
+		assertTrue(sessionTest.getAdminId() == session.getAdminId());
+		assertTrue(sessionTest.getCourseId() == session.getCourseId());
+		assertTrue(sessionTest.getTypeId() == session.getTypeId());
+		
+	}
+	
+	@Test
 	public void testGetScheduleByDate() {
 		System.out.println("***Testing getScheduleByDate***");
 		List<Session> sessions = new ArrayList<Session>();
@@ -83,6 +112,7 @@ public class derbyDatabaseSessionJunit {
 		sessionOne.setTypeName(null);
 		sessionOne.setDaysOfWeekString(null);
 		
+		System.out.println("Created Session Id: " + sessionOne.getSessionId() + ", Database Session Id: " + sessions.get(0).getSessionId());
 		assertTrue(sessionOne.getSessionId() == sessions.get(0).getSessionId());
 		assertTrue(sessionOne.getDate().equals(sessions.get(0).getDate()));
 		assertTrue(sessionOne.getRoom().equals(sessions.get(0).getRoom()));
