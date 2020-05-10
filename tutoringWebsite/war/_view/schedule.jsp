@@ -66,6 +66,6 @@
 			        	</tr>
 			    	</c:forEach>
 			    </table>
-	
-    </form>
+        </form>
+    </body>
 </html>
