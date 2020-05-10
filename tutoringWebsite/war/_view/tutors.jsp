@@ -42,6 +42,8 @@
 			    	</c:forEach>
 			    	 </table>
 			    	 </div>
+			    	 </form>
+			    	 <form action="${pageContext.servletContext.contextPath}/coursePage" method="get">
 			    	  <div class = "tutorDis">
 			    	 <table>
 			    	  <tr>
@@ -49,10 +51,14 @@
                    </tr>
                    
 			    	 <c:forEach items="${courseList}" var="course">
-			        	<tr>
-				           	 <td>${course[1]}</td>	   
-				           	 <td>${course[2]}</td>
-				           	 <td>${course[4]}</td>
+			        	<tr>	
+				           	 <td><input id="courseTitle" name="${course[1].courseId}" type="submit" value="${course[1].title}" class = "myButton"</td> 
+				           	<c:if test="${ not empty course[2].title }">
+				            	<td><input id="courseTitle" name="${course[2].courseId}" type="submit" value="${course[2].title}" class = "myButton"</td>
+				            </c:if> 
+				              	<c:if test="${ not empty course[3].title }">
+				           	  <td><input id="courseTitle" name="${course[3].courseId}" type="submit" value="${course[3].title}" class = "myButton"</td> 
+				           	  </c:if> 
 			        	</tr>
 			    	</c:forEach>
 			    </table>
