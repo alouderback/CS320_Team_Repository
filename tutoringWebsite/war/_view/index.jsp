@@ -29,25 +29,18 @@
 	        </div>
 	       </form>
 	        <form action="${pageContext.servletContext.contextPath}/announcement" method="get">
-                <div class = "AnnouncementWindow">
-                    <p id = "announcementTitle">Announcements</p>
-                    <table>
+	        <div class = "AnnouncementWindow">
+	            <p id = "announcementTitle">Announcements</p>
+	            	<table>
                         <c:forEach items="${announcements}" var="announcement">
-<<<<<<< Updated upstream
-			        		<p id = "pa1">${announcement.typeName} ${announcement.typeId} ${announcement.date} ${announcement.time}</p>
+			        		<p id = "pa1">${announcement.typeName} ${announcement.typeId} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
 			        		<p id = "pa2">${announcement.message}</p>
 			    	</c:forEach>
 	            	</table>
 	        </div>
-	        <input name="createAnnouncement" type="submit" value="Create Announcement"/>
+	        <c:if test = "${isFaculty}">
+	                   <input name="createAnnouncement" type="submit" value="Create Announcement" class = "myButton"/>
+   			</c:if>
 	    </form>
-=======
-                            <p id = "pa1">${announcement.typeName} ${announcement.typeId} ${announcement.date} ${announcement.time}</p>
-                            <p id = "pa2">${announcement.message}</p>
-                        </c:forEach>
-                    </table>
-                </div>
-	        </form>
->>>>>>> Stashed changes
     </body>
 </html>

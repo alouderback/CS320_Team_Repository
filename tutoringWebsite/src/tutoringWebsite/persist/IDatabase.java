@@ -31,12 +31,16 @@ public interface IDatabase {
 	Session getSingleSession(int sessionId);
 	List<Integer> getUserIdbyCourseId(int courseid);
 	List<Integer> getCourseidbyUserId(int userid);
-
+	List<Session> getAllSessions();
 	Course getCourse(int courseid);
 	List<Course> getAllCourses();
 	List<Integer> getTutors(int courseId);
 	List<Session> getSession(int sessionId);
 	List<User> getUserFromUserId(int userId);
 	User getSingleUser(int userId);
+	List<Integer> getSessionIdWithCourseId(int courseId);
+	List<Session> getCourseSession(int courseId);
+	List<Session> getTutoringSession(int courseId);
+	List<Course> getCourseFromCourseId(int courseId);
 
 }

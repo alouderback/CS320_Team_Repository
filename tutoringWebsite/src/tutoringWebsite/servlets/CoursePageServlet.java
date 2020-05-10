@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.CourseController;
 import tutoringWebsite.model.Course;
+import tutoringWebsite.model.Session;
 import tutoringWebsite.model.User;
 
 public class CoursePageServlet extends HttpServlet {
@@ -28,20 +29,46 @@ public class CoursePageServlet extends HttpServlet {
 		String courseIdString = courseStringList.get(0);
 		int courseId = Integer.parseInt(courseIdString);
 		Course course = controller.getCurseByCourseId(courseId);
-		model.setCourseSession(course.getCourseSession());
+		//model.setCourseSession(course.getCourseSession());
 		System.out.println("Course ID:" + courseId);
+		//model.setSessionId(course.getCourseSession().getSessionId());
+		System.out.println("Session ID " + model.getSessionId());
 		controller.getCourseTutors(courseId);
 		String title = course.getTitle();
 		ArrayList<User> tutorList = model.getTutorList();
-		List<String> daysOfWeek = controller.getDayOfWeek();
-		//String startTime = course.getCourseSession().getStartTime().toString();
-		//String endTime = course.getCourseSession().getEndTime().toString();
+		String daysOfWeek = controller.getDayOfWeek(courseId);
+		
+		List<String> times = controller.getTimes(courseId);
+		
+		List<Session> sessions = controller.getTutoringSessions(courseId);		
+		
+		for(int i = 0; i < sessions.size(); i++) {
+			if (controller.getTutorName(sessions.get(i).getAdminId()) == null){
+				sessions.get(i).setAdminName("User not found");
+			}
+			else {
+				sessions.get(i).setAdminName(controller.getTutorName(sessions.get(i).getAdminId()));
+			}
+			if(controller.getCourseName(sessions.get(i).getCourseId()) == null ) {
+				sessions.get(i).setCourseName("Course not found");
+			}
+			else {
+				sessions.get(i).setCourseName(controller.getCourseName(sessions.get(i).getCourseId()));
+			}
+			if(sessions.get(i).getDayOfWeek() == 0) {
+				sessions.get(i).setDayOfWeek(0);
+			}
+			else {
+				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getSessionId()));
+			}
+		}
 		
 		req.setAttribute("title", title);
 		req.setAttribute("tutorList", tutorList);
 		req.setAttribute("daysOfWeek", daysOfWeek);
-		//req.setAttribute("startTime", startTime);
-		//req.setAttribute("endTime", endTime);
+		req.setAttribute("times", times);
+		req.setAttribute("sessions", sessions);
+		
 		
 		req.getRequestDispatcher("/_view/coursePage.jsp").forward(req, resp);
 			

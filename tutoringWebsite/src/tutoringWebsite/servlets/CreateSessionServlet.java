@@ -61,12 +61,15 @@ public class CreateSessionServlet extends HttpServlet {
 		int day = 0;
 		int year = 0;
 		
+		//Initializing LocalDate and LocalTime variables
 		LocalDate startDate = LocalDate.now();
 		LocalTime startTime = LocalTime.now();
 		LocalTime endTime = LocalTime.now();	
 		
+		//Creates a user which will be used to get the current user to check permissions
 		User current = new User();
 		
+		//Gets the parameters listed on the jsp
 		startDateString = req.getParameter("date");
 		startTimeString = req.getParameter("startTime");
 		endTimeString = req.getParameter("endTime");
@@ -81,7 +84,8 @@ public class CreateSessionServlet extends HttpServlet {
 		stringOfCourseId = req.getParameter("course");
 		
 		
-		
+		//Checks for the values that are checked for the week
+		//and adds them together to get an integer dayOfWeek
 		if(sunday != null) { //1
 			System.out.println("******* WE GOT A SUN *******" + sunday);
 			daysOfWeek = daysOfWeek + 1;
@@ -111,7 +115,7 @@ public class CreateSessionServlet extends HttpServlet {
 			daysOfWeek = daysOfWeek + 64;
 		}
 		
-		
+		//Checks to see if a course ID was entered
 		if(stringOfCourseId != null) {
 			courseId = Integer.parseInt(stringOfCourseId);
 		}
@@ -119,18 +123,20 @@ public class CreateSessionServlet extends HttpServlet {
 			errorMessage = "Please select a course.";
 		}
 		
-		
+		//Check length of date; all dates should be ten long
 		if((startDateString != null) && (startDateString.length() == 10)) {
 			month = Integer.parseInt(startDateString.substring(0, 2));
 			day = Integer.parseInt(startDateString.substring(3, 5));
 			year = Integer.parseInt(startDateString.substring(6));
 			
+			//Gives the local date
 			startDate = LocalDate.of(year, month, day);
 		}
 		else {
 			errorMessage = "Please enter a correctly formatted date";
 		}
 		
+		//Checks for the different sizes a time can be (ie 9:45 vs 10:45) and checks to make sure a valid time is entered
 		if ((startTimeString.length() == 5) && (((Integer.parseInt(startTimeString.substring(0, 2)) >= 0) && (Integer.parseInt(startTimeString.substring(0, 2)) < 24))) && ((Integer.parseInt(startTimeString.substring(3)) >= 0) && (Integer.parseInt(startTimeString.substring(3)) < 60) )) {
 			startTime = LocalTime.parse(startTimeString);
 			System.out.println("StartTime formatter output : " + startTime.toString());
@@ -144,6 +150,7 @@ public class CreateSessionServlet extends HttpServlet {
 			errorMessage = "Please enter correct start time";
 		}
 		
+		//Checks for the different sizes a time can be and checks to make sure a valid time is entered
 		if ((endTimeString.length() == 5) && (((Integer.parseInt(endTimeString.substring(0, 2)) >= 0) && (Integer.parseInt(endTimeString.substring(0, 2)) < 24))) && ((Integer.parseInt(endTimeString.substring(3)) >= 0) && (Integer.parseInt(endTimeString.substring(3)) < 60) )) {
 			endTime = LocalTime.parse(endTimeString);
 			System.out.println("EnndTime formatter output : " + endTime.toString());
@@ -157,6 +164,7 @@ public class CreateSessionServlet extends HttpServlet {
 			errorMessage = "Please enter correct end time";
 		}
 		
+		//Gets the current user; will be used to get permissions
 		current = (User) req.getSession().getAttribute("user");
 		
 		if(current == null) {
@@ -182,6 +190,8 @@ public class CreateSessionServlet extends HttpServlet {
 		
 		req.setAttribute("errorMessage", errorMessage);
 		
+		//If there is no errorMessage, a session will be created. Otherwise, an error message will
+		//pop up on the web page and a session will not be created
 		if (errorMessage == null) {
 			controller.createSession(startDate, room, startTime, endTime, daysOfWeek, userId, courseId, typeId);
 			req.getRequestDispatcher("/_view/createSession.jsp").forward(req, resp);

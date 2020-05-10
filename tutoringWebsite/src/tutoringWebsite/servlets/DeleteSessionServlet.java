@@ -17,7 +17,7 @@ import tutoringWebsite.controllers.*;
 
 public class DeleteSessionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	//doGet display the page and current tutoring sessions that can be deleted
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -26,16 +26,18 @@ public class DeleteSessionServlet extends HttpServlet {
 		
 		ScheduleController controller = new ScheduleController();
 		
+		//This segment of code gets all sessions and 'filters out' any sessions that are not tutoring sessions
 		ArrayList<Session> preSessions = new ArrayList<Session>();
 		ArrayList<Session> sessions = new ArrayList<Session>();
 		
 		preSessions = (ArrayList<Session>) controller.getAllSessions();
-		
+				
 		for (int j = 0; j < preSessions.size(); j++) {
 			if(preSessions.get(j).getTypeId() == 1) {
 				sessions.add(preSessions.get(j));
 			}
 		}
+		//
 		
 		for(int i = 0; i < sessions.size(); i++) {
 			if (controller.getTutorName(sessions.get(i).getAdminId()) == null){
@@ -90,6 +92,7 @@ public class DeleteSessionServlet extends HttpServlet {
 		
 		sessionIdString = req.getParameter("sessionId");
 		
+		//Checks to see if the session id box is filled
 		if((sessionIdString == "") || (sessionIdString == null) || (sessionIdString.length() == 0)) {
 			errorMessage = "Please enter a session ID.";
 			System.out.println("Session ID box is blank ");
@@ -105,13 +108,14 @@ public class DeleteSessionServlet extends HttpServlet {
 		
 		preSessions = (ArrayList<Session>) controller.getAllSessions();
 		
+		//Only gets the tutoring sessions
 		for (int j = 0; j < preSessions.size(); j++) {
 			if(preSessions.get(j).getTypeId() == 1) {
 				sessions.add(preSessions.get(j));
 			}
 		}
 		
-		
+		//This loop will set the names of the tutors, the name of the courses, and the days of the week
 		for(int i = 0; i < sessions.size(); i++) {
 			if (controller.getTutorName(sessions.get(i).getAdminId()) == null){
 				sessions.get(i).setAdminName("User not found");
@@ -136,6 +140,7 @@ public class DeleteSessionServlet extends HttpServlet {
 			}
 		}
 		
+		//Makes sure the user picked a viable session id
 		if(counter == 1) {
 			System.out.println("Picked a viable session id... about to delete...");
 		}
@@ -143,8 +148,10 @@ public class DeleteSessionServlet extends HttpServlet {
 			errorMessage = "Please enter viable session ID.";
 		}
 		
+		//Gets current user
 		current = (User) req.getSession().getAttribute("user");
 		
+		//Checks to see if user has permissions to make change
 		if(current == null) {
 			errorMessage = "Not logged in";
 		}
@@ -167,6 +174,7 @@ public class DeleteSessionServlet extends HttpServlet {
 		}
 		
 			doGet(req, resp);
+			//'Refreshes' the page so that new list of tutoring sessions are printed out
 		
 	}
 
