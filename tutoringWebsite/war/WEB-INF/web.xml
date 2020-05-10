@@ -68,6 +68,11 @@
   	<servlet-name>CoursePageServlet</servlet-name>
   	<servlet-class>tutoringWebsite.servlets.CoursePageServlet</servlet-class>
   </servlet>
+	
+  <servlet>
+  	<servlet-name>CreateStudyGroupServlet</servlet-name>
+  	<servlet-class>tutoringWebsite.servlets.CreateStudyGroupServlet</servlet-class>
+  </servlet>
 
   <!-- Servlet mappings -->
   <servlet-mapping>
@@ -89,7 +94,11 @@
     <servlet-name>CreateSessionServlet</servlet-name>
     <url-pattern>/createSession</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet-mapping>
+  	<servlet-name>CreateStudyGroupServlet</servlet-name>
+  	<url-pattern>/createStudyGroup</url-pattern>
+  </servlet-mapping>
  <servlet-mapping>
     <servlet-name>DeleteSessionServlet</servlet-name>
     <url-pattern>/deleteSession</url-pattern>

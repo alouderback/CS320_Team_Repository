@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-
+ 
 <html>
-	<head>
+    <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Courses</Title>
+        <Title>Create Study Group</Title>
     </head>
-    
-    <body>
+    <body>    
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
             <div id = "titleDiv">
                 <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
@@ -23,29 +24,90 @@
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
             <div class = "pageDesc">
-	           <p>Courses</p>
+	           <p>Create a Study Group session</p>
             </div>
         </form>
-        <form action="${pageContext.servletContext.contextPath}/groups/create" method="post">
-	            <table>
-	                <tr>
-	                    <td class="label">Title:</td>
-	                    <td><input type="text" name="date" size="12" value="${course.title}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Date:</td>
-	                    <td><input type="text" name="date" size="12" value="${session.date}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Time:</td>
-	                    <td><input type="text" name="time" size="12" value="${session.time}" /></td>
-	                </tr>
-	                <tr>
-	                    <td class="label">Room:</td>
-	                    <td><input type="text" name="room" size="12" value="${session.room}" /></td>
-	                </tr>
-	            </table>
-            <input type="Submit" name="submit" value="Create Course">
-        	</form>
-        </body>
-</html>|
+        <form action="${pageContext.servletContext.contextPath}/createStudyGroup" method="post">
+       		<p>Please enter the information requested below in order to create a Study Group.</p>
+       		<table>
+       		<tr>
+					<td class="label">Please enter the month, day, and year the Study Group will start (MM-DD-YYYY):</td>
+					<td><input type="text" name="date" size="12" value="${date}" /></td>
+				</tr>
+				<tr>
+					<td class="label">Please enter the time of day the Study Group will start (ex. 18:00):</td>
+					<td><input type="text" name="startTime" size="12" value="${startTime}" /></td>
+				</tr>
+				<tr>
+					<td class="label">Please enter the time of day the Study Group will end (ex. 21:00):</td>
+					<td><input type="text" name="endTime" size="12" value="${endTime}" /></td>
+				</tr>
+				<tr>
+					
+  				<td class="label">Please enter the room the Study Group will be in (ex. KEC132):</td>
+					<td><input type="text" name="room" size="12" value="${room}" /></td>
+  				</tr>
+  				<tr>
+  					<td class="label">Please check the boxes of the days of the week the Study Group will take place:</td>
+  				</tr>
+  					<!-- Going to have the checklist here -->
+  				
+	  					<tr><td><input type="checkbox" id="sunday" name="sunday" value="sunday">
+						<label for="sunday"> Sunday</label><br></td></tr>
+						<tr><td><input type="checkbox" id="monday" name="monday" value="monday">
+						<label for="monday"> Monday</label><br></td></tr>
+						<tr><td><input type="checkbox" id="tuesday" name="tuesday" value="tuesday">
+						<label for="tuesday"> Tuesday</label><br></td></tr>
+						<tr><td><input type="checkbox" id="wednesday" name="wednesday" value="wednesday">
+						<label for="wednesday"> Wednesday</label><br></td></tr>
+						<tr><td><input type="checkbox" id="thursday" name="thursday" value="thursday">
+						<label for="thursday"> Thursday</label><br></td></tr>
+						<tr><td><input type="checkbox" id="friday" name="friday" value="friday">
+						<label for="friday"> Friday</label><br></td></tr>
+						<tr><td><input type="checkbox" id="saturday" name="saturday" value="saturday">
+						<label for="saturday"> Saturday</label><br></td></tr>
+	
+  				<tr>
+  					<td class="label"><label for="course">Please select the course the Study Group is for from the from down box:</label></td>
+  					<!-- Going to have the dropdown box here -->
+  					<td><select id="course" name="course">
+						<option value="1">CS101: Fundamentals of Computer Science</option>
+						<option value="2">CS201: Fundamentals of Computer Science</option>
+						<option value="3">CS290: Computer Science Career Training Prep</option>
+						<option value="4">CS320: Software Engineering and Design</option>
+						<option value="5">CS335: Cybersecuirty Analysis and Applications</option>
+						<option value="6">CS360: Analysis of Algorithms</option>
+						<option value="7">CS456: Social and Professional Issues</option>
+						<option value="8">CS482: Senior Software Project II</option>
+						<option value="9">CS496: Special Topics</option>
+						<option value="10">ECE100: Introduction to Electrical Engineering</option>
+						<option value="11">ECE260: Fundamentals of Computer Engineering</option>
+						<option value="12">ECE280: Fundamentals of Electrical Engineering</option>
+						<option value="13">ECE360: Power Systems</option>
+						<option value="14">ECE420: Embedded System Design</option>
+						<option value="15">CVE280: Civil Engineering Site Design</option>
+						<option value="16">CVE350: Introduction to Environmental Engineering</option>
+						<option value="17">CVE380: Construction Engineering</option>
+						<option value="18">CVE405: Civil Engineering Professional Practice Seminar</option>
+						<option value="19">CVE442: Design of Steel Structures</option>
+						<option value="20">CVE444: Design of Concrete Structures</option>
+						<option value="21">EGR150: Computational Methods</option>
+						<option value="22">EGR240: Mathematical Methods</option>
+						<option value="23">EGR264: Strength of Materials</option>
+						<option value="24">EGR290: Engineering Career Training</option>
+						<option value="25">ME100: Introduction to Mechanical Engineering</option>
+						<option value="26">ME270: Mechatronics</option>
+						<option value="27">ME320: Thermodynamics</option>
+						<option value="28">ME410: Heat Transfer</option>
+						<option value="29">ME411: Thermal System Design</option>
+						<option value="30">ME452: Advanced Dynamics and Vibration</option>
+						<option value="31">ME462: Applied Mechanics and Materials</option>
+						<option value="32">PHY160: Engineering Physics: Mechanics</option>
+					</select></td>
+  				</tr>
+  			</table>
+  			<p id="error">${errorMessage}</p>
+  			<input type="Submit" name="submit" value="Create Study Group Session">
+        </form>
+    </body>
+</html>
