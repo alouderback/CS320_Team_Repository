@@ -46,6 +46,9 @@ public class AnnouncementServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
 			//resp.sendRedirect(req.getContextPath() + "/createAnnouncement");
 		}
+		else if(req.getParameter("deleteAnnouncement") != null) {
+			req.getRequestDispatcher("/_view/deleteAnnouncement.jsp").forward(req, resp);
+		}
 		
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 	}

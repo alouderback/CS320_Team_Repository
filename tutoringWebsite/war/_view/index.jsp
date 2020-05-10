@@ -40,6 +40,7 @@
 	        </div>
 	        <c:if test = "${isFaculty}">
 	                   <input name="createAnnouncement" type="submit" value="Create Announcement" class = "myButton"/>
+	                   <input name="deleteAnnouncement" type="submit" value="Delete Announcement" class = "myButton"/>
    			</c:if>
 	    </form>
     </body>
