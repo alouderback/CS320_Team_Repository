@@ -17,6 +17,11 @@
   </servlet>
   
   <servlet>
+    <servlet-name>CreateAnnouncementServlet</servlet-name>
+    <servlet-class>tutoringWebsite.servlets.CreateAnnouncementServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>CoursesServlet</servlet-name>
     <servlet-class>tutoringWebsite.servlets.CoursesServlet</servlet-class>
   </servlet>
@@ -73,6 +78,11 @@
   <servlet-mapping>
     <servlet-name>AnnouncementServlet</servlet-name>
     <url-pattern>/announcement</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>CreateAnnouncementServlet</servlet-name>
+    <url-pattern>/createAnnouncement</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

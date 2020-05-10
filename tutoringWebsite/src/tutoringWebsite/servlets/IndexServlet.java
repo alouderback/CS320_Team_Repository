@@ -15,7 +15,9 @@ public class IndexServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("Index Servlet: doGet");
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		
+		resp.sendRedirect(req.getContextPath() + "/announcement");
+		//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 			
 		//req.getRequestDispatcher("/_view/announcement.jsp").forward(req, resp);
 	}
@@ -26,6 +28,18 @@ public class IndexServlet extends HttpServlet {
 		
 		System.out.println("Index Servlet: doPost");
 		
+			String errorMessage = null;
+			System.out.println("schedule Servlet: doPost");
+			
+			/*try {
+				if (req.getParameter("createAnnouncement") != null) {
+					//req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
+					resp.sendRedirect(req.getContextPath() + "/createAnnouncement");
+				}
+			}
+			catch(NumberFormatException e){
+				errorMessage = "Something wrong";
+			}*/
 		// check which button the user pressed
 		if (req.getParameter("index") != null) {
 			// call index JSP
@@ -72,6 +86,9 @@ public class IndexServlet extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/createAccount");
 			//req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
 		}
+		/*else if(req.getParameter("createAnnouncement") != null) {
+			send
+		}*/
 		else {
 			throw new ServletException("Unknown command");
 		}

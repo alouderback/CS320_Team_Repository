@@ -35,15 +35,20 @@ public class announcementJUnit {
 	@Test
 	public void testSetTime() {
 		LocalTime time = LocalTime.of(10, 30);
-		model.setTime(time);
-		assertEquals("10:30", model.getTime().toString());
+		model.setStartTime(time);
+		assertEquals("10:30", model.getStartTime().toString());
+		
+		LocalTime time2 = LocalTime.of(11, 30);
+		model.setEndTime(time2);
+		assertEquals("11:30", model.getEndTime().toString());
 	}
 	
 	@Test
 	public void testDelete() {
 		model.delete();
 		assertEquals(null, model.getDate());
-		assertEquals(null, model.getTime());
+		assertEquals(null, model.getStartTime());
+		assertEquals(null, model.getEndTime());
 		assertEquals(null, model.getMessage());
 		assertEquals(-1, model.getAnnouncementType());
 		assertEquals(-1, model.getTypeId());

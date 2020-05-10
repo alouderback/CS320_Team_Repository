@@ -29,6 +29,7 @@ public class AnnouncementServlet extends HttpServlet {
 		controller.setModel(model);
 		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
 		String typeName = null;
+		
 		try {
 			announcements = (ArrayList<Announcement>) controller.getAnnouncements();
 			typeName = model.getTypeName();
@@ -40,7 +41,18 @@ public class AnnouncementServlet extends HttpServlet {
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("announcements", announcements);
 		req.setAttribute("typeName", typeName);
+		//req.setAttribute("createAnnouncement", createAnnouncement);
+		if (req.getParameter("createAnnouncement") != null) {
+			req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
+			//resp.sendRedirect(req.getContextPath() + "/createAnnouncement");
+		}
 		
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+		System.out.println("Announcement Servlet: doPost");
 	}
 }

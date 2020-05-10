@@ -23,7 +23,7 @@ public class coursesControllerJUnit {
 	@Before
 	public void setUp() { 
 		model = new Course();
-		controller = new CourseController();
+		controller = new CourseController(model);
 		courseSession = new Session();
 		tutorList = new ArrayList<Tutor>();
 		
@@ -33,7 +33,7 @@ public class coursesControllerJUnit {
 		alex.setName("Alex Louderback");
 		
 		courseSession.setDate(LocalDate.of(2012, 12, 12));
-		courseSession.setTime(LocalTime.of(03, 52));
+		courseSession.setStartTime(LocalTime.of(03, 52));
 		courseSession.setRoom("123");
 		courseSession.setTutor(alex);
 		
@@ -46,10 +46,8 @@ public class coursesControllerJUnit {
 		tutorList.add(emily);
 		tutorList.add(john);
 		
-		model.setTutorList(tutorList);
 		
 		
-		controller.setModel(model);
 	}
 
 @Test

@@ -33,13 +33,13 @@ public class tutorJUnit {
 		testAnn.setAnnouncementId(1);
 		testAnn.setDate(date);
 		testAnn.setMessage("I love my girlfriend");
-		testAnn.setTime(time);
+		testAnn.setStartTime(time);
 		
 		testAnn2 = new Announcement();
 		testAnn2.setAnnouncementId(1);
 		testAnn2.setDate(date);
 		testAnn2.setMessage("Testy test test test testy");
-		testAnn2.setTime(time);
+		testAnn2.setStartTime(time);
 		
 		course1 = new Course();
 		course1.setCourseSession(null);

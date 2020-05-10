@@ -19,7 +19,8 @@ public class InitialData {
 			// auto-generated primary key for authors table
 			Integer announcementId = 1;
 			LocalDate date = LocalDate.now();
-			LocalTime time = LocalTime.now();
+			LocalTime startTime = LocalTime.now();
+			LocalTime endTime = LocalTime.now();
 			Integer announcementType = 1;
 			Integer typeId = 1;
 			while (true) {
@@ -33,8 +34,10 @@ public class InitialData {
 				announcement.setMessage(i.next()); 
 				date = LocalDate.parse(i.next());
 				announcement.setDate(date);
-				time = LocalTime.parse(i.next());
-				announcement.setTime(time);
+				startTime = LocalTime.parse(i.next());
+				announcement.setStartTime(startTime);
+				endTime = LocalTime.parse(i.next());
+				announcement.setEndTime(endTime);
 				announcementType = Integer.parseInt(i.next());
 				announcement.setAnnouncementType(announcementType);
 				typeId = Integer.decode(i.next());
