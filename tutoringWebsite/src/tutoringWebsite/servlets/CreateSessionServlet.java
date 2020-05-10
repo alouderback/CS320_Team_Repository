@@ -194,7 +194,7 @@ public class CreateSessionServlet extends HttpServlet {
 		//pop up on the web page and a session will not be created
 		if (errorMessage == null) {
 			controller.createSession(startDate, room, startTime, endTime, daysOfWeek, userId, courseId, typeId);
-			req.getRequestDispatcher("/_view/createSession.jsp").forward(req, resp);
+			resp.sendRedirect(req.getContextPath() + "/schedule");
 		}
 		else {
 			System.out.println("Encountered an error: " + errorMessage);
