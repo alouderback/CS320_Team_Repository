@@ -8,7 +8,7 @@ import tutoringWebsite.model.*;
 
 public interface IDatabase {
 	//list of functions used in Derby Database
-	Integer createAnnouncement(String message, LocalDate date, LocalTime time, int announcementType, int typeId);
+	Integer createAnnouncement(String message, LocalDate date, LocalTime startTime, LocalTime endTime, int announcementType, int typeId);
 	List<Announcement> getAnnouncementsforSessionWithSessionId(int sessionId);
 	List<Announcement> getAnnouncementsforStudyGroupWithStudyGroupId(int studyGroupId);
 	List<Announcement> getAllAnnouncements();

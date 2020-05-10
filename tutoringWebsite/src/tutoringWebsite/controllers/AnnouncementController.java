@@ -21,12 +21,13 @@ public class AnnouncementController{
 	public void setModel2(Session model2) {
 		this.model2 = model2;
 	}
-	public Announcement create(LocalDate date, LocalTime time, String message, int announcementType, int typeId) {
-		int id = db.createAnnouncement(message, date, time, announcementType, typeId);
+	public Announcement create(LocalDate date, LocalTime startTime, LocalTime endTime, String message, int announcementType, int typeId) {
+		int id = db.createAnnouncement(message, date, startTime, endTime, announcementType, typeId);
 		Announcement announcement = new Announcement();
 		announcement.setAnnouncementId(id);
 		announcement.setDate(date);
-		announcement.setTime(time);
+		announcement.setStartTime(startTime);
+		announcement.setEndTime(endTime);
 		announcement.setMessage(message);
 		announcement.setAnnouncementType(announcementType);
 		announcement.setTypeId(typeId);
@@ -54,8 +55,8 @@ public class AnnouncementController{
 	public List<Announcement> getSessionAnnouncements() {
 		return db.getAllSessionAnnouncements();
 	}
-	public void delete() {
-		model.delete();
+	public void delete(int announcementId) {
+		db.removeAnnouncement(announcementId);
 	}
 	
 }

@@ -63,7 +63,7 @@ public class derbyDatabaseAnnouncementJUnit {
 			for (Announcement announcement : announcementList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
-				+ "," + announcement.getDate() + "," + announcement.getTime());
+				+ "," + announcement.getDate() + "," + announcement.getStartTime());
 			}			
 		}
 	}
@@ -88,7 +88,7 @@ public class derbyDatabaseAnnouncementJUnit {
 			for (Announcement announcement : announcementList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
-				+ "," + announcement.getDate() + "," + announcement.getTime());
+				+ "," + announcement.getDate() + "," + announcement.getStartTime());
 			}			
 		}
 	}
@@ -111,7 +111,7 @@ public class derbyDatabaseAnnouncementJUnit {
 			for (Announcement announcement : announcementList) {
 				announcements.add(announcement);
 				System.out.println(announcement.getAnnouncementType() + "," + announcement.getAnnouncementId() +"," + announcement.getMessage()
-				+ "," + announcement.getDate() + "," + announcement.getTime());
+				+ "," + announcement.getDate() + "," + announcement.getStartTime());
 			}			
 		}
 	}
@@ -121,11 +121,12 @@ public class derbyDatabaseAnnouncementJUnit {
 		//new information for the new Announcement
 		String message     = "testing create announcement session";
 		LocalDate date     = LocalDate.of(2020, 04, 24);
-		LocalTime time = LocalTime.of(12, 30);
+		LocalTime startTime = LocalTime.of(12, 30);
+		LocalTime endTime = LocalTime.of(13, 45);
 		int announcementType = 1;
 		int typeId = 1;
 		
-		int announcement_id = db.createAnnouncement(message, date, time, announcementType, typeId);
+		int announcement_id = db.createAnnouncement(message, date, startTime, endTime, announcementType, typeId);
 		
 		System.out.println("Got ID in test");
 		
@@ -157,11 +158,12 @@ public class derbyDatabaseAnnouncementJUnit {
 		//new information for the new Announcement
 		String message     = "testing create announcement study group";
 		LocalDate date     = LocalDate.of(2020, 04, 25);
-		LocalTime time = LocalTime.of(12, 30);
+		LocalTime startTime = LocalTime.of(12, 30);
+		LocalTime endTime = LocalTime.of(13, 30);
 		int announcementType = 2;
 		int typeId = 1;
 		
-		int announcement_id = db.createAnnouncement(message, date, time, announcementType, typeId);
+		int announcement_id = db.createAnnouncement(message, date, startTime, endTime, announcementType, typeId);
 		
 		System.out.println("Got ID in test");
 		

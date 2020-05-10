@@ -38,6 +38,7 @@
 			    	</c:forEach>
 	            	</table>
 	        </div>
+	        <input name="createAnnouncement" type="submit" value="Create Announcement"/>
 	    </form>
     </body>
 </html>

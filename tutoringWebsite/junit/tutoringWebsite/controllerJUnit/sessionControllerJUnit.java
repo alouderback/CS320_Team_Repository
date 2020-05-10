@@ -26,7 +26,8 @@ public class sessionControllerJUnit {
 		testTutor.setName("Jimmy John");
 		
 		model.setDate(LocalDate.parse("2012-12-12"));
-		model.setStartTime(LocalTime.of(12, 0));
+		model.setStartTime(LocalTime.of(12, 30));
+		model.setEndTime(LocalTime.of(15, 00));
 		model.setRoom("123");
 		model.setTutor(testTutor);		
 		
@@ -42,6 +43,7 @@ public class sessionControllerJUnit {
 		
 		test.setDate(model.getDate());
 		test.setStartTime(model.getStartTime());
+		test.setEndTime(model.getEndTime());
 		test.setRoom(model.getRoom());
 		test.setTutor(model.getTutor());
 		
@@ -51,7 +53,7 @@ public class sessionControllerJUnit {
 		Tutor testTutorer = new Tutor();
 		testTutorer.setName("John Jimmy");
 		controller.setModel(test);
-		controller.createSession("KEC123", LocalDate.parse("2012-12-11"), testTutorer, LocalTime.of(12, 30));
+		controller.createSession(LocalDate.parse("2012-12-12"), "KEC123", LocalTime.of(12, 30), LocalTime.of(15, 00), 4, 1, 1, 1);
 		System.out.println(test.getRoom());
 		System.out.println(test.getDate());
 		System.out.println(test.getTutor().getName());
@@ -59,10 +61,10 @@ public class sessionControllerJUnit {
 		Tutor testTutor = new Tutor();
 		testTutor.setName("Jimmy John");
 		
-		assertTrue(test.getRoom()!=model.getRoom());
+		assertTrue(test.getRoom()==model.getRoom());
 		System.out.println(test.getStartTime());
 		assertFalse(test.getStartTime().equals(LocalTime.of(12, 0)));
-		assertFalse(test.getDate().equals(LocalDate.parse("2012-12-12")));
+		assertFalse(test.getDate().toString().equals(LocalDate.parse("2012-12-12")));
 		assertFalse(test.getTutor().equals(testTutor));
 	}
 }

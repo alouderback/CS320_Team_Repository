@@ -134,7 +134,6 @@ h1{
    font-family: "Times New Roman", Times, serif;
 }
 
-
 .myButton {
 color: black; font-size: 13px; line-height: 13px; padding: 4px; border-radius: 4px; 
  font-family: "Times New Roman", Times, serif;
@@ -147,4 +146,3 @@ background-image:   box-shadow: rgba(0, 0, 0, 0) 39px 5px 0px 0px;
 background: rgb(17,164,61); }
 .myButton:active {
 background: rgb(81,211,45); }
-
