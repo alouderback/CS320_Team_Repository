@@ -47,6 +47,14 @@ public class StudyGroupServlet extends HttpServlet {
 		}catch(NumberFormatException e){
 			errorMessage = "try fail";
 		}
+		for(int i = 0; i < announcements.size(); i++) {
+			int num = 0;
+			num = announcements.get(i).getTypeId();
+			System.out.println("Type id: "+ num);
+			String course = controller.getCourseName(num);
+			announcements.get(i).setCourseName(course);
+			System.out.println("Course Name" + course);
+		}
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("announcements", announcements);
 		// call JSP to generate empty form
