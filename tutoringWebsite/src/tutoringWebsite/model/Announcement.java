@@ -16,6 +16,7 @@ public class Announcement {
 	//announcementType = 2 for study group
 	private String typeName;
 	private Session session;
+	private String courseName;
 	
 	// Constructor for class
 	public Announcement() {
@@ -103,5 +104,13 @@ public class Announcement {
 
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 }
