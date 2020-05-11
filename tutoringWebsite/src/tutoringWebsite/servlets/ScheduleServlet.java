@@ -20,7 +20,6 @@ public class ScheduleServlet extends HttpServlet {
 	private UserController controller2;
 	private Student model1;
 	private StudentController controller1;
-	private AnnouncementController controller3;
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -42,7 +41,7 @@ public class ScheduleServlet extends HttpServlet {
 			int num = 0;
 			num = announcements.get(i).getTypeId();
 			System.out.println("Type id: "+ num);
-			String course = controller3.getCourseName(num);
+			String course = announcementController.getCourseName(num);
 			announcements.get(i).setCourseName(course);
 			System.out.println("Course Name" + course);
 		}
