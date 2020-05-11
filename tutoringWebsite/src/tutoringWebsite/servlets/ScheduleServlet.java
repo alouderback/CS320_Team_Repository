@@ -20,7 +20,6 @@ public class ScheduleServlet extends HttpServlet {
 	private UserController controller2;
 	private Student model1;
 	private StudentController controller1;
-	private AnnouncementController controller3;
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -57,8 +56,24 @@ public class ScheduleServlet extends HttpServlet {
 		
 		System.out.println("schedule Servlet: doPost");
 		
-
+		//print Announcements
 		String errorMessage = null;
+		AnnouncementController announcementController = new AnnouncementController();
+		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
+		try {
+			announcements = (ArrayList<Announcement>) announcementController.getSessionAnnouncements();
+		}catch(NumberFormatException e){
+			errorMessage = "try fail";
+		}
+		for(int i = 0; i < announcements.size(); i++) {
+			int num = 0;
+			num = announcements.get(i).getTypeId();
+			System.out.println("Type id: "+ num);
+			String course = announcementController.getCourseName(num);
+			announcements.get(i).setCourseName(course);
+			System.out.println("Course Name" + course);
+		}
+		req.setAttribute("announcements", announcements);
 
 
 		Schedule model = null;
