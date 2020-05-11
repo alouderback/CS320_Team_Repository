@@ -69,8 +69,10 @@ public class StudyGroupServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("Study Groups Servlet: doPost");
+
 		int userId = 0;
 		String errorMessage = null;
+
 		//System.out.println("Study Group Servlet: doGet");	 
 		StudyGroup studyGroup = new StudyGroup();
 		StudyGroupController controller = new StudyGroupController();
@@ -83,6 +85,7 @@ public class StudyGroupServlet extends HttpServlet {
 			session.setDaysOfWeekString(controller.getDayOfWeek(session.getSessionId()));
 			session.setAdminName(controller.getTutorName(session.getAdminId()));;
 		}
+
 		if((req.getParameter("CreateSession") == null) && (req.getParameter("DeleteSesion") == null)) {
 			StudyGroup model = new StudyGroup();
 			Session sessionModel = new Session();
@@ -129,6 +132,7 @@ public class StudyGroupServlet extends HttpServlet {
 				req.setAttribute("sessions", studyGroupSessions);
 				req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
 			}
+
 		}
 	}
 }

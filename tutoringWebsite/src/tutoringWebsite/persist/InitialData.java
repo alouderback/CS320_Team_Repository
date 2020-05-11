@@ -22,7 +22,7 @@ public class InitialData {
 			LocalTime startTime = LocalTime.now();
 			LocalTime endTime = LocalTime.now();
 			Integer announcementType = 1;
-			Integer typeId = 1;
+			int typeId = 1;
 			while (true) {
 				List<String> tuple = readAnnouncement.next();
 				if(tuple==null || tuple.size() == 0) {
@@ -40,7 +40,7 @@ public class InitialData {
 				announcement.setEndTime(endTime);
 				announcementType = Integer.parseInt(i.next());
 				announcement.setAnnouncementType(announcementType);
-				typeId = Integer.decode(i.next());
+				typeId = Integer.parseInt(i.next());
 				announcement.setTypeId(typeId);
 				announcementList.add(announcement);
 			}
