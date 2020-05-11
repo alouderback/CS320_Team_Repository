@@ -26,8 +26,19 @@ public class ScheduleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("schedule Servlet: doGet");	 
+		System.out.println("schedule Servlet: doGet");	
 		
+		//printing announcements on schedule
+		String errorMessage = null;
+		AnnouncementController announcementController = new AnnouncementController();
+		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
+		try {
+			announcements = (ArrayList<Announcement>) announcementController.getSessionAnnouncements();
+		}catch(NumberFormatException e){
+			errorMessage = "try fail";
+		}
+		req.setAttribute("errorMessage", errorMessage);
+		req.setAttribute("announcements", announcements);
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/schedule.jsp").forward(req, resp); 
 	}
@@ -42,6 +53,7 @@ public class ScheduleServlet extends HttpServlet {
 
 
 		Schedule model = null;
+		Announcement ann = null;
 
 		String courseName = null;
 
@@ -53,7 +65,6 @@ public class ScheduleServlet extends HttpServlet {
 		controller.setDB(db);
 		
 		ArrayList<Session> sessions = new ArrayList<Session>();
-		
 		////////////////////////////////////////////////
 		int userType		= 0;
 		User current 		= new User();
@@ -70,14 +81,9 @@ public class ScheduleServlet extends HttpServlet {
 			
 			
 		}
-		
-		
-		
-		
 		////////////////////////////////////////////////
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			
 			// check for errors in the form data before using is in a calculation
 			if (req.getParameter("Submit") != null) {
 				sessions = (ArrayList<Session>) controller.getScheduleWithDate("Submit");

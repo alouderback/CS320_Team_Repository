@@ -27,6 +27,17 @@
 	           <p>Schedule</p>
             </div>
         </form>
+        <form action="${pageContext.servletContext.contextPath}/announcement" method="get">
+	        <div class = "AnnouncementWindow">
+	            <p id = "announcementTitle">Announcements</p>
+	            	<table>
+                        <c:forEach items="${announcements}" var="announcement">
+			        		<p id = "pa1">${announcement.typeName} ${announcement.typeId} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
+			        		<p id = "pa2">${announcement.message}</p>
+			    	</c:forEach>
+	            	</table>
+	        </div>
+	    </form>
         <form action="${pageContext.servletContext.contextPath}/schedule" method="post">
             <table>
                     <tr>
