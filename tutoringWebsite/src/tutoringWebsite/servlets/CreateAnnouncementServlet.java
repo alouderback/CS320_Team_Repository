@@ -59,27 +59,33 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		message = req.getParameter("message");
 		temp = req.getParameter("announcementType");
 		course = req.getParameter("course");
-		
+				
+		//check announcementType
 		String session, studyGroup;
 		session= "Session";
 		studyGroup = "Study Group";
-		if(temp.contains(session)) {
+		if(req.getParameter("announcementType") == session) {
 			announcementType=1;
 			System.out.print("\ntrue");
-		}else if(temp.contentEquals(studyGroup)){
+		}else if(req.getParameter("announcementType") == studyGroup){
 			announcementType = 2;
 		}
-		else {
-			errorMessage = "Incorrect Announcement Type";
+		else if(req.getParameter("announcementType") == null){
+			errorMessage = "Please select an Announcement type";
+		}
+		else {//if message is blank
+			errorMessage = "Please enter a message for the Announcement";
 		}
 		
+		//checks the course selected
 		if(course != null) {
 			courseId = Integer.parseInt(course);
 		}
-		else {
-			errorMessage = "Please select a course.";
+		else{
+			errorMessage = "Please select a course";
 		}
 		
+		//checks the date put in
 		if((date != null) && (date.length() == 10)) {
 			month = Integer.parseInt(date.substring(0, 2));
 			day = Integer.parseInt(date.substring(3, 5));
@@ -91,8 +97,8 @@ public class CreateAnnouncementServlet extends HttpServlet {
 			errorMessage = "Please enter a correctly formatted date";
 		}
 		
+		//checks start time
 		if ((startTime.length() == 5) && (((Integer.parseInt(startTime.substring(0, 2)) >= 0) && (Integer.parseInt(startTime.substring(0, 2)) < 24))) && ((Integer.parseInt(startTime.substring(3)) >= 0) && (Integer.parseInt(startTime.substring(3)) < 60) )) {
-		//System.out.println("Announcement" + startTime);
 			aTime = LocalTime.parse(startTime);
 			System.out.println("StartTime formatter output : " + aTime.toString());
 		}
@@ -105,6 +111,7 @@ public class CreateAnnouncementServlet extends HttpServlet {
 			errorMessage = "Please enter correct start time";
 		}
 		
+		//checks end time
 		if ((endTime.length() == 5) && (((Integer.parseInt(endTime.substring(0, 2)) >= 0) && (Integer.parseInt(endTime.substring(0, 2)) < 24))) && ((Integer.parseInt(endTime.substring(3)) >= 0) && (Integer.parseInt(endTime.substring(3)) < 60) )) {
 			bTime = LocalTime.parse(endTime);
 			System.out.println("EnndTime formatter output : " + bTime.toString());
@@ -117,6 +124,8 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		else {
 			errorMessage = "Please enter correct end time";
 		}
+		
+		//checks user is logged in/ correct user
 		User current = new User();
 		current = (User) req.getSession().getAttribute("user");
 		
