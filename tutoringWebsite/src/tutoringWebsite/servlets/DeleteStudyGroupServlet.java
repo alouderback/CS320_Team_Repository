@@ -27,9 +27,13 @@ public class DeleteStudyGroupServlet extends HttpServlet {
 		
 		ArrayList<Session> preSessions = new ArrayList<Session>();
 		ArrayList<Session> sessions = new ArrayList<Session>();
+		controller = new ScheduleController();
 		
-		preSessions = (ArrayList<Session>) controller.getAllSessions();
-				
+		preSessions = (ArrayList<Session>) controller.getAllStudyGroups();
+		for(int k = 0; k < preSessions.size(); k++) {
+			System.out.println(preSessions.get(k).getSessionId());
+		}
+		
 		for (int j = 0; j < preSessions.size(); j++) {
 			if(preSessions.get(j).getTypeId() == 2) {
 				sessions.add(preSessions.get(j));
@@ -57,6 +61,8 @@ public class DeleteStudyGroupServlet extends HttpServlet {
 			}
 		}
 		
+		System.out.println("**********     NUMBER OF STUDY GROUPS: " + sessions.size() + "     **********");
+		
 		req.setAttribute("sessions", sessions);
 
 		req.getRequestDispatcher("/_view/deleteStudyGroup.jsp").forward(req, resp);
@@ -74,8 +80,6 @@ public class DeleteStudyGroupServlet extends HttpServlet {
 		String stringOfSessionId = null;
 		
 		int sessionId = 0; //Will use this one
-		int typeId = 2;
-		int userId = 0;	
 		
 		//Creates a user which will be used to get the current user to check permissions
 		User current = new User();
@@ -84,11 +88,11 @@ public class DeleteStudyGroupServlet extends HttpServlet {
 		stringOfSessionId = req.getParameter("studyGroup");
 		
 		//Checks to see if a course ID was entered
-		if(stringOfSessionId != null) {
-			sessionId = Integer.parseInt(stringOfSessionId);
+		if((stringOfSessionId == "") || (stringOfSessionId == null) || (stringOfSessionId.length() == 0)) {
+			errorMessage = "Please select a viable ID.";
 		}
 		else {
-			errorMessage = "Please select a viable ID.";
+			sessionId = Integer.parseInt(stringOfSessionId);
 		}
 
 
@@ -100,7 +104,6 @@ public class DeleteStudyGroupServlet extends HttpServlet {
 		}
 		else {
 			System.out.println("Current user name: " + current.getName());
-			userId = current.getUser_Id();
 			if(current.getUserType() == 1 || current.getUserType() == 2) {
 				errorMessage = "User does not have permissions to delete groups.";
 			}
@@ -111,12 +114,11 @@ public class DeleteStudyGroupServlet extends HttpServlet {
 		//If there is no errorMessage, a session will be created. Otherwise, an error message will
 		//pop up on the web page and a session will not be created
 		if (errorMessage == null) {
-
+			controller.deleteSession(sessionId);
 			resp.sendRedirect(req.getContextPath() + "/deleteStudyGroup");
 		}
 		else {
 		
-			//System.out.println("Encountered an error: " + errorMessage);
 			req.getRequestDispatcher("/_view/deleteStudyGroup.jsp").forward(req, resp);
 		}
 	}

@@ -80,7 +80,7 @@
   </servlet>
  <servlet>
   	<servlet-name>DeleteStudyGroupServlet</servlet-name>
-  	<servlet-class>tutoringWebsite.servlets.StudyGroupServlet</servlet-class>
+  	<servlet-class>tutoringWebsite.servlets.DeleteStudyGroupServlet</servlet-class>
   </servlet>
 
   <!-- Servlet mappings -->

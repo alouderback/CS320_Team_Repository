@@ -32,6 +32,10 @@ public class ScheduleController{
 		return db.getAllTutoringSessions();
 	}
 	
+	public List<Session> getAllStudyGroups() {
+		return db.getAllStudyGroupSessions();
+	}
+	
 	//Deletes a session in the session table; takes userId as a parameter
 	public void deleteSession(int id) {
 		db.deleteSession(id);
