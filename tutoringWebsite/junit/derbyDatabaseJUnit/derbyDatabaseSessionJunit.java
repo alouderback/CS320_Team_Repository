@@ -134,7 +134,7 @@ public class derbyDatabaseSessionJunit {
 		System.out.println("Prelist size: " + preList.size() + ", Postlist size: " + postList.size());
 		assertTrue(preList.size() > postList.size());
 	}
-	
+	/*
 	@Test
 	public void testGetScheduleByDate() {
 		System.out.println("***Testing getScheduleByDate***");
@@ -176,7 +176,7 @@ public class derbyDatabaseSessionJunit {
 		assertTrue(sessionOne.getCourseName() == sessionCompare.getCourseName());
 		assertTrue(sessionOne.getTypeName() == sessionCompare.getTypeName());
 	}
-	
+	*/
 	@Test
 	public void testGetAllSessions(){
 		System.out.println("***Testing getAllSessions ***");
