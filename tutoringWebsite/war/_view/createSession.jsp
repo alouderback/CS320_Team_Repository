@@ -44,9 +44,24 @@
 					<td><input type="text" name="endTime" size="12" value="${endTime}" /></td>
 				</tr>
 				<tr>
-					
-  				<td class="label">Please enter the room the session will be in (ex. KEC132):</td>
-					<td><input type="text" name="room" size="12" value="${room}" /></td>
+  					<td class="label"><label for="room">Please select the room the session will be in:</label></td>
+  					<!-- Going to have the dropdown box here -->
+  					<td><select id="course" name="room">
+						<option value="KEC118">KEC118</option>
+						<option value="KEC119">KEC119</option>
+						<option value="KEC120">KEC120</option>
+						<option value="KEC121">KEC121</option>
+						<option value="KEC122">KEC122</option>
+						<option value="KEC123">KEC123</option>
+						<option value="KEC124">KEC124</option>
+						<option value="KEC125">KEC125</option>
+						<option value="KEC126">KEC126</option>
+						<option value="KEC127">KEC127</option>
+						<option value="KEC128">KEC128</option>
+						<option value="KEC129">KEC129</option>
+						<option value="KEC130">KEC130</option>
+						<option value="KEC131">KEC131</option>
+					</select></td>
   				</tr>
   				<tr>
   					<td class="label">Please check the boxes of the days of the week the session will take place:</td>
