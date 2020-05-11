@@ -34,13 +34,21 @@
 					<td class="label">Please enter session ID of the session you would like to delete:</td>
 					<td><input type="text" name="sessionId" size="12" value="${sessionId}" /></td>
 				</tr>
+				<tr>
+					<td id="loopTitle">Session ID</td>
+					<td id="loopTitle">Tutor Name</td>
+					<td id="loopTitle">Course Name</td>
+					<td id="loopTitle">Days Of Week</td>
+					<td id="loopTitle">Start Time</td>
+				</tr>
 				
 				<c:forEach items="${sessions}" var="session">
 			        	<tr class="scheduleListings">
 				            	<td>${session.sessionId}</td>
 				            	<td>${session.adminName}</td>
 				            	<td>${session.courseName}</td>
-				            	<td>${session.daysOfWeekString}</td>	          
+				            	<td>${session.daysOfWeekString}</td>	
+				            	<td>${session.startTime}</td>          
 			        	</tr>
 			    	</c:forEach>
 
