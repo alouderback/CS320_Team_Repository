@@ -49,11 +49,11 @@
 	                    </tr>
    					</c:if>
                         <tr>
-                            <td>Tutor</td>
-                            <td>Days of Week</td>      
-                            <td>Time</td>
-                            <td>Room</td>
-                            <td>Course</td>   				
+                            <td id="loopTitle">Tutor</td>
+                            <td id="loopTitle">Days of Week</td>      
+                            <td id="loopTitle">Time</td>
+                            <td id="loopTitle">Room</td>
+                            <td id="loopTitle">Course</td>   				
                         </tr>
                         
                         <c:forEach items="${sessions}" var="session">
