@@ -22,6 +22,11 @@
             </div>
             <div class = "pageDesc">
 	           <p>Helpful Links and Resources</p>
+	           
+	           
+	           <p>Academic support center: </p>
+	           <a href="https://www.ycp.edu/about-us/offices-and-departments/student-success/academic-support-center/">Visit W3Schools</a>
+	            <a href=" https://catalog.ycp.edu/index.php?catoid=14/">Undergraduate catalog:</a>
             </div>
         </form>
     </body>
