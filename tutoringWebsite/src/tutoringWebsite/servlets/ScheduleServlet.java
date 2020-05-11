@@ -72,6 +72,8 @@ public class ScheduleServlet extends HttpServlet {
 		}
 		
 		
+		
+		
 		////////////////////////////////////////////////
 		// decode POSTed form parameters and dispatch to controller
 		try {
@@ -119,6 +121,7 @@ public class ScheduleServlet extends HttpServlet {
 			}
 		}
 		
+		System.out.println("SESSION SIZE: " + sessions.size());
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);

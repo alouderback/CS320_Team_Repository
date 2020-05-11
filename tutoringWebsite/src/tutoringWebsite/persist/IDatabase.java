@@ -42,5 +42,6 @@ public interface IDatabase {
 	List<Session> getCourseSession(int courseId);
 	List<Session> getTutoringSession(int courseId);
 	List<Course> getCourseFromCourseId(int courseId);
+	List<Session> getAllStudyGroupSessions();
 
 }

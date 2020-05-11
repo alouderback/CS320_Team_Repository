@@ -642,6 +642,43 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	@Override
+	public List<Session> getAllStudyGroupSessions(){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Session> result = new ArrayList<Session>();
+					
+					stmt = conn.prepareStatement(
+							"select * from Sessions " +
+							"where type_id = ? "
+							);
+					
+					stmt.setInt(1, 2);
+					resultSet = stmt.executeQuery();
+					
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
 	public List<Course> getAllCourses(){
 		return executeTransaction(new Transaction<List<Course>>() {
 			public List<Course> execute(Connection conn) throws SQLException {
@@ -1420,7 +1457,6 @@ public class DerbyDatabase implements IDatabase{
 				}
 			
 		});
-		
 		
 	}
 	@Override

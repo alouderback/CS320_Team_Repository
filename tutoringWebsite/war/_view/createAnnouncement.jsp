@@ -28,7 +28,7 @@
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
             <div class = "pageDesc">
-	           <p>Create an Announcement</p>
+	           <p id = "announcementTitle">Create an Announcement</p>
             </div>
         </form>
 

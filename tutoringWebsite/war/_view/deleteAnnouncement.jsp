@@ -2,13 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-
+ 
 <html>
-	<head>
+    <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
-        <Title>Study Groups</Title>
+        <Title>Delete Session</Title>
     </head>
-    <body>
+    <body>    
         <form action="${pageContext.servletContext.contextPath}/index" method="post">
             <div id = "titleDiv">
                 <input id = "title" name="index" type="submit" value="Kinsley Tutoring Service" /><br>			
@@ -24,31 +24,26 @@
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
             <div class = "pageDesc">
-	           <p>Study Groups</p>
+	           <p id = "announcementTitle">Delete an Announcement</p>
             </div>
         </form>
+        <form action="${pageContext.servletContext.contextPath}/deleteAnnouncement" method="post">
+       		<p>Please enter the information requested below in order to delete an Announcement.</p>
+       		<table>
+       			<tr>
+					<td class="label">Please enter Announcement ID of the announcement you would like to delete:</td>
+					<td><input type="text" name="announcementId" size="12" value="${announcementId}" /></td>
+				</tr>
+				
+				<c:forEach items="${announcements}" var="announcement">
+			        	<tr class="scheduleListings">
+				            <p id = "pa1">${announcement.announcementId} ${announcement.typeName} ${announcement.typeId}</p>
+			        		<p id = "pa2">${announcement.message}</p>	          
+			        	</tr>
+			    	</c:forEach>
 
-        <form action="${pageContext.servletContext.contextPath}/groups" method = "post">
-            <table>
-                <tr>
-                    <td>Course</td>
-                    <td>Days of Week</td>      
-                    <td>Time</td>
-                    <td>Room</td>
-                    <td>Tutor</td>	
-                </tr>
-
-                <c:forEach items="${sessions}" var="session">
-                    <tr class="scheduleListings">
-                        <td>${session.courseName}</td>
-                        <td>${session.daysOfWeekString}</td>
-                        <td>${session.startTime} - ${session.endTime}</td>
-                        <td>${session.room}</td>		
-                        <td>${session.adminName}</td>
-                        <td><input type="submit" name="${session.sessionId}" value="Join Study Group"></td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </form>
-    </body>
+  			</table>
+  			<p id="error">${errorMessage}</p>
+  			<input type="Submit" name="submit" value="Delete Announcement" class = "myButton">
+    </form>
 </html>
