@@ -59,7 +59,7 @@ public class CoursePageServlet extends HttpServlet {
 				sessions.get(i).setDayOfWeek(0);
 			}
 			else {
-				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getSessionId()));
+				sessions.get(i).setDaysOfWeekString(controller.getDayOfWeek(sessions.get(i).getCourseId()));
 			}
 		}
 		
