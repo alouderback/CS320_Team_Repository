@@ -51,10 +51,11 @@ public class CourseController{
 	}
 	
 	public String getDayOfWeek(int courseId) {
-		ArrayList weekString = new ArrayList();
+		List<String> weekString = new ArrayList<String>();
+		System.out.println(db.getSessionIdWithCourseId(courseId).get(0));
 		model.setSessionId(db.getSessionIdWithCourseId(courseId).get(0));
 		
-		weekString = (ArrayList<String>)db.getDayOfWeek(model.getSessionId());
+		weekString = db.getDayOfWeek(model.getSessionId());
 		System.out.println("WeekList Size:" + weekString.size());
 		String temp = null;
 		String monday = null;

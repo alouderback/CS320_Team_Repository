@@ -33,7 +33,7 @@
 	            <p id = "announcementTitle">Announcements</p>
 	            	<table>
                         <c:forEach items="${announcements}" var="announcement">
-			        		<p id = "pa1">${announcement.typeName} ${announcement.typeId} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
+			        		<p id = "pa1">${announcement.typeName} ${announcement.courseName} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
 			        		<p id = "pa2">${announcement.message}</p>
 			    	</c:forEach>
 	            	</table>
