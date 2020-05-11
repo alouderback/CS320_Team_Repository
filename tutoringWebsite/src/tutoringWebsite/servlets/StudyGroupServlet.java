@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tutoringWebsite.controllers.AnnouncementController;
 import tutoringWebsite.controllers.StudyGroupController;
 
 import tutoringWebsite.model.StudyGroup;
+import tutoringWebsite.model.Announcement;
 import tutoringWebsite.model.Session;
 
 public class StudyGroupServlet extends HttpServlet {
@@ -36,6 +38,17 @@ public class StudyGroupServlet extends HttpServlet {
 		
 		req.setAttribute("sessions", studyGroupSessions);
 		
+		//printing announcements for study groups
+		String errorMessage = null;
+		AnnouncementController announcementController = new AnnouncementController();
+		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
+		try {
+			announcements = (ArrayList<Announcement>) announcementController.getStudyGroupAnnouncements();
+		}catch(NumberFormatException e){
+			errorMessage = "try fail";
+		}
+		req.setAttribute("errorMessage", errorMessage);
+		req.setAttribute("announcements", announcements);
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
 	}
