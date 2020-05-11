@@ -1,14 +1,13 @@
 package tutoringWebsite.controllers;
 import tutoringWebsite.model.Announcement;
+import tutoringWebsite.model.*;
 import tutoringWebsite.persist.DerbyDatabase;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import org.eclipse.jetty.server.session.Session; 
+import java.util.Scanner; 
 
 public class AnnouncementController{
 	private Announcement model;
@@ -61,6 +60,13 @@ public class AnnouncementController{
 	public void setDB(DerbyDatabase db2) {
 		this.db = db2;
 		
+	}
+	public String getCourseName(int courseId) {
+		Course course = db.getCourse(courseId);
+		return course.getTitle();
+	}
+	public Session getSession(int sessionId) {
+		return db.getSingleSession(sessionId);
 	}
 	
 }

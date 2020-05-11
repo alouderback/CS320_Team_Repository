@@ -138,7 +138,7 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		if (errorMessage == null) {
 			controller.create(aDate, aTime, bTime, message, announcementType, courseId);
 			System.out.println("Announcement Created");
-			req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
+			resp.sendRedirect(req.getContextPath() + "/index");
 		}
 		else {
 			System.out.println("Encountered an error: " + errorMessage);

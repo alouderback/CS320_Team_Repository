@@ -29,19 +29,27 @@ public class AnnouncementServlet extends HttpServlet {
 		controller.setModel(model);
 		ArrayList<Announcement> announcements = new ArrayList<Announcement>();
 		String typeName = null;
+		String courseName = null;
 		
 		try {
 			announcements = (ArrayList<Announcement>) controller.getAnnouncements();
 			typeName = model.getTypeName();
+			//courseName = controller.getCourseName(model.getTypeId());
 		}
 		catch (NumberFormatException e) {
 			errorMessage = "Try failed";
 		}
-		
+		for(int i = 0; i < announcements.size(); i++) {
+			int num = 0;
+			num = announcements.get(i).getTypeId();
+			System.out.println("Type id: "+ num);
+			String course = controller.getCourseName(num);
+			announcements.get(i).setCourseName(course);
+			System.out.println("Course Name" + course);
+		}
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("announcements", announcements);
 		req.setAttribute("typeName", typeName);
-		//req.setAttribute("createAnnouncement", createAnnouncement);
 		if (req.getParameter("createAnnouncement") != null) {
 			req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
 			//resp.sendRedirect(req.getContextPath() + "/createAnnouncement");
