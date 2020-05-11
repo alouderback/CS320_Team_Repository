@@ -1,7 +1,9 @@
 package tutoringWebsite.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import tutoringWebsite.model.Session;
 import tutoringWebsite.model.User;
 import tutoringWebsite.persist.DerbyDatabase;
 import tutoringWebsite.persist.IDatabase;
@@ -75,5 +77,16 @@ public class UserController {
 	public List<User> getTutors(){
 		List<User> tutorList = db.getTutors();
 		return tutorList;
+	}
+	
+	public List<Session> getStudyGroups(int userId){
+		List<Integer> sessionIds = db.getStudyGroups(userId);
+		List<Session> studyGroupSessions = new ArrayList<Session>();
+		for(int sessionId : sessionIds) {
+			studyGroupSessions.add(db.getSingleSession(sessionId));
+		}
+		
+		return studyGroupSessions;
+		
 	}
 }
