@@ -186,6 +186,46 @@ table.center {
     margin-right: auto;
 }
 
+#dayOfWeek {
+    display: inline-block;
+    vertical-align: inherit;
+    padding-right: 2%;
+}
+
+#courseSession {
+    display: inline-block;
+    vertical-align: inherit;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+#tutorList {
+    display: inline-block;
+    vertical-align: inherit;
+    padding-left: 2%;
+}
+
+#infoWindow {
+    text-align: center;
+    vertical-align: top;
+    vertical-align: text-top;
+    margin-left: 7%;
+    padding-left: 7%;
+    padding-right: 7%;
+    margin-right: 7%;
+    background-color: white;
+    padding-bottom: 2%;
+}
+#tutoringSessions {
+    text-align: center;
+    vertical-align: top;
+    vertical-align: text-top;
+    margin-left: 7%;
+    padding-left: 7%;
+    padding-right: 7%;
+    margin-right: 7%;
+}
 .links {
     text-align: center;
     font-size: xx-large;
