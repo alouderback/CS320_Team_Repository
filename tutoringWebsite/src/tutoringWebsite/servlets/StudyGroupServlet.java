@@ -86,7 +86,7 @@ public class StudyGroupServlet extends HttpServlet {
 			session.setAdminName(controller.getTutorName(session.getAdminId()));;
 		}
 
-		if((req.getParameter("CreateSession") == null) && (req.getParameter("DeleteSesion") == null)) {
+		if((req.getParameter("CreateSession") == null) && (req.getParameter("DeleteSession") == null)) {
 			StudyGroup model = new StudyGroup();
 			Session sessionModel = new Session();
 			StudyGroupController studyGroupController = new StudyGroupController();

@@ -73,9 +73,6 @@ public class CreateAnnouncementServlet extends HttpServlet {
 		else if(req.getParameter("announcementType") == null){
 			errorMessage = "Please select an Announcement type";
 		}
-		else {//if message is blank
-			errorMessage = "Please enter a message for the Announcement";
-		}
 		
 		//checks the course selected
 		if(course != null) {
