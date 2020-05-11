@@ -97,7 +97,7 @@ public class derbyDatabaseSessionJunit {
 	
 	@Test
 	public void testCreateSession() {
-		System.out.println("***Testing createSession");
+		System.out.println("***Testing createSession***");
 		LocalDate date = LocalDate.parse("2020-05-05");
 		LocalTime startTime = LocalTime.parse("21:00:00.000");
 		LocalTime endTime = LocalTime.parse("22:00:00.000");
@@ -124,12 +124,29 @@ public class derbyDatabaseSessionJunit {
 	}
 	
 	@Test
+	public void testDeleteSession() {
+		List<Session> preList = new ArrayList<Session>();
+		List<Session> postList = new ArrayList<Session>();
+		System.out.println("***Testing deleteSession***");
+		preList = db.getAllSessions();
+		db.deleteSession(71);
+		postList = db.getAllSessions();
+		System.out.println("Prelist size: " + preList.size() + ", Postlist size: " + postList.size());
+		assertTrue(preList.size() > postList.size());
+	}
+	
+	@Test
 	public void testGetScheduleByDate() {
 		System.out.println("***Testing getScheduleByDate***");
 		List<Session> sessions = new ArrayList<Session>();
 		
 		sessions = db.getScheduleByDate("SubmitM");
-		
+		Session sessionCompare = new Session();
+		for (int i = 0; i < sessions.size(); i++) {
+			if(sessions.get(i).getSessionId() == 11) {
+				sessionCompare = sessions.get(i);
+			}
+		}
 		Session sessionOne = new Session();
 		sessionOne.setSessionId(11);
 		sessionOne.setDate(LocalDate.parse("2020-05-15"));
@@ -145,19 +162,19 @@ public class derbyDatabaseSessionJunit {
 		sessionOne.setTypeName(null);
 		sessionOne.setDaysOfWeekString(null);
 		
-		System.out.println("Created Session Id: " + sessionOne.getSessionId() + ", Database Session Id: " + sessions.get(0).getSessionId());
-		assertTrue(sessionOne.getSessionId() == sessions.get(0).getSessionId());
-		assertTrue(sessionOne.getDate().equals(sessions.get(0).getDate()));
-		assertTrue(sessionOne.getRoom().equals(sessions.get(0).getRoom()));
-		assertTrue(sessionOne.getStartTime().equals(sessions.get(0).getStartTime()));
-		assertTrue(sessionOne.getEndTime().equals(sessions.get(0).getEndTime()));
-		assertTrue(sessionOne.getDayOfWeek() == sessions.get(0).getDayOfWeek());
-		assertTrue(sessionOne.getAdminId() == sessions.get(0).getAdminId());
-		assertTrue(sessionOne.getCourseId() == sessions.get(0).getCourseId());
-		assertTrue(sessionOne.getTypeId() == sessions.get(0).getTypeId());
-		assertTrue(sessionOne.getAdminName() == sessions.get(0).getAdminName());
-		assertTrue(sessionOne.getCourseName() == sessions.get(0).getCourseName());
-		assertTrue(sessionOne.getTypeName() == sessions.get(0).getTypeName());
+		
+		assertTrue(sessionOne.getSessionId() == sessionCompare.getSessionId());
+		assertTrue(sessionOne.getDate().equals(sessionCompare.getDate()));
+		assertTrue(sessionOne.getRoom().equals(sessionCompare.getRoom()));
+		assertTrue(sessionOne.getStartTime().equals(sessionCompare.getStartTime()));
+		assertTrue(sessionOne.getEndTime().equals(sessionCompare.getEndTime()));
+		assertTrue(sessionOne.getDayOfWeek() == sessionCompare.getDayOfWeek());
+		assertTrue(sessionOne.getAdminId() == sessionCompare.getAdminId());
+		assertTrue(sessionOne.getCourseId() == sessionCompare.getCourseId());
+		assertTrue(sessionOne.getTypeId() == sessionCompare.getTypeId());
+		assertTrue(sessionOne.getAdminName() == sessionCompare.getAdminName());
+		assertTrue(sessionOne.getCourseName() == sessionCompare.getCourseName());
+		assertTrue(sessionOne.getTypeName() == sessionCompare.getTypeName());
 	}
 	
 	@Test
