@@ -43,16 +43,13 @@ public class AnnouncementServlet extends HttpServlet {
 			int num = 0;
 			num = announcements.get(i).getTypeId();
 			System.out.println("Type id: "+ num);
-			Session session = controller.getSession(num);
-			String course = controller.getCourseName(session.getCourseId());
+			String course = controller.getCourseName(num);
 			announcements.get(i).setCourseName(course);
 			System.out.println("Course Name" + course);
 		}
 		req.setAttribute("errorMessage", errorMessage);
 		req.setAttribute("announcements", announcements);
 		req.setAttribute("typeName", typeName);
-		//req.setAttribute("courseName", courseName);
-		//req.setAttribute("createAnnouncement", createAnnouncement);
 		if (req.getParameter("createAnnouncement") != null) {
 			req.getRequestDispatcher("/_view/createAnnouncement.jsp").forward(req, resp);
 			//resp.sendRedirect(req.getContextPath() + "/createAnnouncement");
