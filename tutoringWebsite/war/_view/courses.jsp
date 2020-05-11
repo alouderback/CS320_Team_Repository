@@ -37,7 +37,7 @@
                     </tr>
                     <c:forEach items="${courses}" var="course">
                     <tr>    
-                        <td><input id="courseTitle" name="${course.courseId}" type="submit" value="${course.title}" /></td>
+                        <td><input class="myButton" id="courseTitle" name="${course.courseId}" type="submit" value="${course.title}" /></td>
                     </tr>
                     </c:forEach>
                 </table>

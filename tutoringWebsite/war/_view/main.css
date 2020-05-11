@@ -13,10 +13,11 @@ h1{
   	  text-align: center;
 }
 .pageDesc {
-   background-color: white;
-    color: black;
-    margin: 1%;
-    text-align: center;
+   color: black;
+   margin: 1%;
+   text-align: center;
+   font-family: 'Raleway', sans-serif;
+   font-size: 125%;
 }
 .scheduleListings {
     background-color: white;
@@ -32,10 +33,12 @@ h1{
 .AnnouncementWindow {
     color: black;
     background-color: white;
-    margin: 1%;
-    font-family: "Times New Roman", Times, serif;
-    padding-left: 1%;
-    padding-right: 1%;
+    margin-left: 7%;
+    padding-left: 7%;
+    padding-right: 7%;
+    margin-right: 7%;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
 }
 .profileDis {
     color: black;
@@ -75,12 +78,11 @@ h1{
     color: green;
     font-size: 135%;
     font-weight: bold;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Raleway", sans-serif;
     padding-top: 1%;
     padding-left: 2%;
     padding-right: 2%;
     background: none;
-    text-decoration: underline;
 }
 #message{float: left;}
 
@@ -89,6 +91,9 @@ h1{
     border: none;
     color: white;
     width: 12%;
+    font-size: 125%;
+    font-family: 'Raleway', sans-serif;
+    font-weight:500;
 }
 
 #error{
@@ -102,8 +107,9 @@ h1{
 
 #title {
     color: white;
-    font-size: 150%;
-    font-family: "Times New Roman", Times, serif;
+    font-size: 250%;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
     padding-top: 1%;
     padding-bottom: 1%;
     padding-left: 2%;
@@ -126,14 +132,16 @@ h1{
    text-align: center
    color: black;
    font-size: 100%;
-   font-family: "Times New Roman", Times, serif;
    font-weight: bold;
+   padding-top: 1%;
 }
 #pa2{
    text-align: center
    color: black;
    font-size: 100%;
-   font-family: "Times New Roman", Times, serif;
+   border-bottom-style: double;
+   border-bottom-color: green;
+   padding-bottom: 3%;
 }
 
 .myButton {
