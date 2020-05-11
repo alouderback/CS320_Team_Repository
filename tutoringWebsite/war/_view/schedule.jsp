@@ -59,12 +59,13 @@
                     </div>
                     
                     <c:if test = "${isFaculty}">
-	                    <tr>
-	                        <td><input class="myButton" type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
-	                    </tr>
-	                    <tr>
-	                        <td><input class="myButton" type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
-	                    </tr>
+
+	                    <div class="myButton2">
+	                        <input class="myButton" type="submit" name="CreateSession" value="Add A New Tutoring Session">
+	                    
+	                        <input class="myButton" type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session">
+   						</div>
+
    					</c:if>
    					
    					<table class="center">

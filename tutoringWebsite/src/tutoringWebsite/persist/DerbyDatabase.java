@@ -542,6 +542,10 @@ public class DerbyDatabase implements IDatabase{
 		tf.setUserType((resultSet.getInt(index++)));
 		
 	}
+	private void loadStudyGroup(StudyGroup group, ResultSet resultSet, int index) {
+		group.getSession().setAdminId(index++);
+		group.getSession().setSessionId(index++);
+	}
 	private void loadStudent(Student stud, ResultSet resultSet, int index) throws SQLException {
 		stud.setStudent_id(resultSet.getInt(index++));
 		stud.setMajor(resultSet.getString(index++));
@@ -665,6 +669,102 @@ public class DerbyDatabase implements IDatabase{
 						loadSession(session, resultSet, 1);
 						System.out.println("Session ID: " + session.getSessionId());
 						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	
+	@Override
+	public List<StudyGroup> joinStudyGroups(int userId, int sessionId) {
+		return executeTransaction(new Transaction<List<StudyGroup>>() {
+			@Override
+			public List<StudyGroup> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt3 = null;
+				ResultSet resultSet = null;
+				/*
+				System.out.println("IN DERBY DATABASE");
+				System.out.println("email: "+ email + " password: "+ password);
+				System.out.println("name: "+ name +" userType: "+ userType);
+				*/
+				try {
+					
+					List<StudyGroup> result = new ArrayList<StudyGroup>();
+					
+					stmt1 = conn.prepareStatement(
+							"insert into StudyGroup (user_id, session_id)" +
+							"values(?,?)"
+					//sql to add an account to list
+							);
+					stmt1.setInt(1, userId);
+					stmt1.setInt(2, sessionId);
+					stmt1.executeUpdate();
+					
+				//	System.out.println("user created");
+					
+				
+					
+					stmt3 = conn.prepareStatement(
+							"select * from StudyGroup"
+							);
+		
+					
+					resultSet = stmt3.executeQuery();
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;			
+						StudyGroup group = new StudyGroup();
+						loadStudyGroup(group,resultSet,1);
+						result.add(group);
+					
+					}
+
+					
+				//	System.out.println("user returned");
+					return result;
+			}finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt3);
+					}
+		
+				}
+			
+		});
+	}
+	
+	@Override 
+	public List<Integer> getStudyGroups(int userId){
+		return executeTransaction(new Transaction<List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Integer> result = new ArrayList<Integer>();
+					
+					stmt = conn.prepareStatement(
+							"select * from StudyGroup " +
+							" where user_id = ?" 
+							);
+					
+					stmt.setInt(1, userId);
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						StudyGroup group = new StudyGroup();
+						loadStudyGroup(group, resultSet, 1);
+						result.add(group.getSession().getSessionId());
 					}
 					
 					return result;
@@ -1863,7 +1963,7 @@ public class DerbyDatabase implements IDatabase{
 			public Boolean execute(Connection conn) throws SQLException {
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null;
-				//PreparedStatement stmt3 = null;				
+				PreparedStatement stmt3 = null;				
 				PreparedStatement stmt4 = null;
 				PreparedStatement stmt5 = null;
 				PreparedStatement stmt6 = null;
@@ -1905,7 +2005,21 @@ public class DerbyDatabase implements IDatabase{
 
 					stmt2.executeUpdate();
 
-					System.out.println("Users table created");					
+					System.out.println("Users table created");	
+					
+					//create user table
+					stmt3 = conn.prepareStatement(
+							"create table StudyGroup (" +
+							"	study_group_id integer primary key " +
+							"		generated always as identity (start with 1, increment by 1), " +
+							"	user_id integer," +
+							"	session_id integer" +
+							")"
+					);
+
+					stmt3.executeUpdate();
+
+					System.out.println("StudyGroup table created");	
 
 
 					//create session table

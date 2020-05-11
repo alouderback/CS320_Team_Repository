@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
@@ -46,5 +47,16 @@
 			<input class="myButton" type="Submit" name="deleteAccount" value="Delete Account">
 			<input class="myButton" type="Submit" name="logOut" value="Log Out">
 		</form>
+        <form action="${pageContext.servletContext.contextPath}/profile" method ="get">
+            <div id = "groupList">
+                <h3>List of Joined Study Groups:</h3>
+                   <!-- <c:forEach items="${groupList}" var = "group">
+                        <tr>
+                            <td>${group}<br></td>            
+                        </tr>
+                    </c:forEach> //-->
+            </div>
+        
+        </form>
     </body>
-</html>|
+</html>
