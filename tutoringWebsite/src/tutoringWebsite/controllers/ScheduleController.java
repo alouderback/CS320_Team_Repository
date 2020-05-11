@@ -32,6 +32,10 @@ public class ScheduleController{
 		return db.getAllTutoringSessions();
 	}
 	
+	public List<Session> getAllStudyGroups() {
+		return db.getAllStudyGroupSessions();
+	}
+	
 	//Deletes a session in the session table; takes userId as a parameter
 	public void deleteSession(int id) {
 		db.deleteSession(id);
@@ -59,6 +63,27 @@ public class ScheduleController{
 			return "Course not found";
 		}
 		return course.get(0).getTitle();
+	}
+	
+	//This be a real janky way to get sessions from weekday
+	public List<Session> getTutorSessionsByWeekday(String weekday){
+		List<Session> tempSessions = new ArrayList<Session>();
+		List<Session> sessions = new ArrayList<Session>();
+		tempSessions = db.getAllSessions();
+		for(int i = 0; i < tempSessions.size(); i++) {
+			if(tempSessions.get(i).getTypeId() == 2 || tempSessions.get(i).getTypeId() == 3) {
+				tempSessions.remove(i);
+				i = i - 1;
+			}
+		}
+		
+		for (int j = 0; j < tempSessions.size(); j++) {
+			if(getDayOfWeek(tempSessions.get(j).getSessionId()).contains(weekday)) {
+				sessions.add(tempSessions.get(j));
+			}
+		}
+		
+		return sessions;
 	}
 	
 	//Returns a single string of weekdays given a sessionId ("Sunday, Monday, Thursday")

@@ -6,6 +6,7 @@
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Study Groups</Title>
     </head>
     <body>
@@ -23,13 +24,13 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Study Groups</p>
+            <div id = "subTitle">
+	           Study Groups
             </div>
         </form>
 		<form action="${pageContext.servletContext.contextPath}/announcement" method="get">
 	        <div class = "AnnouncementWindow">
-	            <p id = "announcementTitle">Announcements</p>
+                <div id = "announcementTitle">Announcements</div>
 	            	<table>
                         <c:forEach items="${announcements}" var="announcement">
 			        		<p id = "pa1">${announcement.typeName} ${announcement.courseName} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
@@ -39,13 +40,20 @@
 	        </div>
 	    </form>
         <form action="${pageContext.servletContext.contextPath}/groups" method = "post">
-            <table>
+            <table class="center">
+                <tr><input class="myButton" type="submit" name="CreateSession" value="Create a new Study Group"></tr>
+                <c:if test = "${isFaculty}">
+	                    <tr>
+	                        <input class="myButton" type="submit" name="DeleteSession" value="Delete A Study Session">
+	                    </tr>
+   					</c:if>
+                
                 <tr>
                     <td>Course</td>
                     <td>Days of Week</td>      
                     <td>Time</td>
                     <td>Room</td>
-                    <td>Tutor</td>	
+                    <td>Creator</td>	
                 </tr>
 
                 <c:forEach items="${sessions}" var="session">
@@ -55,10 +63,12 @@
                         <td>${session.startTime} - ${session.endTime}</td>
                         <td>${session.room}</td>		
                         <td>${session.adminName}</td>
-                        <td><input type="submit" name="${session.sessionId}" value="Join Study Group"></td>
+                        <td class="buttonTable"><input class="myButton" type="submit" name="${session.sessionId}" value="Join Study Group"></td>
                     </tr>
                 </c:forEach>
+                
             </table>
+            
         </form>
     </body>
 </html>

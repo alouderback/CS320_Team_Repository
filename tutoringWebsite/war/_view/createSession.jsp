@@ -6,6 +6,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Create Session</Title>
     </head>
     <body>    
@@ -23,8 +24,8 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Create a tutoring session</p>
+            <div id = "subTitle">
+	           Create a tutoring session
             </div>
         </form>
         <form action="${pageContext.servletContext.contextPath}/createSession" method="post">
@@ -43,9 +44,24 @@
 					<td><input type="text" name="endTime" size="12" value="${endTime}" /></td>
 				</tr>
 				<tr>
-					
-  				<td class="label">Please enter the room the session will be in (ex. KEC132):</td>
-					<td><input type="text" name="room" size="12" value="${room}" /></td>
+  					<td class="label"><label for="room">Please select the room the session will be in:</label></td>
+  					<!-- Going to have the dropdown box here -->
+  					<td><select id="course" name="room">
+						<option value="KEC118">KEC118</option>
+						<option value="KEC119">KEC119</option>
+						<option value="KEC120">KEC120</option>
+						<option value="KEC121">KEC121</option>
+						<option value="KEC122">KEC122</option>
+						<option value="KEC123">KEC123</option>
+						<option value="KEC124">KEC124</option>
+						<option value="KEC125">KEC125</option>
+						<option value="KEC126">KEC126</option>
+						<option value="KEC127">KEC127</option>
+						<option value="KEC128">KEC128</option>
+						<option value="KEC129">KEC129</option>
+						<option value="KEC130">KEC130</option>
+						<option value="KEC131">KEC131</option>
+					</select></td>
   				</tr>
   				<tr>
   					<td class="label">Please check the boxes of the days of the week the session will take place:</td>

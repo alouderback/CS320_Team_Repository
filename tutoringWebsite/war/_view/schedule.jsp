@@ -6,6 +6,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Schedule</Title>
     </head>
     <body>    
@@ -23,13 +24,13 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Schedule</p>
+            <div id = "subTitle">
+	           Schedule
             </div>
         </form>
         <form action="${pageContext.servletContext.contextPath}/announcement" method="get">
 	        <div class = "AnnouncementWindow">
-	            <p id = "announcementTitle">Announcements</p>
+                <div id = "announcementTitle">Announcements</div>
 	            	<table>
                         <c:forEach items="${announcements}" var="announcement">
 			        		<p id = "pa1">${announcement.typeName} ${announcement.courseName} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
@@ -39,32 +40,40 @@
 	        </div>
 	    </form>
         <form action="${pageContext.servletContext.contextPath}/schedule" method="post">
-            <table>
-                    <tr>
-                        <!-- <td class="label">Date of Desired Schedule (XX/XX/XXXX):</td> -->
-                        <td><input type="submit" name="Submit" value="Get Schedule for Today" /></td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" name="SubmitW" value="Get Schedule for Week"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" name="SubmitM" value="Get Schedule for Month"></td>
-                    </tr>
+            
+                    <div class="myButton2">              
+            
+                        <input class="myButton" type="submit" name="Monday" value="Get Schedule for Monday" />
+                    
+                        <input class="myButton" type="submit" name="Tuesday" value="Get Schedule for Tuesday">
+                    
+                        <input class="myButton" type="submit" name="Wednesday" value="Get Schedule for Wedesday">
+                    
+                        <input class="myButton" type="submit" name="Thursday" value="Get Schedule for Thursday" />
+                    
+                        <input class="myButton" type="submit" name="Friday" value="Get Schedule for Friday">
+                    
+                        <input class="myButton" type="submit" name="Saturday" value="Get Schedule for Saturday">
+                   
+                        <input class="myButton" type="submit" name="Sunday" value="Get Schedule for Sunday">
+                    </div>
                     
                     <c:if test = "${isFaculty}">
 	                    <tr>
-	                        <td><input type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
+	                        <td><input class="myButton" type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
 	                    </tr>
 	                    <tr>
-	                        <td><input type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
+	                        <td><input class="myButton" type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
 	                    </tr>
    					</c:if>
+   					
+   					<table class="center">
                         <tr>
-                            <td>Tutor</td>
-                            <td>Days of Week</td>      
-                            <td>Time</td>
-                            <td>Room</td>
-                            <td>Course</td>   				
+                            <td id="loopTitle">Tutor</td>
+                            <td id="loopTitle">Days of Week</td>      
+                            <td id="loopTitle">Time</td>
+                            <td id="loopTitle">Room</td>
+                            <td id="loopTitle">Course</td>   				
                         </tr>
                         
                         <c:forEach items="${sessions}" var="session">
@@ -77,6 +86,7 @@
 			        	</tr>
 			    	</c:forEach>
 			    </table>
+                
         </form>
     </body>
 </html>

@@ -3,6 +3,7 @@
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Resources</Title>
     </head>
     <body>
@@ -20,14 +21,14 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Helpful Links and Resources</p>
-	           
-	           
-	           <p>Academic support center: </p>
-	           <a href="https://www.ycp.edu/about-us/offices-and-departments/student-success/academic-support-center/">Visit W3Schools</a>
-	            <a href=" https://catalog.ycp.edu/index.php?catoid=14/">Undergraduate catalog:</a>
+            <div id = "subTitle">
+	           Helpful Links and Resources
+	        </div>
+	       <div class = "links">
+	           <p><a href="https://www.ycp.edu/about-us/offices-and-departments/student-success/academic-support-center/">Academic support center</a></p>
+	           <p><a href=" https://catalog.ycp.edu/index.php?catoid=14/">Undergraduate catalog</a></p>
+               <p><a href="https://w3schools.com">W3Schools</a></p>
             </div>
         </form>
     </body>
-</html>|
+</html>

@@ -109,14 +109,33 @@ public class ScheduleServlet extends HttpServlet {
 		// decode POSTed form parameters and dispatch to controller
 		try {
 			// check for errors in the form data before using is in a calculation
-			if (req.getParameter("Submit") != null) {
-				sessions = (ArrayList<Session>) controller.getScheduleWithDate("Submit");
+			if (req.getParameter("Monday") != null) {
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("Submit");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Monday");
 			}
-			else if(req.getParameter("SubmitW") != null){
-				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
+			else if(req.getParameter("Tuesday") != null){
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Tuesday");
 			}
-			else if(req.getParameter("SubmitM") != null) {
-				sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
+			else if(req.getParameter("Wednesday") != null) {
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Wednesday");
+			}
+			else if(req.getParameter("Thursday") != null){
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Thursday");
+			}
+			else if(req.getParameter("Friday") != null) {
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Friday");
+			}
+			else if(req.getParameter("Saturday") != null){
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitW");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Saturday");
+			}
+			else if(req.getParameter("Sunday") != null) {
+				//sessions = (ArrayList<Session>) controller.getScheduleWithDate("SubmitM");
+				sessions = (ArrayList<Session>) controller.getTutorSessionsByWeekday("Sunday");
 			}
 			else if(req.getParameter("CreateSession") != null) {
 				resp.sendRedirect(req.getContextPath() + "/createSession");

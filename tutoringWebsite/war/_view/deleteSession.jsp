@@ -6,6 +6,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Delete Session</Title>
     </head>
     <body>    
@@ -23,8 +24,8 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Delete a tutoring session</p>
+            <div id = "subTitle">
+	           Delete a tutoring session
             </div>
         </form>
         <form action="${pageContext.servletContext.contextPath}/deleteSession" method="post">
@@ -34,13 +35,21 @@
 					<td class="label">Please enter session ID of the session you would like to delete:</td>
 					<td><input type="text" name="sessionId" size="12" value="${sessionId}" /></td>
 				</tr>
+				<tr>
+					<td id="loopTitle">Session ID</td>
+					<td id="loopTitle">Tutor Name</td>
+					<td id="loopTitle">Course Name</td>
+					<td id="loopTitle">Days Of Week</td>
+					<td id="loopTitle">Start Time</td>
+				</tr>
 				
 				<c:forEach items="${sessions}" var="session">
 			        	<tr class="scheduleListings">
 				            	<td>${session.sessionId}</td>
 				            	<td>${session.adminName}</td>
 				            	<td>${session.courseName}</td>
-				            	<td>${session.daysOfWeekString}</td>	          
+				            	<td>${session.daysOfWeekString}</td>	
+				            	<td>${session.startTime}</td>          
 			        	</tr>
 			    	</c:forEach>
 
