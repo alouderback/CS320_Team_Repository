@@ -40,14 +40,17 @@
 	        </div>
 	    </form>
         <form action="${pageContext.servletContext.contextPath}/groups" method = "post">
-            <table class="center">
-                <tr><input class="myButton" type="submit" name="CreateSession" value="Create a new Study Group"></tr>
-                <c:if test = "${isFaculty}">
-	                    <tr>
-	                        <input class="myButton" type="submit" name="DeleteSession" value="Delete A Study Session">
-	                    </tr>
-   					</c:if>
+            
+                <div class="myButton2">
+                <input class="myButton" type="submit" name="CreateSession" value="Create a new Study Group">
                 
+                <c:if test = "${isFaculty}">
+	                    
+	                        <input class="myButton" type="submit" name="DeleteSession" value="Delete A Study Session">
+	                    
+   					</c:if>
+                </div>
+            <table class="center">
                 <tr>
                     <td>Course</td>
                     <td>Days of Week</td>      
