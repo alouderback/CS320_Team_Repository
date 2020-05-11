@@ -29,7 +29,7 @@ public class ScheduleController{
 	//Returns a list of all sessions
 	public List<Session> getAllSessions() {
 		System.out.println("In Schedule Controller");
-		return db.getAllSessions();
+		return db.getAllTutoringSessions();
 	}
 	
 	//Deletes a session in the session table; takes userId as a parameter

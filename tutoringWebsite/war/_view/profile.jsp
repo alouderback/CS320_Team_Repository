@@ -32,7 +32,6 @@
 							<p class = "profile"> Email: 	<td>${user.email}</td></p>	           
 			            	<p.profile> Password: <td>${user.password}</td></p>
 			            	<p.profile> Name: <td>${user.name}</td></p>
-			            	<p.profile> Type: <td>${user.userType}</td></p>	            
 			    
 	          
           
