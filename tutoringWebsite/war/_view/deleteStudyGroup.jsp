@@ -33,6 +33,11 @@
        		
        		<table>
        			<tr>
+					<td class="label">Please enter the ID of the study group you would like to delete:</td>
+					<td><input type="text" name="studyGroup" size="12" value="${studyGroup}" /></td>
+				</tr>
+       			<tr>
+       				<td>Group ID</td>
                     <td>Course</td>    
                     <td>Time</td>
                     <td>Room</td>
@@ -40,6 +45,7 @@
                 </tr>
                 <c:forEach items="${sessions}" var="session">
                     <tr class="scheduleListings">
+                    	<td>${session.sessionId}</td>
                         <td>${session.courseName}</td>
                         <td>${session.startTime} - ${session.endTime}</td>
                         <td>${session.room}</td>		
