@@ -6,6 +6,7 @@
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Courses</Title>
     </head>
     
@@ -24,20 +25,16 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
+            <div id = "subTitle">
 	           <p>Courses</p>
             </div>
         </form>
         <form action="${pageContext.servletContext.contextPath}/coursePage" method="get">
-            <div class = "coursesPane">
-                <p id = "title">Course List</p>
-                <table>
-                    <tr>
-                        <td>Course</td>
-                    </tr>
+            <div id = "coursesPane" style="column-count: 3" >
+                <table class = "center">
                     <c:forEach items="${courses}" var="course">
                     <tr>    
-                        <td><input id="courseTitle" name="${course.courseId}" type="submit" value="${course.title}" /></td>
+                        <td><input class="myButton" id="courseTitle" name="${course.courseId}" type="submit" value="${course.title}"/></td>
                     </tr>
                     </c:forEach>
                 </table>

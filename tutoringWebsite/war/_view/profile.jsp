@@ -3,6 +3,7 @@
 <html>
 	<head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Profile</Title>
     </head>
     <body>
@@ -23,9 +24,9 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
+            <div id = "subTitle">
             
-	           <h1>Profile</h1>
+	           Profile
 	        </div>
 	       <body>
 	          
@@ -42,8 +43,8 @@
 			</body>
         </form>
         <form action="${pageContext.servletContext.contextPath}/profile" method="post">
-			<input type="Submit" name="deleteAccount" value="Delete Account">
-			<input type="Submit" name="logOut" value="Log Out">
+			<input class="myButton" type="Submit" name="deleteAccount" value="Delete Account">
+			<input class="myButton" type="Submit" name="logOut" value="Log Out">
 		</form>
     </body>
 </html>|

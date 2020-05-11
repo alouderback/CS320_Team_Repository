@@ -6,6 +6,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/_view/main.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
         <Title>Schedule</Title>
     </head>
     <body>    
@@ -23,13 +24,13 @@
                 <input id="navBarItem" name="login" type="submit" value="Login" />
                 <input id="navBarItem" name="createAccount" type="submit" value="Create Account" />
             </div>
-            <div class = "pageDesc">
-	           <p>Schedule</p>
+            <div id = "subTitle">
+	           Schedule
             </div>
         </form>
         <form action="${pageContext.servletContext.contextPath}/announcement" method="get">
 	        <div class = "AnnouncementWindow">
-	            <p id = "announcementTitle">Announcements</p>
+                <div id = "announcementTitle">Announcements</div>
 	            	<table>
                         <c:forEach items="${announcements}" var="announcement">
 			        		<p id = "pa1">${announcement.typeName} ${announcement.courseName} ${announcement.date} ${announcement.startTime} - ${announcement.endTime}</p>
@@ -39,24 +40,25 @@
 	        </div>
 	    </form>
         <form action="${pageContext.servletContext.contextPath}/schedule" method="post">
-            <table>
+            
+            <table class="center">
                     <tr>
                         <!-- <td class="label">Date of Desired Schedule (XX/XX/XXXX):</td> -->
-                        <td><input type="submit" name="Submit" value="Get Schedule for Today" /></td>
+                        <input class="myButton" type="submit" name="Submit" value="Get Schedule for Today" />
                     </tr>
                     <tr>
-                        <td><input type="submit" name="SubmitW" value="Get Schedule for Week"></td>
+                        <input class="myButton" type="submit" name="SubmitW" value="Get Schedule for Week">
                     </tr>
                     <tr>
-                        <td><input type="submit" name="SubmitM" value="Get Schedule for Month"></td>
+                        <input class="myButton" type="submit" name="SubmitM" value="Get Schedule for Month">
                     </tr>
                     
                     <c:if test = "${isFaculty}">
 	                    <tr>
-	                        <td><input type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
+	                        <td><input class="myButton" type="submit" name="CreateSession" value="Add A New Tutoring Session"></td>
 	                    </tr>
 	                    <tr>
-	                        <td><input type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
+	                        <td><input class="myButton" type="submit" name="DeleteSession" value="Delete An Existing Tutoring Session"></td>
 	                    </tr>
    					</c:if>
                         <tr>
@@ -77,6 +79,7 @@
 			        	</tr>
 			    	</c:forEach>
 			    </table>
+                
         </form>
     </body>
 </html>

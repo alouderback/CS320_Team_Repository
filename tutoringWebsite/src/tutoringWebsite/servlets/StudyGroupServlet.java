@@ -51,7 +51,7 @@ public class StudyGroupServlet extends HttpServlet {
 			int num = 0;
 			num = announcements.get(i).getTypeId();
 			System.out.println("Type id: "+ num);
-			String course = controller.getCourseName(num);
+			String course = announcementController.getCourseName(num);
 			announcements.get(i).setCourseName(course);
 			System.out.println("Course Name" + course);
 		}
@@ -79,10 +79,13 @@ public class StudyGroupServlet extends HttpServlet {
 			session.setAdminName(controller.getTutorName(session.getAdminId()));;
 		}
 		
-		req.setAttribute("sessions", studyGroupSessions);
 		
+		if(req.getParameter("CreateSession") != null) {
+			resp.sendRedirect(req.getContextPath() + "/createStudyGroup");
+		} else {
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
-	
+			req.setAttribute("sessions", studyGroupSessions);
+			req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
+		}
 	}
 }
