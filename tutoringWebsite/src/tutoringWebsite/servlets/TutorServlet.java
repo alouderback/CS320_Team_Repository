@@ -44,7 +44,7 @@ public class TutorServlet extends HttpServlet {
 		List<User> tutorList = new ArrayList<User>();
 		List<Integer> courseIdList = new ArrayList<Integer>();
 		List<Course> courseList = new ArrayList<Course>();
-		String[][] courses = new String[13][5];
+		Course[][] courses = new Course[13][5];
 		boolean isStudent	= false;//will turn true i student
 
 			model      = new User(); 
@@ -70,7 +70,7 @@ public class TutorServlet extends HttpServlet {
 				for(int courseid : courseIdList ) {									//goes through course ids
 					
 					model2 = controller2.getCurseByCourseId(courseid);				//gets course from course id
-					courses[i][j] = model2.getTitle();
+					courses[i][j] = model2;
 					
 					
 					courseList.add(model2);											//add course to course list
