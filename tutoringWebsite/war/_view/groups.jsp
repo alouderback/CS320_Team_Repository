@@ -44,7 +44,7 @@
                 <tr><input class="myButton" type="submit" name="CreateSession" value="Create a new Study Group"></tr>
                 <c:if test = "${isFaculty}">
 	                    <tr>
-	                        <input class="myButton" type="submit" name="DeleteSession" value="Delete A Study Tutoring Session">
+	                        <input class="myButton" type="submit" name="DeleteSession" value="Delete A Study Session">
 	                    </tr>
    					</c:if>
                 
