@@ -1,6 +1,8 @@
 package tutoringWebsite.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tutoringWebsite.controllers.StudentController;
 import tutoringWebsite.controllers.UserController;
+import tutoringWebsite.model.Session;
 import tutoringWebsite.model.Student;
 import tutoringWebsite.model.User;
 
@@ -23,7 +26,20 @@ public class ProfileServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("\nProfileServlet: doGet");
-
+		User current = (User) req.getSession().getAttribute("user");
+		
+		if(current != null) {
+			controller = new UserController(current);
+			List<Session> studyGroupSessions = controller.getStudyGroups(current.getUser_Id());
+			List<String> groupList = new ArrayList<String>();
+			
+			for(Session studyGroup : studyGroupSessions) {
+				groupList.add(studyGroup.getCourseName() + " " + studyGroup.getSessionId());
+			}
+			req.setAttribute("groupList", groupList);
+		}
+		
+		
 		req.getRequestDispatcher("/_view/profile.jsp").forward(req, resp);
 	}
 

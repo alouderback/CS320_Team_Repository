@@ -157,4 +157,8 @@ public class StudyGroupController {
 		
 	}
 	
+	public List<StudyGroup> joinStudyGroup(int userId) {
+		return db.joinStudyGroups(userId, model.getSession().getSessionId());
+	}
+	
 }
