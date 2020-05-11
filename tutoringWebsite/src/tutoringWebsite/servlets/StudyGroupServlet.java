@@ -79,10 +79,13 @@ public class StudyGroupServlet extends HttpServlet {
 			session.setAdminName(controller.getTutorName(session.getAdminId()));;
 		}
 		
-		req.setAttribute("sessions", studyGroupSessions);
 		
+		if(req.getParameter("CreateSession") != null) {
+			resp.sendRedirect(req.getContextPath() + "/createStudyGroup");
+		} else {
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
-	
+			req.setAttribute("sessions", studyGroupSessions);
+			req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
+		}
 	}
 }

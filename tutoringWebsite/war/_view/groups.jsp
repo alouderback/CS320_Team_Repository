@@ -41,6 +41,7 @@
 	    </form>
         <form action="${pageContext.servletContext.contextPath}/groups" method = "post">
             <table class="center">
+                <tr><input class="myButton" type="submit" name="CreateSession" value="Create a new Study Group"></tr>
                 <tr>
                     <td>Course</td>
                     <td>Days of Week</td>      
@@ -59,7 +60,9 @@
                         <td class="buttonTable"><input class="myButton" type="submit" name="${session.sessionId}" value="Join Study Group"></td>
                     </tr>
                 </c:forEach>
+                
             </table>
+            
         </form>
     </body>
 </html>
