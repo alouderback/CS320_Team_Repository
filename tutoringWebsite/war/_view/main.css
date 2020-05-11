@@ -238,6 +238,12 @@ font-weight: 600; font-style: normal; font-variant: normal;
 background-image:   box-shadow: rgba(0, 0, 0, 0) 39px 5px 0px 0px;
  border: 1px solid gray;
   display: inline-block;}
+.myButton2 {
+	margin-top: 5%;
+	text-align: center;
+	display: inline-block;
+	width: 100%;
+}
 
 .myButton:hover {
 background: rgb(17,164,61); }
