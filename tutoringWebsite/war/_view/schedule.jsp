@@ -42,8 +42,7 @@
         <form action="${pageContext.servletContext.contextPath}/schedule" method="post">
             
             <table class="center">
-                    <tr>
-                        <!-- <td class="label">Date of Desired Schedule (XX/XX/XXXX):</td> -->
+                    <!--  <tr>
                         <input class="myButton" type="submit" name="Submit" value="Get Schedule for Today" />
                     </tr>
                     <tr>
@@ -51,6 +50,28 @@
                     </tr>
                     <tr>
                         <input class="myButton" type="submit" name="SubmitM" value="Get Schedule for Month">
+                    </tr> -->
+                     <tr>
+                        <!-- <td class="label">Date of Desired Schedule (XX/XX/XXXX):</td> -->
+                        <input class="myButton" type="submit" name="Monday" value="Get Schedule for Monday" />
+                    </tr>
+                    <tr>
+                        <input class="myButton" type="submit" name="Tuesday" value="Get Schedule for Tuesday">
+                    </tr>
+                    <tr>
+                        <input class="myButton" type="submit" name="Wednesday" value="Get Schedule for Wedesday">
+                    </tr>
+                     <tr>
+                        <input class="myButton" type="submit" name="Thursday" value="Get Schedule for Thursday" />
+                    </tr>
+                    <tr>
+                        <input class="myButton" type="submit" name="Friday" value="Get Schedule for Friday">
+                    </tr>
+                    <tr>
+                        <input class="myButton" type="submit" name="Saturday" value="Get Schedule for Saturday">
+                    </tr>
+                    <tr>
+                        <input class="myButton" type="submit" name="Sunday" value="Get Schedule for Sunday">
                     </tr>
                     
                     <c:if test = "${isFaculty}">

@@ -61,6 +61,27 @@ public class ScheduleController{
 		return course.get(0).getTitle();
 	}
 	
+	//This be a real janky way to get sessions from weekday
+	public List<Session> getTutorSessionsByWeekday(String weekday){
+		List<Session> tempSessions = new ArrayList<Session>();
+		List<Session> sessions = new ArrayList<Session>();
+		tempSessions = db.getAllSessions();
+		for(int i = 0; i < tempSessions.size(); i++) {
+			if(tempSessions.get(i).getTypeId() == 2 || tempSessions.get(i).getTypeId() == 3) {
+				tempSessions.remove(i);
+				i = i - 1;
+			}
+		}
+		
+		for (int j = 0; j < tempSessions.size(); j++) {
+			if(getDayOfWeek(tempSessions.get(j).getSessionId()).contains(weekday)) {
+				sessions.add(tempSessions.get(j));
+			}
+		}
+		
+		return sessions;
+	}
+	
 	//Returns a single string of weekdays given a sessionId ("Sunday, Monday, Thursday")
 	public String getDayOfWeek(int sessionId) {
 		ArrayList weekString = new ArrayList();

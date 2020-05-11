@@ -66,7 +66,7 @@ public class StudyGroupServlet extends HttpServlet {
 		System.out.println("Study Groups Servlet: doPost");
 		
 
-		System.out.println("Study Group Servlet: doGet");	 
+		//System.out.println("Study Group Servlet: doGet");	 
 		StudyGroup studyGroup = new StudyGroup();
 		StudyGroupController controller = new StudyGroupController();
 		controller.setStudyGroup(studyGroup);
@@ -82,7 +82,11 @@ public class StudyGroupServlet extends HttpServlet {
 		
 		if(req.getParameter("CreateSession") != null) {
 			resp.sendRedirect(req.getContextPath() + "/createStudyGroup");
-		} else {
+		}
+		else if(req.getParameter("DeleteSession") != null) {
+			resp.sendRedirect(req.getContextPath() + "/deleteStudyGroup");
+		}
+		else {
 		// call JSP to generate empty form
 			req.setAttribute("sessions", studyGroupSessions);
 			req.getRequestDispatcher("/_view/groups.jsp").forward(req, resp); 
