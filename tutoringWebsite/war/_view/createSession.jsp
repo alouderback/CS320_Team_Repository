@@ -108,5 +108,6 @@
   			</table>
   			<p id="error">${errorMessage}</p>
   			<input type="Submit" name="submit" value="Create Tutoring Session">
-    </form>
+        </form>
+    </body>
 </html>

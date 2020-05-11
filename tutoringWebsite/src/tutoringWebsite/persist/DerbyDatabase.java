@@ -642,6 +642,43 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	@Override
+	public List<Session> getAllStudyGroupSessions(){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Session> result = new ArrayList<Session>();
+					
+					stmt = conn.prepareStatement(
+							"select * from Sessions " +
+							"where type_id = ? "
+							);
+					
+					stmt.setInt(1, 2);
+					resultSet = stmt.executeQuery();
+					
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
 	public List<Course> getAllCourses(){
 		return executeTransaction(new Transaction<List<Course>>() {
 			public List<Course> execute(Connection conn) throws SQLException {
@@ -1072,7 +1109,9 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(1, sessionId);
 					resultSet = stmt.executeQuery();
 					
-					if(resultSet.next()) {
+					
+					
+					while(resultSet.next()) {
 						Session session = new Session();
 						loadSession(session, resultSet, 1);
 						result.add(session);
@@ -1090,11 +1129,130 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	@Override
+	public List<Integer> getSessionIdWithCourseId(int courseId) {
+		return executeTransaction(new Transaction<List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Integer> result = new ArrayList<Integer>();
+					
+					stmt = conn.prepareStatement(
+							"select * from Sessions " +
+							" where course_id = ?" +
+							" and type_id = ?"
+							);
+					
+					stmt.setInt(1, courseId);
+					stmt.setInt(2,  3);
+					resultSet = stmt.executeQuery();
+					
+					if(resultSet.next()) {
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						result.add(session.getSessionId());
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
 	public Session getSingleSession(int sessionId) {
 		Session session = getSession(sessionId).get(0);
+		if(session == null) {
+			System.out.println(session.toString());
+		}
 		return session;
 	}
 	@Override
+	public List<Session> getCourseSession(int courseId){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Session> result = new ArrayList<Session>();
+					
+					stmt = conn.prepareStatement(
+							"select * from Sessions " +
+							" where course_id = ?" +
+							" and type_id = ? "
+							);
+					
+					stmt.setInt(1, courseId);
+					stmt.setInt(2, 3);
+					resultSet = stmt.executeQuery();
+					
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
+	public List<Session> getTutoringSession(int courseId){
+		return executeTransaction(new Transaction<List<Session>>() {
+			public List<Session> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					List<Session> result = new ArrayList<Session>();
+					
+					stmt = conn.prepareStatement(
+							"select * from Sessions " +
+							" where course_id = ?" +
+							" and type_id = ? "
+							);
+					
+					stmt.setInt(1, courseId);
+					stmt.setInt(2, 1);
+					resultSet = stmt.executeQuery();
+					
+					while (resultSet.next()) {
+						System.out.println("Within while loop, see session id below:");
+						Session session = new Session();
+						loadSession(session, resultSet, 1);
+						System.out.println("Session ID: " + session.getSessionId());
+						result.add(session);
+					}
+					
+					return result;
+					
+				}finally{
+					DBUtil.closeQuietly(conn);
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+			
+		});
+	}
+	@Override
+	
 	public List<String> getDayOfWeek(int sessionId){
 		return executeTransaction(new Transaction<List<String>>() {
 			public List<String> execute(Connection conn) throws SQLException {
@@ -1300,8 +1458,8 @@ public class DerbyDatabase implements IDatabase{
 			
 		});
 		
-		
 	}
+	@Override
 	public List<Course> getCourseFromCourseId(int courseId){
 		return executeTransaction(new Transaction<List<Course>>() {
 			public List<Course> execute(Connection conn) throws SQLException {

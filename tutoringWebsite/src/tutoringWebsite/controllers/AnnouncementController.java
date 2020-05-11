@@ -45,7 +45,7 @@ public class AnnouncementController{
 				name = "Study Group";
 			}
 			announcement.setTypeName(name);
-			announcement.setSession(db.getSingleSession(announcement.getTypeId()));
+			//announcement.setSession(db.getSingleSession(announcement.getTypeId()));
 		}
 		return announcements;
 	}
@@ -57,6 +57,10 @@ public class AnnouncementController{
 	}
 	public void delete(int announcementId) {
 		db.removeAnnouncement(announcementId);
+	}
+	public void setDB(DerbyDatabase db2) {
+		this.db = db2;
+		
 	}
 	
 }
